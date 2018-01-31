@@ -8,6 +8,7 @@ import java.util.Map;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -15,6 +16,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.Path;
@@ -32,71 +34,41 @@ import rx.Observable;
  */
 public interface CommonApi {
 
-    @POST("user/applogin")
-    Observable<ResponseInfo> loginEx(@Body RequestBody route);
+    //用户登陆
+    @POST("api/login")
+    Observable<ResponseInfo> login(@Body RequestBody route);
 
-    @POST("base/sendVerifyCode")
-    Observable<ResponseInfo> getVerifyCode(@Body RequestBody route);
+    //获取用户信息
+    @GET("/api/userinfo/:{id}")
+    Observable<ResponseInfo> getUserInfo(@Path("id") String uid);
 
-    @POST()
-    Observable<ResponseInfo> getVerifyCodeEx(@Url String url, @Body RequestBody route);
+    //编辑用户信息
+    @PUT("api/username")
+    Observable<ResponseInfo> modifyUserInfo(@Body RequestBody route);
 
-    @POST("user/logout")
-    Observable<ResponseInfo> logout();
+    //修改密码
+    @POST("api/userpsd")
+    Observable<ResponseInfo> modifyPwd(@Body RequestBody route);
 
-    @POST("user/forgetPassword")
-    Observable<ResponseInfo> forgetPwd(@Body RequestBody route);
+    //获取用户所在房间列表
+    @GET("api/userroom/")
+    Observable<ResponseInfo> getRoomList();
 
-    @GET("schoollist.xml")
-    Observable<String> schoolUrl();
+    //用户向房间发送消息
+    @POST("api/msgtoroom")
+    Observable<ResponseInfo> sendToRoom(@Body RequestBody route);
 
-    @GET("base/schoollist")
-    Observable<ResponseInfo> schoolList();
+    //向用户发送消息
+    @POST("api/msgtouser")
+    Observable<ResponseInfo> sendToUser(@Body RequestBody route);
 
-    @GET("base/teacherlist")
-    Observable<ResponseInfo> teacherList(@Query("schoolUid") String schoolId, @Query("keyword") String keyword);
+    //读取消息
+    @GET("api/msg")
+    Observable<ResponseInfo> getMessage();
 
-
-    //通知详情
-    @GET("notice/{uid}")
-    Observable<ResponseInfo> getMsgDetail(@Path("uid") String uid);
-
-    //事件地点
-    @GET("teacher/address")
-    Observable<ResponseInfo> getEventAddressList();
-
-    /**
-     * 返回问卷调查列表
-     * @return
-     */
-    @GET("questionnaire/list")
-    Observable<ResponseInfo> questionnaireList();
-
-    //获取事件类型
-    @GET("event/type")
-    Observable<ResponseInfo> getEventTypeList();
-
-    /**
-     * 返回问卷调查详情
-     * @return
-     */
-    @GET("questionnaire/{uid}")
-    Observable<ResponseInfo> questionnaireDetail(@Path("uid") String uid);
-
-
-    /**
-     * 提交问卷
-     * @return
-     */
-    @POST("questionnaire/commit")
-    Observable<ResponseInfo> questionnaireCommit(@Body RequestBody route);
-
-    /**
-     * 获取最新通告
-     */
-    @GET("base/newnotice")
-    Observable<ResponseInfo> getLatestNotice();
-
+    //消息已读
+    @DELETE("api/readmsg")
+    Observable<ResponseInfo> readMessage(@Body RequestBody route);
 
 
 

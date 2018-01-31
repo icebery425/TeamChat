@@ -20,10 +20,8 @@ import retrofit2.converter.fastjson.FastJsonConverterFactory;
 
 public class RetrofitUtil {
 
-    //正式环境
-    public static String BASE_URL = "http://54.223.26.249:925/swagger/";
     //测试环境
-    //public static String BASE_URL  = "http://54.223.26.249:8090/ms/api/";
+    public static String BASE_URL = "http://47.100.0.143:8081/";
     public static String PHOTO_URL = "http://54.223.26.249:925";
 
     //113.98.235.212

@@ -59,25 +59,12 @@ public class CommonModel extends BaseModel{
         gCommonModel = null;
     }
 
-    public void getVerifyCode(String mobile, final BaseListener baseListener){
-        String sb = "{\"mobile\":\"" + mobile + "\"}";
-        RequestBody body=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),sb.toString());
-        mCommonApi.getVerifyCode(body).subscribeOn(Schedulers.io())//请求在子线程
-                .observeOn(AndroidSchedulers.mainThread())//回调在主线程
-                .subscribe(new CommonSubscriber(baseListener){
-                    @Override
-                    public void onNext(ResponseInfo responseInfo) {
-                        dealJsonStr(responseInfo, baseListener);
-                    }
-                });
-    }
 
     public void login(String userName, String psd,String verifyCode, String deviceInfo, final BaseListener baseListener){
         StringBuilder sb = new StringBuilder();
         sb.append("{");
-        sb.append("\"loginName\":\"").append(userName).append("\"");
+        sb.append("\"account\":\"").append(userName).append("\"");
         sb.append(",\"password\":\"").append(psd).append("\"");
-        sb.append(",\"verifyCode\":\"").append(verifyCode).append("\"");
         sb.append(",\"deviceInfo\":{");
              sb.append("\"type\":10,");
              sb.append("\"deviceDesc\":\"" + Build.MODEL+ "\",");
@@ -86,7 +73,7 @@ public class CommonModel extends BaseModel{
 
 
         RequestBody body=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),sb.toString());
-        mCommonApi.loginEx(body).subscribeOn(Schedulers.io())//请求在子线程
+        mCommonApi.login(body).subscribeOn(Schedulers.io())//请求在子线程
                 .observeOn(AndroidSchedulers.mainThread())//回调在主线程
                 .subscribe(new CommonSubscriber(baseListener){
                     @Override
@@ -97,10 +84,119 @@ public class CommonModel extends BaseModel{
 
     }
 
+    public void getUserInfo(String uid, final BaseListener baseListener){
+        mCommonApi.getUserInfo(uid).subscribeOn(Schedulers.io())//请求在子线程
+                .observeOn(AndroidSchedulers.mainThread())//回调在主线程
+                .subscribe(new CommonSubscriber(baseListener){
+                    @Override
+                    public void onNext(ResponseInfo responseInfo) {
+                        dealJsonStr(responseInfo, baseListener);
+                    }
+                });
+    }
 
-    public void logout(final BaseListener baseListener){
 
-        mCommonApi.logout().subscribeOn(Schedulers.io())//请求在子线程
+    public void modifyUserInfo(String userName, final BaseListener baseListener){
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        sb.append("\"name\":\"").append(userName).append("\"}");
+
+        RequestBody body=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),sb.toString());
+        mCommonApi.modifyUserInfo(body).subscribeOn(Schedulers.io())//请求在子线程
+                .observeOn(AndroidSchedulers.mainThread())//回调在主线程
+                .subscribe(new CommonSubscriber(baseListener){
+                    @Override
+                    public void onNext(ResponseInfo responseInfo) {
+                        dealJsonStr(responseInfo, baseListener);
+                    }
+                });
+
+    }
+
+    public void modifyUserPwd(String oldpwd, String newPwd, final BaseListener baseListener){
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        sb.append("\"oldpsd\":\"").append(oldpwd).append("\"");
+        sb.append(",\"newpsd\":\"").append(newPwd).append("\"}");
+
+        RequestBody body=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),sb.toString());
+        mCommonApi.modifyPwd(body).subscribeOn(Schedulers.io())//请求在子线程
+                .observeOn(AndroidSchedulers.mainThread())//回调在主线程
+                .subscribe(new CommonSubscriber(baseListener){
+                    @Override
+                    public void onNext(ResponseInfo responseInfo) {
+                        dealJsonStr(responseInfo, baseListener);
+                    }
+                });
+
+    }
+
+    public void getRoomList(final BaseListener baseListener){
+        mCommonApi.getRoomList().subscribeOn(Schedulers.io())//请求在子线程
+                .observeOn(AndroidSchedulers.mainThread())//回调在主线程
+                .subscribe(new CommonSubscriber(baseListener){
+                    @Override
+                    public void onNext(ResponseInfo responseInfo) {
+                        dealJsonStr(responseInfo, baseListener);
+                    }
+                });
+    }
+
+    public void sendToRoom(String roomid, String content, final BaseListener baseListener){
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        sb.append("\"roomid\":\"").append(roomid).append("\"");
+        sb.append(",\"content\":\"").append(content).append("\"}");
+
+        RequestBody body=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),sb.toString());
+        mCommonApi.sendToRoom(body).subscribeOn(Schedulers.io())//请求在子线程
+                .observeOn(AndroidSchedulers.mainThread())//回调在主线程
+                .subscribe(new CommonSubscriber(baseListener){
+                    @Override
+                    public void onNext(ResponseInfo responseInfo) {
+                        dealJsonStr(responseInfo, baseListener);
+                    }
+                });
+
+    }
+
+    public void sendToUser(String userId, String content, final BaseListener baseListener){
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        sb.append("\"to\":\"").append(userId).append("\"");
+        sb.append(",\"content\":\"").append(content).append("\"}");
+
+        RequestBody body=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),sb.toString());
+        mCommonApi.sendToUser(body).subscribeOn(Schedulers.io())//请求在子线程
+                .observeOn(AndroidSchedulers.mainThread())//回调在主线程
+                .subscribe(new CommonSubscriber(baseListener){
+                    @Override
+                    public void onNext(ResponseInfo responseInfo) {
+                        dealJsonStr(responseInfo, baseListener);
+                    }
+                });
+
+    }
+
+    public void getMessage(final BaseListener baseListener) {
+        mCommonApi.getMessage().subscribeOn(Schedulers.io())//请求在子线程
+                .observeOn(AndroidSchedulers.mainThread())//回调在主线程
+                .subscribe(new CommonSubscriber(baseListener) {
+                    @Override
+                    public void onNext(ResponseInfo responseInfo) {
+                        dealJsonStr(responseInfo, baseListener);
+                    }
+                });
+    }
+
+
+    public void readMessage(String time, final BaseListener baseListener){
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        sb.append("\"time\":\"").append(time).append("\"}");
+
+        RequestBody body=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),sb.toString());
+        mCommonApi.readMessage(body).subscribeOn(Schedulers.io())//请求在子线程
                 .observeOn(AndroidSchedulers.mainThread())//回调在主线程
                 .subscribe(new CommonSubscriber(baseListener){
                     @Override
