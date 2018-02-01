@@ -6,4 +6,6 @@
     <color name="white">#ffffff</color>
 
     <color name="status_red">#F93014</color>
+    <color name="blue_button">#3784E4</color>
+    <color name="common_status_color">#3784E4</color>
 </resources>

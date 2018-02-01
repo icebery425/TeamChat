@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@mipmap/logologin_logo"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="89dp"
         android:layout_gravity="center_horizontal"/>
 
     <EditText
@@ -19,38 +19,47 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="58dp"
         android:drawableLeft="@mipmap/logologin_zhangh"
+        android:drawablePadding="10dp"
         android:ems="10"
         android:hint="请输入用户名"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:textSize="13.5dp" />
 
-    <EditText
-        android:id="@+id/editPwd"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:drawableLeft="@mipmap/logologin_key"
-        android:ems="10"
-        android:hint="请输入密码"
-        android:inputType="textPassword" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp">
+        <EditText
+            android:id="@+id/editPwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:drawableLeft="@mipmap/logologin_key"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:hint="请输入密码"
+            android:inputType="textPassword"
+            android:textSize="13.5dp" />
+    </RelativeLayout>
+
 
     <Button
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
+        android:layout_height="45dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/circle_corner_red_bg"
+        android:background="@drawable/circle_corner_blue_bg"
         android:text="登录"
         android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
 
 </LinearLayout>

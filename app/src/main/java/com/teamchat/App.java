@@ -4,6 +4,7 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.teamchat.network.RetrofitUtil;
+import com.teamchat.util.ToastUtil;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,7 @@ public class App extends MultiDexApplication{
         super.onCreate();
 
         RetrofitUtil.initRetrofit();//Retrofit 初始化
+        ToastUtil.setContext(this);
 
 
         //JPushInterface.setDebugMode(true);

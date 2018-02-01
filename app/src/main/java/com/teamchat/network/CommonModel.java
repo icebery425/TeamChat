@@ -60,7 +60,7 @@ public class CommonModel extends BaseModel{
     }
 
 
-    public void login(String userName, String psd,String verifyCode, String deviceInfo, final BaseListener baseListener){
+    public void login(String userName, String psd,final BaseListener baseListener){
         StringBuilder sb = new StringBuilder();
         sb.append("{");
         sb.append("\"account\":\"").append(userName).append("\"");

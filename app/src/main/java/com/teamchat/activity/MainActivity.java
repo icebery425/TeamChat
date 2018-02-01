@@ -5,7 +5,10 @@ import android.os.Bundle;
 
 import com.teamchat.R;
 
+import butterknife.BindView;
+
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
