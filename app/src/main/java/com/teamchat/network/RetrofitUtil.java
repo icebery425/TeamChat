@@ -33,7 +33,6 @@ public class RetrofitUtil {
 
     public static void setSchoolBaseUrl(String preUrl){
         if (!TextUtils.isEmpty(preUrl)){
-            //BASE_URL = preUrl + "/ms/api/";
             BASE_URL = preUrl;
             PHOTO_URL= preUrl + "";
         }
