@@ -8,11 +8,10 @@ package com.jinglangtech.teamchat.model;
 
 public class LoginUser {
     public int type;
-    public String uid;
+    public int _id;
     public String token;
     public String name;
     public String avatar;
-    public boolean isVolunteer;
-    public String volunteerNo;
+    public String account;
     public boolean isUpdated;
 }
