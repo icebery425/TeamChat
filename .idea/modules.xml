@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TeamChat.iml" filepath="$PROJECT_DIR$/TeamChat.iml" />
-      <module fileurl="file://E:\git_project\TeamChat\TeamChat\TeamChat.iml" filepath="E:\git_project\TeamChat\TeamChat\TeamChat.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://E:\git_project\TeamChat\TeamChat\app\app.iml" filepath="E:\git_project\TeamChat\TeamChat\app\app.iml" />
     </modules>
   </component>
 </project>

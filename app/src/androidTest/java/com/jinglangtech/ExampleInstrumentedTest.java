@@ -1,4 +1,4 @@
-package com.teamchat;
+package com.jinglangtech;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

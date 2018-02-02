@@ -1,4 +1,4 @@
-package com.teamchat.util;
+package com.jinglangtech.teamchat.util;
 
 /**
  *  参数名称，例如intent.putExtra(key,value)

@@ -1,4 +1,4 @@
-package com.teamchat.util;
+package com.jinglangtech.teamchat.util;
 
 import android.util.Log;
 

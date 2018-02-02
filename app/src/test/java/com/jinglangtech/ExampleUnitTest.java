@@ -1,4 +1,4 @@
-package com.teamchat;
+package com.jinglangtech;
 
 import org.junit.Test;
 

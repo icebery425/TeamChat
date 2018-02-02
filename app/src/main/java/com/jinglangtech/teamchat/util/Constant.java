@@ -1,8 +1,6 @@
-package com.teamchat.util;
+package com.jinglangtech.teamchat.util;
 
 import android.os.Environment;
-
-import com.teamchat.App;
 
 /**
  * 全局常量

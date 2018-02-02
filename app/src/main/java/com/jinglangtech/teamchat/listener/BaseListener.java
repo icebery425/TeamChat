@@ -1,7 +1,7 @@
-package com.teamchat.listener;
+package com.jinglangtech.teamchat.listener;
 
 
-import com.teamchat.model.PageInfo;
+import com.jinglangtech.teamchat.model.PageInfo;
 
 /**
  *

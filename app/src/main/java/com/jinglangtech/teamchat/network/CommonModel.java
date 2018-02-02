@@ -1,33 +1,13 @@
-package com.teamchat.network;
+package com.jinglangtech.teamchat.network;
 
-import android.content.Context;
 import android.os.Build;
-import android.os.Handler;
-import android.util.Log;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.teamchat.App;
-import com.teamchat.listener.BaseListener;
-import com.teamchat.network.CommonSubscriber;
-import com.teamchat.network.NetWorkInterceptor;
-import com.teamchat.network.RetrofitUtil;
-import com.teamchat.network.CommonApi;
-import com.teamchat.model.ResponseInfo;
-
-import java.io.File;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import com.jinglangtech.teamchat.App;
+import com.jinglangtech.teamchat.listener.BaseListener;
+import com.jinglangtech.teamchat.model.ResponseInfo;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 

@@ -1,21 +1,18 @@
-package com.teamchat.activity;
+package com.jinglangtech.teamchat.activity;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import com.teamchat.R;
-import com.teamchat.listener.BaseListener;
-import com.teamchat.model.LoginUser;
-import com.teamchat.network.CommonModel;
-import com.teamchat.network.NetWorkInterceptor;
-import com.teamchat.util.ConfigUtil;
-import com.teamchat.util.Constant;
-import com.teamchat.util.ToastUtil;
+import com.jinglangtech.teamchat.R;
+import com.jinglangtech.teamchat.listener.BaseListener;
+import com.jinglangtech.teamchat.model.LoginUser;
+import com.jinglangtech.teamchat.network.CommonModel;
+import com.jinglangtech.teamchat.network.NetWorkInterceptor;
+import com.jinglangtech.teamchat.util.ConfigUtil;
+import com.jinglangtech.teamchat.util.Constant;
+import com.jinglangtech.teamchat.util.ToastUtil;
 
 import butterknife.BindView;
 

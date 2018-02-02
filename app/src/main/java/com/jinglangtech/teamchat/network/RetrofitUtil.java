@@ -1,7 +1,6 @@
-package com.teamchat.network;
+package com.jinglangtech.teamchat.network;
 
 import android.text.TextUtils;
-import com.teamchat.network.CommonModel;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;

@@ -1,11 +1,9 @@
-package com.teamchat.activity;
+package com.jinglangtech.teamchat.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.teamchat.R;
-
-import butterknife.BindView;
+import com.jinglangtech.teamchat.R;
 
 public class MainActivity extends AppCompatActivity {
 

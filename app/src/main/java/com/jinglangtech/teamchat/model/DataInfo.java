@@ -1,4 +1,4 @@
-package com.teamchat.model;
+package com.jinglangtech.teamchat.model;
 
 
 import com.alibaba.fastjson.JSON;

@@ -1,12 +1,9 @@
-package com.teamchat.network;
+package com.jinglangtech.teamchat.network;
 
-
-import android.content.Intent;
 
 import com.alibaba.fastjson.JSONException;
-import com.teamchat.App;
-import com.teamchat.listener.BaseListener;
-import com.teamchat.model.ResponseInfo;
+import com.jinglangtech.teamchat.listener.BaseListener;
+import com.jinglangtech.teamchat.model.ResponseInfo;
 
 
 import java.net.SocketTimeoutException;

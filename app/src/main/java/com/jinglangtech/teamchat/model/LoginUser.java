@@ -1,4 +1,4 @@
-package com.teamchat.model;
+package com.jinglangtech.teamchat.model;
 
 /**
  * Created by icebery on 2017/4/25 0025.

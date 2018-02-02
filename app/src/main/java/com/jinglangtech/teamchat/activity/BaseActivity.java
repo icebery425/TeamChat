@@ -1,4 +1,4 @@
-package com.teamchat.activity;
+package com.jinglangtech.teamchat.activity;
 
 import android.app.ProgressDialog;
 import android.os.Build;
@@ -7,10 +7,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.teamchat.R;
+import com.jinglangtech.teamchat.R;
 
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 public abstract class BaseActivity extends AppCompatActivity{

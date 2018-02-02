@@ -1,12 +1,11 @@
-package com.teamchat.network;
+package com.jinglangtech.teamchat.network;
 
 import android.text.TextUtils;
 import android.util.Log;
-import com.teamchat.util.Key;
-import com.teamchat.util.LogUtil;
+import com.jinglangtech.teamchat.util.Key;
+import com.jinglangtech.teamchat.util.LogUtil;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -33,7 +32,7 @@ public class NetWorkInterceptor implements Interceptor{
     }
 
     public static void setToken(String token){
-        gToken = "Basic " + token;
+        gToken = "bearer " + token;
     }
     public static void resetToken(){
         gToken = "";

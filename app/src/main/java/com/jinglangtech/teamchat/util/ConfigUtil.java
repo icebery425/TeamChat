@@ -1,4 +1,4 @@
-package com.teamchat.util;
+package com.jinglangtech.teamchat.util;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

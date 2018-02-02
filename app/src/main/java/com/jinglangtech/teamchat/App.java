@@ -1,12 +1,9 @@
-package com.teamchat;
+package com.jinglangtech.teamchat;
 
-import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
-import com.teamchat.network.RetrofitUtil;
-import com.teamchat.util.ToastUtil;
-
-import java.util.ArrayList;
+import com.jinglangtech.teamchat.network.RetrofitUtil;
+import com.jinglangtech.teamchat.util.ToastUtil;
 
 //import cn.jpush.android.api.JPushInterface;
 
