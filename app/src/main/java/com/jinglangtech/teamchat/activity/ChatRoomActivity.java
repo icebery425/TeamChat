@@ -1,6 +1,7 @@
 package com.jinglangtech.teamchat.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -49,6 +50,13 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
     @Override
     public void initVariables() {
 
+    }
+
+    @Override
+    public void initStatusColor(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.title_bg));
+        }
     }
 
     @Override

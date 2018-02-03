@@ -1,6 +1,7 @@
 package com.jinglangtech.teamchat.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -49,6 +50,12 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
     @Override
     public void initVariables() {
 
+    }
+    @Override
+    public void initStatusColor(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.title_bg));
+        }
     }
 
     @Override

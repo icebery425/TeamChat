@@ -19,6 +19,7 @@ public abstract class BaseActivity extends AppCompatActivity{
     public abstract  void initVariables();
     public abstract  void initViews();
     public abstract  void loadData();
+    public abstract void initStatusColor();
 
     public ProgressDialog mProgressDialog;
 
@@ -33,11 +34,6 @@ public abstract class BaseActivity extends AppCompatActivity{
         loadData();
     }
 
-    public void initStatusColor(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.common_status_color));
-        }
-    }
 
     public void disLoading(){
         mProgressDialog = new ProgressDialog(this);
