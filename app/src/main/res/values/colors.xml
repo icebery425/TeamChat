@@ -4,13 +4,16 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#ffffff</color>
-
+    <color name="dark_bg1">#eeeeee</color>
     <color name="status_red">#F93014</color>
     <color name="blue_button">#3784E4</color>
     <color name="common_status_color">#3784E4</color>
     <color name="title_bg">#37363A</color>
     <color name="window_bg">#f0f0f2</color>
     <color name="dark_font">#6B6B6B</color>
-    <color name="line_bg">@color/window_bg</color>
+    <color name="line_bg">#D8D8D8</color>
     <color name="dark_bg3">#999999</color>
+    <color name="dark_bg4">#B2B2B2</color>
+    <color name="dark_bg5">#CECECE</color>
+    <color name="blue_unread">#3784E4</color>
 </resources>

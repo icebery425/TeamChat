@@ -8,7 +8,7 @@ package com.jinglangtech.teamchat.model;
 
 public class LoginUser {
     public int type;
-    public int _id;
+    public String _id;
     public String token;
     public String name;
     public String avatar;

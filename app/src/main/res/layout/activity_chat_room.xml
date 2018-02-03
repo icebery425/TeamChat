@@ -19,14 +19,6 @@
             android:layout_centerHorizontal="true"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="TeamChat"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
-
         </LinearLayout>
 
         <RelativeLayout
@@ -37,19 +29,45 @@
             android:visibility="visible">
 
             <ImageView
+                android:id="@+id/imageView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:src="@mipmap/nav_ic_set" />
+                android:src="@mipmap/nav_ic_p" />
+
 
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:drawableLeft="@mipmap/home_list_ic_morel"
+            android:drawablePadding="5dp"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="TeamChat"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:onClick="finishActivity"/>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_back"
+            android:layout_centerHorizontal="true"
+            android:text="room1(25)"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
     </RelativeLayout>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        android:layout_marginTop="5dp">
+        android:background="@color/dark_bg1">
 
         <com.github.jdsjlzx.recyclerview.LRecyclerView
             android:id="@+id/eventlist_lv"

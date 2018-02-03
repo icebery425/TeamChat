@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
     android:orientation="vertical"
     tools:context=".activity.LoginActivity">
     <ImageView
@@ -19,21 +21,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:layout_marginTop="58dp"
         android:drawableLeft="@mipmap/logologin_zhangh"
         android:drawablePadding="10dp"
+        android:background="@null"
         android:ems="10"
         android:hint="请输入用户名"
         android:inputType="textPersonName"
         android:textSize="13.5dp" />
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="3dp"
+        android:background="@color/line_bg"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:layout_marginTop="20dp">
         <EditText
             android:id="@+id/editPwd"
@@ -42,19 +45,30 @@
             android:layout_gravity="center_horizontal"
             android:drawableLeft="@mipmap/logologin_key"
             android:drawablePadding="10dp"
+            android:background="@null"
             android:ems="10"
             android:hint="请输入密码"
             android:inputType="textPassword"
             android:textSize="13.5dp" />
-    </RelativeLayout>
 
+        <ImageView
+            android:id="@+id/iv_lock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            app:srcCompat="@mipmap/logologin_key_unlook" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="3dp"
+        android:background="@color/line_bg"/>
 
     <Button
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:layout_marginTop="30dp"
         android:background="@drawable/circle_corner_blue_bg"
         android:text="登录"

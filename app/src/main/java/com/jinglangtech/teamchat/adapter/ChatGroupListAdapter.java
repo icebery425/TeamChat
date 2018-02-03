@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jinglangtech.teamchat.model.ChatGroup;
@@ -15,6 +16,7 @@ import com.jinglangtech.teamchat.util.ImgLoadUtil;
 
 
 public class ChatGroupListAdapter extends BasicRecylerAdapter<ChatGroup>{
+
 
     public ChatGroupListAdapter(Context context) {
         super(context);
@@ -32,15 +34,26 @@ public class ChatGroupListAdapter extends BasicRecylerAdapter<ChatGroup>{
         TextView tvTime = cHolder.obtainView(R.id.tv_time);
         TextView tvMsg = cHolder.obtainView(R.id.tv_last_message);
         TextView tvName = cHolder.obtainView(R.id.tv_name);
-        ImageView tvAvatar = cHolder.obtainView(R.id.img_avatar);
+
+        RelativeLayout mLayoutUnread=(RelativeLayout)cHolder.obtainView(R.id.layout_unread);
+        TextView mTvUnread  = (TextView)cHolder.obtainView(R.id.tv_unread_count);
 
 
         ChatGroup info = mList.get(position);
         tvTime.setText(info.time);
         tvMsg.setText(info.msg);
 
+        if (info.unread <= 0){
+            mLayoutUnread.setVisibility(View.INVISIBLE);
+        }else {
+            mLayoutUnread.setVisibility(View.VISIBLE);
+            if (info.unread > 99){
+                mTvUnread.setText("99+");
+            }else{
+                mTvUnread.setText(info.unread + "");
+            }
+        }
 
-        ImgLoadUtil.displayPic(R.mipmap.ic_avatar_middle, info.avatar, tvAvatar);
 
         cHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

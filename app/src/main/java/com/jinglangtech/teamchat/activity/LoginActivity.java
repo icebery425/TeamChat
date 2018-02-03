@@ -1,5 +1,6 @@
 package com.jinglangtech.teamchat.activity;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -78,7 +79,7 @@ public class LoginActivity extends BaseActivity {
                 LoginUser user = (LoginUser)infoObj;
                 NetWorkInterceptor.setToken(user.token);
                 saveSp();
-                //startService();
+                startChatPage();
             }
 
             @Override
@@ -94,6 +95,13 @@ public class LoginActivity extends BaseActivity {
         ConfigUtil.getInstance(this).put(Constant.KEY_LOGIN_NAME, mName);
         ConfigUtil.getInstance(this).put(Constant.KEY_LOGIN_PWD, mPwd);
         ConfigUtil.getInstance(this).commit();
+    }
+
+    public void startChatPage(){
+        Intent intent = new Intent();
+        intent.setClass(LoginActivity.this, ChatGroupActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 

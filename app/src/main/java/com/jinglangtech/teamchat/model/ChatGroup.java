@@ -12,4 +12,6 @@ public class ChatGroup {
 
     public String msg;
     public String time;
+
+    public int unread;
 }
