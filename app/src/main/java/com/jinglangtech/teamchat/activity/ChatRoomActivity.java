@@ -14,6 +14,7 @@ import com.github.jdsjlzx.view.LoadingFooter;
 import com.jinglangtech.teamchat.R;
 import com.jinglangtech.teamchat.adapter.BasicRecylerAdapter;
 import com.jinglangtech.teamchat.adapter.ChatGroupListAdapter;
+import com.jinglangtech.teamchat.adapter.ChatMemberListAdapter;
 import com.jinglangtech.teamchat.adapter.ChatRoomMsgAdapter;
 import com.jinglangtech.teamchat.listener.BaseListener;
 import com.jinglangtech.teamchat.model.ChatGroup;
@@ -34,6 +35,8 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
     LRecyclerView mRv;
     @BindView(R.id.empty_rel)
     RelativeLayout mEmptyRealtive;
+    @BindView(R.id.add_event_rel)
+    RelativeLayout mLayoutChatInfo;
 
     ChatRoomMsgAdapter mChatRoomAdapter;
     LRecyclerViewAdapter mLRecyclerViewAdapter;
@@ -79,6 +82,15 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
                 //intent.putExtra(Key.BEAN, eventBean);
                // intent.setClass(ReportListActivity.this, ReportConfirmActivity.class);
                 //startActivityForResult(intent, 1);
+            }
+        });
+        mLayoutChatInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                //intent.putExtra(Key.BEAN, eventBean);
+                intent.setClass(ChatRoomActivity.this, ChatMemberActivity.class);
+                startActivityForResult(intent, 1);
             }
         });
     }

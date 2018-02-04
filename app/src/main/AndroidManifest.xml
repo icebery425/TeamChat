@@ -33,6 +33,8 @@
         <activity android:name=".activity.ChatRoomActivity" />
         <activity android:name=".activity.SettingActivity"/>
         <activity android:name=".activity.PwdModifyActivity"/>
+        <activity android:name=".activity.ChatMemberActivity"/>
+        <activity android:name=".activity.NameModifyActivity"/>
     </application>
 
 </manifest>

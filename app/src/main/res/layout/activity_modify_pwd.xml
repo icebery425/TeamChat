@@ -167,5 +167,22 @@
 
         </LinearLayout>
     </LinearLayout>
-
+    <TextView
+        android:id="@+id/tv_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:text="密码必须至少8个字符，而且同时包含数字和字母"
+        android:textColor="@color/menu_sub_font"
+        android:textSize="15sp" />
+    <TextView
+        android:id="@+id/tv_subhint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:layout_marginLeft="15dp"
+        android:text="如忘记密码，请联系管理员"
+        android:textColor="@color/menu_sub_font"
+        android:textSize="13sp" />
 </LinearLayout>

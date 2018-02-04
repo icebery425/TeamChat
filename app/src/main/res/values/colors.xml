@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
     <color name="dark_bg1">#eeeeee</color>
     <color name="status_red">#F93014</color>
     <color name="blue_button">#3784E4</color>
@@ -19,5 +20,6 @@
     <color name="menu_font">#333333</color>
     <color name="menu_sub_font">#666666</color>
     <color name="main_bg">#efeff4</color>
+    <color name="red_font">#e22622</color>
 
 </resources>
