@@ -21,5 +21,6 @@
     <color name="menu_sub_font">#666666</color>
     <color name="main_bg">#efeff4</color>
     <color name="red_font">#e22622</color>
+    <color name="dark_bg6">#f5f5f7</color>
 
 </resources>

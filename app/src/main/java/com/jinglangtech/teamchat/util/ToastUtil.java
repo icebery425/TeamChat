@@ -1,6 +1,10 @@
 package com.jinglangtech.teamchat.util;
 
 import android.content.Context;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ToastUtil {
@@ -29,6 +33,8 @@ public class ToastUtil {
         CharSequence msg = mContext.getText(msgId);
         return show(msg);
     }
+
+
 
 
 }

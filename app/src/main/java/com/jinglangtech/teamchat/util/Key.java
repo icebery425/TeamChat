@@ -23,7 +23,8 @@ public class Key {
     public final static String NUMBER_IS_CHOOSED = "choosed_num";
 
     public final static String BEAN = "bean";
-
+    public final static String ID = "id";
+    public final static String NAME = "name";
 
     public final static String FROM_SOURCE_WINDOW = "source_window";
 

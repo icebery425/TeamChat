@@ -2,8 +2,12 @@ package com.jinglangtech.teamchat;
 
 import android.support.multidex.MultiDexApplication;
 
+import com.jinglangtech.teamchat.dbmanager.DbMigration;
 import com.jinglangtech.teamchat.network.RetrofitUtil;
 import com.jinglangtech.teamchat.util.ToastUtil;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 //import cn.jpush.android.api.JPushInterface;
 
@@ -23,6 +27,15 @@ public class App extends MultiDexApplication{
         //JPushInterface.init(this);
         //mJPushRegId =JPushInterface.getRegistrationID(this);
 
+    }
+
+    private void initRealm(){
+        Realm.init(this);
+        RealmConfiguration config = new RealmConfiguration.Builder()
+                .schemaVersion(1)
+                .migration(new DbMigration())
+                .build();
+        Realm.setDefaultConfiguration(config);
     }
 
 }

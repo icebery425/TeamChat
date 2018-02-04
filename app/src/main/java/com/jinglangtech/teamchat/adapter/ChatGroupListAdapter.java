@@ -42,6 +42,7 @@ public class ChatGroupListAdapter extends BasicRecylerAdapter<ChatGroup>{
         ChatGroup info = mList.get(position);
         tvTime.setText(info.time);
         tvMsg.setText(info.msg);
+        tvName.setText(info.name);
 
         if (info.unread <= 0){
             mLayoutUnread.setVisibility(View.INVISIBLE);

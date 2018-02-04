@@ -35,6 +35,8 @@
         <activity android:name=".activity.PwdModifyActivity"/>
         <activity android:name=".activity.ChatMemberActivity"/>
         <activity android:name=".activity.NameModifyActivity"/>
+
+        <service android:name=".service.PushMessageToLocalService" />
     </application>
 
 </manifest>
