@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/main_bg"
+    tools:context="com.jinglangtech.teamchat.activity.SettingActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/topbar_height"
+        android:background="@color/title_bg">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:drawableLeft="@mipmap/home_list_ic_morel"
+            android:drawablePadding="5dp"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="TeamChat"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:onClick="finishActivity"/>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/tv_back"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:text="设置"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/layout_mine_name"
+            style="@style/MineItemStyle"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:paddingRight="10dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="账号"
+                android:textColor="@color/menu_font"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_invite_code"
+                android:layout_width="0.0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0"
+                android:ellipsize="end"
+                android:gravity="center_vertical|right"
+                android:singleLine="true"
+                android:text="002"
+                android:textColor="@color/menu_sub_font"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <View style="@style/main_menu_line_style" />
+
+        <LinearLayout
+            android:id="@+id/layout_mine_nickname"
+            style="@style/MineItemStyle"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:paddingRight="10dp" >
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="昵称"
+                android:textColor="@color/menu_font"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_nickname"
+                android:layout_width="0.0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0"
+                android:drawablePadding="10dp"
+                android:drawableRight="@mipmap/home_list_ic_more"
+                android:ellipsize="end"
+                android:gravity="center_vertical|right"
+                android:singleLine="true"
+                android:text="云淡风轻"
+                android:textColor="@color/menu_sub_font"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <View style="@style/main_menu_line_style" />
+
+        <LinearLayout
+            android:id="@+id/layout_mine_modify_pwd"
+            style="@style/MineItemStyle"
+            android:background="@color/white"
+            android:paddingRight="10dp" >
+
+
+            <TextView
+                android:id="@+id/tv_modify_pwd"
+                style="@style/mine_main_menu_text_style"
+                android:text="修改密码" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/layout_mine_clear_cache"
+            style="@style/MineItemStyle"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:paddingRight="10dp" >
+
+            <TextView
+                android:id="@+id/tv_clear_cache"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawablePadding="10dp"
+                android:drawableRight="@mipmap/home_list_ic_more"
+                android:gravity="center_vertical"
+                android:text="清空所有消息缓存"
+                android:textColor="@color/menu_font"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <View style="@style/main_menu_line_style" />
+
+        <LinearLayout
+            android:id="@+id/layout_mine_notice"
+            style="@style/MineItemStyle"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:paddingRight="10dp" >
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="通知"
+                android:textColor="@color/menu_font"
+                android:textSize="16sp" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <CheckBox
+                    android:id="@+id/cb_notice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:button="@drawable/check_selector"
+                    android:gravity="center_vertical" />
+            </FrameLayout>
+
+
+
+        </LinearLayout>
+
+        <View
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"
+        android:background="@color/main_bg"></View>
+        <LinearLayout
+            android:id="@+id/layout_mine_version"
+            style="@style/MineItemStyle"
+            android:background="@color/white"
+            android:paddingRight="10dp" >
+
+            <TextView
+                android:id="@+id/tv_version"
+                style="@style/mine_main_menu_text_style"
+                android:text="版本" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:background="@color/main_bg"></View>
+        <LinearLayout
+            android:id="@+id/layout_mine_exit"
+            style="@style/MineItemStyle"
+            android:background="@color/white"
+            android:paddingRight="10dp" >
+
+            <TextView
+                android:id="@+id/tv_exit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="退出登录"
+                android:textColor="@color/menu_font"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

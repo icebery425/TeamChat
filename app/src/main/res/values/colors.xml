@@ -16,4 +16,8 @@
     <color name="dark_bg4">#B2B2B2</color>
     <color name="dark_bg5">#CECECE</color>
     <color name="blue_unread">#3784E4</color>
+    <color name="menu_font">#333333</color>
+    <color name="menu_sub_font">#666666</color>
+    <color name="main_bg">#efeff4</color>
+
 </resources>

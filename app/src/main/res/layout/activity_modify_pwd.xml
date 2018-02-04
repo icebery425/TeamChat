@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/main_bg"
+    tools:context="com.jinglangtech.teamchat.activity.SettingActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/topbar_height"
+        android:background="@color/title_bg">
+
+        <TextView
+            android:id="@+id/tv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:drawablePadding="5dp"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="取消"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:onClick="finishActivity"/>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/tv_back"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:text="修改密码"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_save"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical|right"
+            android:text="完成"
+            android:textColor="@color/blue_unread" />
+
+        <TextView
+            android:id="@+id/tv_version"
+            style="@style/mine_main_menu_text_style"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="266dp"
+            android:text="版本"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/layout_mine_name"
+            style="@style/MineItemStyle"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:paddingRight="10dp" >
+
+            <ImageView
+                android:id="@+id/img_login_first"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/logologin_zhangh" />
+
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:text="a001"
+                android:textColor="@color/menu_font"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <View style="@style/main_menu_line_style" />
+        <LinearLayout
+            android:id="@+id/layout_old_pwd"
+            style="@style/MineItemStyle"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:paddingRight="10dp" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/logologin_key" />
+
+            <EditText
+                android:id="@+id/et_pwd_old"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:background="@null"
+                android:hint="请输入原密码"
+                android:textColor="@color/menu_font"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+        <View style="@style/main_menu_line_style" />
+        <LinearLayout
+            android:id="@+id/layout_new_pwd"
+            style="@style/MineItemStyle"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:paddingRight="10dp" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/logologin_key" />
+
+            <EditText
+                android:id="@+id/et_pwd_new"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:background="@null"
+                android:hint="请输入新密码"
+                android:textColor="@color/menu_font"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+        <View style="@style/main_menu_line_style" />
+        <LinearLayout
+            android:id="@+id/layout_new_pwd_again"
+            style="@style/MineItemStyle"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:paddingRight="10dp" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/logologin_key" />
+
+            <EditText
+                android:id="@+id/et_pwd_new_again"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:background="@null"
+                android:hint="请再次输入新密码"
+                android:textColor="@color/menu_font"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

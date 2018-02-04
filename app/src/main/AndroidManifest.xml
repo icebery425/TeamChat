@@ -29,8 +29,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.ChatGroupActivity"></activity>
-        <activity android:name=".activity.ChatRoomActivity"></activity>
+        <activity android:name=".activity.ChatGroupActivity" />
+        <activity android:name=".activity.ChatRoomActivity" />
+        <activity android:name=".activity.SettingActivity"/>
+        <activity android:name=".activity.PwdModifyActivity"/>
     </application>
 
 </manifest>
