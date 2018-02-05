@@ -21,6 +21,11 @@ public interface DbManager {
     //条件查询2
     public abstract Object conditionQueryWithOne(String key, String value);
 
+
+    //查询聊天数据表－ChatMsg
+    //查询某个聊天室最后一条聊天记录，用于聊天室分组显示
+    public abstract Object findMaxDateOne(String key, String value);
+
     //编辑(单个)
     public abstract Object modifyOneElement(Object object);
 

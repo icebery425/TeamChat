@@ -17,8 +17,10 @@ import com.jinglangtech.teamchat.util.Constant;
 import com.jinglangtech.teamchat.util.TimeConverterUtil;
 import com.jinglangtech.teamchat.util.ToastUtil;
 
-import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
@@ -104,11 +106,26 @@ public class PushMessageToLocalService extends IntentService {
                 //results.deleteAllFromRealm();
 
                 //插入数据
-                for (ChatMsg localMsg: msglist){
-                    //System.out.println(localSku.getBarcode());
-                    String tempTime = TimeConverterUtil.utc2Local(localMsg.time, "yyyy-MM-dd HH:mm:ss");
-                    localMsg.dTime = Date.valueOf(tempTime);
-                    realm.copyToRealmOrUpdate(localMsg);
+                try {
+                    for (ChatMsg localMsg : msglist) {
+                        //System.out.println(localSku.getBarcode());
+                        String tempTime = TimeConverterUtil.utc2Local(localMsg.time, "yyyy-MM-dd HH:mm:ss");
+                        //localMsg.dTime = Date.valueOf(tempTime);
+
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        Date date = null;
+                        try {
+                            date = dateFormat.parse(tempTime);
+                            localMsg.dTime = date;
+                            //System.out.println(date.toLocaleString().split(" ")[0]);//切割掉不要的时分秒数据
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        realm.copyToRealmOrUpdate(localMsg);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
 
             }

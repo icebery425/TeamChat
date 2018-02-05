@@ -13,6 +13,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  *  Realm
@@ -80,6 +81,13 @@ public class RealmDbManger implements DbManager {
     @Override
     public ChatGroup conditionQueryWithOne(String keys, String values) {
         return  Realm.getDefaultInstance().where(ChatGroup.class).equalTo(keys, values).findFirst();
+    }
+
+    @Override
+    public ChatMsg findMaxDateOne(String key, String value){
+        return  Realm.getDefaultInstance().where(ChatMsg.class)
+                .equalTo(key, value)
+                .findAllSorted("dTime", Sort.DESCENDING).first();
     }
 
     @Override

@@ -72,9 +72,9 @@ public class TimeConverterUtil {
 
         //步骤二:处理毫秒SSS
         if(utcTime.indexOf(".") != -1){
-            utcTimePattern = utcTimePattern + " HH:mm:ss.SSS";
+            utcTimePattern = utcTimePattern + "HH:mm:ss.SSS";
         }else{
-            utcTimePattern = utcTimePattern + " HH:mm:ss";
+            utcTimePattern = utcTimePattern + "HH:mm:ss";
         }
 
         //步骤三:处理时区问题

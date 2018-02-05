@@ -19,6 +19,7 @@ import com.github.jdsjlzx.view.LoadingFooter;
 import com.jinglangtech.teamchat.R;
 import com.jinglangtech.teamchat.adapter.BasicRecylerAdapter;
 import com.jinglangtech.teamchat.adapter.ChatGroupListAdapter;
+import com.jinglangtech.teamchat.dbmanager.DBFactory;
 import com.jinglangtech.teamchat.listener.BaseListener;
 import com.jinglangtech.teamchat.model.ChatGroup;
 import com.jinglangtech.teamchat.model.ChatMsg;
@@ -56,6 +57,8 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
     public final static String MESSAGE_INIT_FINISHED_ACTION = "msgInitFinished";
 
 
+
+
     private class ChatMessagePulledReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -64,6 +67,9 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
             if (result == -1){
                 ToastUtils.showToast(ChatGroupActivity.this, "获取聊天数据出错");
             }
+
+            ChatGroup group1 =  mGroupAdapter.mList.get(0);
+            ChatMsg skuList = (ChatMsg) DBFactory.getDBInstance().findMaxDateOne("roomid", group1._id);
         }
     }
 
@@ -128,6 +134,12 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
         this.registerReceiver(mReceiver, intentFilter);
 
         getRoomList(mPageIndex);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.unregisterReceiver(mReceiver);
     }
 
     public void test(){
