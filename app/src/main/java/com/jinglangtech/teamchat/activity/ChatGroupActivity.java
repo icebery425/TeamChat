@@ -30,6 +30,7 @@ import com.jinglangtech.teamchat.util.Constant;
 import com.jinglangtech.teamchat.util.Key;
 import com.jinglangtech.teamchat.util.ThreadUtil;
 import com.jinglangtech.teamchat.util.ToastUtil;
+import com.jinglangtech.teamchat.util.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +62,7 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
             int result =getIntent().getIntExtra("result", 0);
             hideLoading();
             if (result == -1){
-                ToastUtil.show("获取聊天数据出错");
+                ToastUtils.showToast(ChatGroupActivity.this, "获取聊天数据出错");
             }
         }
     }
@@ -102,7 +103,7 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
                 ChatGroup chatgroup = mGroupAdapter.mList.get(position);
                 Intent intent = new Intent();
                 intent.putExtra(Key.ID, chatgroup._id);
-                intent.putExtra(Key.ID, chatgroup.name);
+                intent.putExtra(Key.ROOM_NAME, chatgroup.name);
                 intent.setClass(ChatGroupActivity.this, ChatRoomActivity.class);
                 startActivity(intent);
             }
@@ -221,7 +222,7 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
             @Override
             public void requestFailed(boolean status, int code, String errorMessage) {
                 //hideLoading();
-                ToastUtil.show(errorMessage == null ? Constant.REQUEST_FAILED_STR:errorMessage);
+                ToastUtils.showToast(ChatGroupActivity.this,errorMessage == null ? Constant.REQUEST_FAILED_STR:errorMessage);
                 mRv.refreshComplete();
             }
         });
@@ -245,7 +246,7 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
             @Override
             public void requestFailed(boolean status, int code, String errorMessage) {
                 //hideLoading();
-                ToastUtil.show(errorMessage == null ? Constant.REQUEST_FAILED_STR:errorMessage);
+                ToastUtils.showToast(ChatGroupActivity.this,errorMessage == null ? Constant.REQUEST_FAILED_STR:errorMessage);
             }
         });
     }

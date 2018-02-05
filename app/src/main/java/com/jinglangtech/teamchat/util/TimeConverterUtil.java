@@ -151,4 +151,33 @@ public class TimeConverterUtil {
         return timeZoneByNumExpressStr;
     }
 
+    public static String getCurrentTime(){
+        SimpleDateFormat formatter   =   new   SimpleDateFormat   ("yyyy-MM-dd HH:mm:ss");
+        Date curDate =  new Date(System.currentTimeMillis());
+        String   str   =   formatter.format(curDate);
+        return str;
+    }
+
+    public static String getTodayTime(){
+        long time = System.currentTimeMillis();
+        final Calendar mCalendar = Calendar.getInstance();
+        mCalendar.setTimeInMillis(time);
+
+        int hour = mCalendar.get(Calendar.HOUR);
+        int apm = mCalendar.get(Calendar.AM_PM);
+
+        String result;
+        if (apm == 0){
+            result = "上午";
+        }else {
+            result = "下午";
+        }
+
+        SimpleDateFormat formatter   =   new   SimpleDateFormat   ("HH:mm");
+        Date curDate =  new Date(System.currentTimeMillis());
+        String   str   =   formatter.format(curDate);
+        result=result + str;
+        return result;
+    }
+
 }

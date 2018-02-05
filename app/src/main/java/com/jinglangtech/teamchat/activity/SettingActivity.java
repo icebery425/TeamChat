@@ -13,13 +13,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jinglangtech.teamchat.R;
+import com.jinglangtech.teamchat.util.ConfigUtil;
 import com.jinglangtech.teamchat.util.DisPlayUtil;
+import com.jinglangtech.teamchat.util.Key;
 import com.jinglangtech.teamchat.widget.CustomPhotoSelect;
 
 import butterknife.BindView;
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
 
+    @BindView(R.id.tv_user_account)
+    TextView mTvAccount;
     @BindView(R.id.tv_nickname)
     TextView mTvNickName;
     @BindView(R.id.tv_modify_pwd)
@@ -54,6 +58,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         mTvClearCache.setOnClickListener(this);
         mCbNotice.setOnClickListener(this);
         mTvVersion.setOnClickListener(this);
+
+        String account = ConfigUtil.getInstance(this).get(Key.USER_ACCOUNT, "");
+        String nickName = ConfigUtil.getInstance(this).get(Key.USER_NAME, "");
+        mTvAccount.setText(account);
+        mTvNickName.setText(nickName);
     }
 
     @Override

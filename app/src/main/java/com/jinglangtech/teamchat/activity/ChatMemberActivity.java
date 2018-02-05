@@ -23,6 +23,7 @@ import com.jinglangtech.teamchat.model.PageInfo;
 import com.jinglangtech.teamchat.network.CommonModel;
 import com.jinglangtech.teamchat.util.Constant;
 import com.jinglangtech.teamchat.util.ToastUtil;
+import com.jinglangtech.teamchat.util.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -180,7 +181,7 @@ public class ChatMemberActivity extends BaseActivity implements LRecyclerView.LS
 
             @Override
             public void requestFailed(boolean status, int code, String errorMessage) {
-                ToastUtil.show(errorMessage == null ? Constant.REQUEST_FAILED_STR:errorMessage);
+                ToastUtils.showToast(ChatMemberActivity.this,errorMessage == null ? Constant.REQUEST_FAILED_STR:errorMessage);
                 mRv.refreshComplete();
             }
         });

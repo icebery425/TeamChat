@@ -10,7 +10,7 @@ public class ResponseInfo {
 
 	public boolean status;
 	public int err;
-	public String desc;
+	public String msg;
 	public String data;
 
 	public PageInfo pageinfo;

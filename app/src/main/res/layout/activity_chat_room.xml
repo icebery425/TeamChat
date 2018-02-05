@@ -55,7 +55,7 @@
             android:onClick="finishActivity"/>
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tv_room_name"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignBottom="@+id/tv_back"
@@ -95,6 +95,7 @@
             android:layout_height="1px"
             android:background="@color/line_bg"/>
         <EditText
+            android:id="@+id/et_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="33dp"

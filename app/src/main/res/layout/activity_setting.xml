@@ -71,14 +71,13 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/tv_invite_code"
+                android:id="@+id/tv_user_account"
                 android:layout_width="0.0dip"
                 android:layout_height="match_parent"
                 android:layout_weight="1.0"
                 android:ellipsize="end"
                 android:gravity="center_vertical|right"
                 android:singleLine="true"
-                android:text="002"
                 android:textColor="@color/menu_sub_font"
                 android:textSize="15sp" />
         </LinearLayout>

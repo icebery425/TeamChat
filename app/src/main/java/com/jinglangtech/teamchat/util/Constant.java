@@ -14,19 +14,6 @@ public class Constant {
     public static final int ROLE_PARENTS    = 4;
     public static final int ROLE_EXPERT     = 5;
 
-    public static final String KEY_ROLE_TYPE    = "role_type";
-    public static final String KEY_SCHOOL_ID    = "school_id";
-    public static final String KEY_SCHOOL_NAME  = "school_name";
-    public static final String KEY_SCHOOL_URL   = "school_url";
-    public static final String KEY_LOGIN_NAME   = "login_name";
-    public static final String KEY_LOGIN_PWD    = "login_pwd";
-    public static final String KEY_TOKEN        = "token";
-    public static final String KEY_TEACHER      = "teacher";
-    public static final String KEY_USER_ID      = "user_id";
-    public static final String KEY_USER_NAME    = "user_name";
-    public static final String KEY_USER_AVATAR  = "user_avatar";
-    public static final String KEY_VT_NUMBER    = "volunter_number";
-    public static final String KEY_IS_STUDENT_AFFAIRS   = "is_student_affairs";
 
     public static final int REQUEST_CAMERA_CODE     = 10;
     public static final int REQUEST_PREVIEW_CODE    = 20;

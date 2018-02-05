@@ -13,7 +13,7 @@ import com.jinglangtech.teamchat.model.ChatGroup;
 import com.jinglangtech.teamchat.model.ChatMsg;
 
 
-public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>{
+public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>  {
 
 
     public static int TYPE_OTHERS   = 1;

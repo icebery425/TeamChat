@@ -25,7 +25,7 @@ public class BaseModel {
                 baseListener.responseResult(null, null,responseInfo.err, responseInfo.status);
             }
         }else{
-            baseListener.requestFailed(responseInfo.status,responseInfo.err, responseInfo.desc);
+            baseListener.requestFailed(responseInfo.status,responseInfo.err, responseInfo.msg);
         }
 
     }
@@ -41,7 +41,7 @@ public class BaseModel {
                 baseListener.responseListResult(null, null,null,responseInfo.err, responseInfo.status);
             }
         }else{
-            baseListener.requestFailed(responseInfo.status,responseInfo.err, responseInfo.desc);
+            baseListener.requestFailed(responseInfo.status,responseInfo.err, responseInfo.msg);
         }
 
     }
@@ -59,7 +59,7 @@ public class BaseModel {
                 baseListener.responseResult(null,null, responseInfo.err,responseInfo.status);
             }
         }else{
-            baseListener.requestFailed(responseInfo.status,responseInfo.err, responseInfo.desc);
+            baseListener.requestFailed(responseInfo.status,responseInfo.err, responseInfo.msg);
         }
 
     }

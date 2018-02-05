@@ -14,7 +14,9 @@ import com.jinglangtech.teamchat.network.CommonModel;
 import com.jinglangtech.teamchat.network.NetWorkInterceptor;
 import com.jinglangtech.teamchat.util.ConfigUtil;
 import com.jinglangtech.teamchat.util.Constant;
+import com.jinglangtech.teamchat.util.Key;
 import com.jinglangtech.teamchat.util.ToastUtil;
+import com.jinglangtech.teamchat.util.ToastUtils;
 
 import butterknife.BindView;
 
@@ -29,6 +31,7 @@ public class LoginActivity extends BaseActivity {
 
     private String mName;
     private String mPwd;
+    private String mAccount;
 
     @Override
     public int getLayoutResourceId() {
@@ -64,12 +67,12 @@ public class LoginActivity extends BaseActivity {
     private void userLogin(){
         mName = mEtName.getText().toString();
         if (TextUtils.isEmpty(mName)){
-            ToastUtil.show("请输入用户名");
+            ToastUtils.showToast(LoginActivity.this, "请输入用户名");
             return;
         }
         mPwd = mEtPwd.getText().toString();
         if (TextUtils.isEmpty(mPwd)){
-            ToastUtil.show("请输入密码");
+            ToastUtils.showToast(LoginActivity.this,"请输入密码");
             return;
         }
 
@@ -84,23 +87,28 @@ public class LoginActivity extends BaseActivity {
             public void responseResult(Object infoObj, Object listObj, int code, boolean status) {
                 super.responseResult(infoObj, listObj, code, status);
                 LoginUser user = (LoginUser)infoObj;
-                NetWorkInterceptor.setToken(user.token);
-                saveSp();
-                startChatPage();
+                if (user != null){
+                    NetWorkInterceptor.setToken(user.token);
+                    mAccount = user.account;
+                    mName = user.name;
+                    saveSp();
+                    startChatPage();
+                }
+
             }
 
             @Override
             public void requestFailed(boolean status, int code, String errorMessage) {
                 super.requestFailed(status, code, errorMessage);
-                ToastUtil.show("登录失败" + (TextUtils.isEmpty(errorMessage)?"":errorMessage));
+                ToastUtils.showToast(LoginActivity.this,"登录失败" + (TextUtils.isEmpty(errorMessage)?"":errorMessage));
             }
         });
     }
 
     public void saveSp(){
-
-        ConfigUtil.getInstance(this).put(Constant.KEY_LOGIN_NAME, mName);
-        ConfigUtil.getInstance(this).put(Constant.KEY_LOGIN_PWD, mPwd);
+        ConfigUtil.getInstance(this).put(Key.USER_ACCOUNT, mAccount);
+        ConfigUtil.getInstance(this).put(Key.USER_NAME, mName);
+        ConfigUtil.getInstance(this).put(Key.USER_PWD, mPwd);
         ConfigUtil.getInstance(this).commit();
     }
 

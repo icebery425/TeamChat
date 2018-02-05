@@ -70,14 +70,14 @@ public class PushMessageToLocalService extends IntentService {
                     Intent intent = new Intent(ChatGroupActivity.MESSAGE_INIT_FINISHED_ACTION);
                     intent.putExtra("result", 1);
                     sendBroadcast(intent);
-                    //ToastUtil.show( "没有数据");
+                    //ToastUtils.showToast( "没有数据");
                 }
             }
 
             @Override
             public void requestFailed(boolean status, int code, String errorMessage) {
                 //hideLoading();
-                //ToastUtil.show(errorMessage == null ? Constant.REQUEST_FAILED_STR:errorMessage);
+                //ToastUtils.showToast(errorMessage == null ? Constant.REQUEST_FAILED_STR:errorMessage);
                 Intent intent = new Intent(ChatGroupActivity.MESSAGE_INIT_FINISHED_ACTION);
                 intent.putExtra("result", -1);
                 sendBroadcast(intent);
@@ -111,12 +111,12 @@ public class PushMessageToLocalService extends IntentService {
                 Intent intent = new Intent(ChatGroupActivity.MESSAGE_INIT_FINISHED_ACTION);
                 intent.putExtra("result", 0);
                 sendBroadcast(intent);
-                //ToastUtil.show("获取聊天数据成功");
+                //ToastUtils.showToast("获取聊天数据成功");
             }
         }, new Realm.Transaction.OnError() {
             @Override
             public void onError(Throwable error) {
-                //ToastUtil.show("初始化聊天数据失败，请重试");
+                //ToastUtils.showToast("初始化聊天数据失败，请重试");
                 Intent intent = new Intent(ChatGroupActivity.MESSAGE_INIT_FINISHED_ACTION);
                 intent.putExtra("result", -1);
                 sendBroadcast(intent);

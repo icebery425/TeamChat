@@ -47,41 +47,33 @@ public class ConfigUtil {
 	{
 		mEditor.commit();
 	}
-
-	public void putSchoolId(int schoolId){
-		mEditor.putInt(Constant.KEY_SCHOOL_ID, schoolId);
-		mEditor.commit();
-	}
-	public int getSchoolId(){
-		return mSharedPreferences.getInt(Constant.KEY_SCHOOL_ID, -1);
-	}
 	
 	public void putLoginName(String loginName){
-		mEditor.putString(Constant.KEY_LOGIN_NAME, loginName);
+		mEditor.putString(Key.USER_NAME, loginName);
 		mEditor.commit();
 	}
 	public String getLoginName(){
-		return mSharedPreferences.getString(Constant.KEY_LOGIN_NAME, "");
+		return mSharedPreferences.getString(Key.USER_NAME, "");
 	}
 
 	public void putPwd(String pwd){
-		mEditor.putString(Constant.KEY_LOGIN_PWD, pwd);
+		mEditor.putString(Key.USER_PWD, pwd);
 		mEditor.commit();
 	}
 	public String getPwd(){
-		return mSharedPreferences.getString(Constant.KEY_LOGIN_PWD, "");
+		return mSharedPreferences.getString(Key.USER_PWD, "");
 	}
 
 	public void saveToken(String token){
-		mEditor.putString(Constant.KEY_TOKEN, token);
+		mEditor.putString(Key.TOKEN, token);
 		mEditor.commit();
 	}
 	public String getToken(){
-		return mSharedPreferences.getString(Constant.KEY_TOKEN, "");
+		return mSharedPreferences.getString(Key.TOKEN, "");
 	}
 	
 	public void clearToken(){
-		mEditor.putString(Constant.KEY_TOKEN, "");
+		mEditor.putString(Key.TOKEN, "");
 		mEditor.commit();
 	}
 

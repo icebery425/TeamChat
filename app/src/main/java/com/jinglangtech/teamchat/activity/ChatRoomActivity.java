@@ -3,8 +3,14 @@ package com.jinglangtech.teamchat.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.github.jdsjlzx.progressindicator.AVLoadingIndicatorView;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -21,25 +27,42 @@ import com.jinglangtech.teamchat.model.ChatGroup;
 import com.jinglangtech.teamchat.model.ChatMsg;
 import com.jinglangtech.teamchat.model.PageInfo;
 import com.jinglangtech.teamchat.network.CommonModel;
+import com.jinglangtech.teamchat.util.ConfigUtil;
 import com.jinglangtech.teamchat.util.Constant;
+import com.jinglangtech.teamchat.util.Key;
+import com.jinglangtech.teamchat.util.TimeConverterUtil;
 import com.jinglangtech.teamchat.util.ToastUtil;
+import com.jinglangtech.teamchat.util.ToastUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 
-public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScrollListener{
+public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScrollListener, TextView.OnEditorActionListener{
 
+    @BindView(R.id.tv_room_name)
+    TextView mTvRoomName;
     @BindView(R.id.eventlist_lv)
     LRecyclerView mRv;
     @BindView(R.id.empty_rel)
     RelativeLayout mEmptyRealtive;
     @BindView(R.id.add_event_rel)
     RelativeLayout mLayoutChatInfo;
+    @BindView(R.id.et_input)
+    EditText mEtInput;
+
+
+    String mRoomId;
+    String mRoomName;
+    String mCurrentMsg;
+    List<ChatMsg> mChatMsgList = new ArrayList<ChatMsg>();
 
     ChatRoomMsgAdapter mChatRoomAdapter;
     LRecyclerViewAdapter mLRecyclerViewAdapter;
+    LinearLayoutManager mRecyclerManager;
 
     private int mPageSize = 15;
     private int mPageIndex = 1;
@@ -52,7 +75,8 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
 
     @Override
     public void initVariables() {
-
+        mRoomId = this.getIntent().getStringExtra(Key.ID);
+        mRoomName = this.getIntent().getStringExtra(Key.ROOM_NAME);
     }
 
     @Override
@@ -64,10 +88,11 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
 
     @Override
     public void initViews() {
+        mTvRoomName.setText(mRoomName);
         mChatRoomAdapter = new ChatRoomMsgAdapter(this);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRv.setLayoutManager(layoutManager);
+        mRecyclerManager = new LinearLayoutManager(this);
+        mRecyclerManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRv.setLayoutManager(mRecyclerManager);
         mRv.setRefreshProgressStyle(AVLoadingIndicatorView.BallSpinFadeLoader);
         mRv.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(this, mChatRoomAdapter);
@@ -93,12 +118,80 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
                 startActivityForResult(intent, 1);
             }
         });
+
+        mEtInput.setOnEditorActionListener(this);
+    }
+
+    public void MoveToPosition(int n) {
+        mRecyclerManager.scrollToPositionWithOffset(n, 0);
+        mRecyclerManager.setStackFromEnd(true);
     }
 
     @Override
     public void loadData() {
         test();
     }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        doWhichOperation(actionId);
+        Log.e("BALLACK", "event: " + event);
+        Log.e("BALLACK", "v.getImeActionId(): " + v.getImeActionId());
+        Log.e("BALLACK", "v.getImeOptions(): " + v.getImeOptions());
+        return true;
+    }
+
+    private void doWhichOperation(int actionId) {
+        switch (actionId) {
+            case EditorInfo.IME_ACTION_DONE:
+            case EditorInfo.IME_ACTION_GO:
+            case EditorInfo.IME_ACTION_NEXT:
+            case EditorInfo.IME_ACTION_SEND:
+                Log.e("BALLACK", "IME_ACTION_SEND");
+                sendMessage();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void sendMessage(){
+        if (TextUtils.isEmpty(mRoomId)){
+            ToastUtils.showToast(ChatRoomActivity.this,"聊天室ID为空");
+            return;
+        }
+        mCurrentMsg = mEtInput.getText().toString().trim();
+        if (mCurrentMsg.length() <= 0){
+            ToastUtils.showToast(ChatRoomActivity.this,"发送内容不能为空");
+            return;
+        }
+        CommonModel.getInstance().sendToRoom(mRoomId,mCurrentMsg, new BaseListener(String.class){
+
+            @Override
+            public void responseResult(Object infoObj, Object listObj, int code, boolean status) {
+                super.responseResult(infoObj, listObj, code, status);
+                mEtInput.setText("");
+                ChatMsg msg1 = new ChatMsg();
+                String name = ConfigUtil.getInstance(ChatRoomActivity.this).get(Key.USER_NAME, "");
+                msg1.name = name;
+                msg1.content = mCurrentMsg;
+                msg1.time = TimeConverterUtil.getCurrentTime();
+                msg1.isMine = true;
+                mChatMsgList.add(msg1);
+                mChatRoomAdapter.setDataList(mChatMsgList);
+                MoveToPosition(mChatMsgList.size()-1);
+
+            }
+
+            @Override
+            public void requestFailed(boolean status, int code, String errorMessage) {
+                super.requestFailed(status, code, errorMessage);
+                ToastUtils.showToast(ChatRoomActivity.this,"发送消息失败");
+            }
+        });
+    }
+
+
 
     public void test(){
         List<ChatMsg> tempList = new ArrayList<ChatMsg>();
@@ -189,7 +282,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
 
             @Override
             public void requestFailed(boolean status, int code, String errorMessage) {
-                ToastUtil.show(errorMessage == null ? Constant.REQUEST_FAILED_STR:errorMessage);
+                ToastUtils.showToast(ChatRoomActivity.this,errorMessage == null ? Constant.REQUEST_FAILED_STR:errorMessage);
                 mRv.refreshComplete();
             }
         });
