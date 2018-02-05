@@ -87,7 +87,8 @@ public class RealmDbManger implements DbManager {
     public ChatMsg findMaxDateOne(String key, String value){
         return  Realm.getDefaultInstance().where(ChatMsg.class)
                 .equalTo(key, value)
-                .findAllSorted("dTime", Sort.DESCENDING).first();
+                .findAllSorted("dTime", Sort.DESCENDING)
+                .first();
     }
 
     @Override
