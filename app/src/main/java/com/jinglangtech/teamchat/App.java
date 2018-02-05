@@ -26,6 +26,7 @@ public class App extends MultiDexApplication{
         //JPushInterface.setDebugMode(true);
         //JPushInterface.init(this);
         //mJPushRegId =JPushInterface.getRegistrationID(this);
+        initRealm();
 
     }
 

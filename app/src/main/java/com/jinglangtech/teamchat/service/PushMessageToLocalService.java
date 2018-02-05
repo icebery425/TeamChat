@@ -11,6 +11,7 @@ import android.util.Log;
 import com.jinglangtech.teamchat.activity.ChatGroupActivity;
 import com.jinglangtech.teamchat.listener.BaseListener;
 import com.jinglangtech.teamchat.model.ChatMsg;
+import com.jinglangtech.teamchat.model.ChatMsgWraper;
 import com.jinglangtech.teamchat.network.CommonModel;
 import com.jinglangtech.teamchat.util.Constant;
 import com.jinglangtech.teamchat.util.TimeConverterUtil;
@@ -59,10 +60,17 @@ public class PushMessageToLocalService extends IntentService {
 
     private void getDataBaseAllMsgList(){
 
-        CommonModel.getInstance().getMessage(new BaseListener(ChatMsg.class) {
+        CommonModel.getInstance().getMessage(new BaseListener(ChatMsgWraper.class) {
             public void responseResult(Object infoObj, Object listObj, int code, boolean status) {
 
-                ArrayList<ChatMsg> tempList = (ArrayList<ChatMsg>) listObj;
+                ChatMsgWraper msgWraper = (ChatMsgWraper)infoObj;
+                if (msgWraper == null){
+                    Intent intent = new Intent(ChatGroupActivity.MESSAGE_INIT_FINISHED_ACTION);
+                    intent.putExtra("result", 1);
+                    sendBroadcast(intent);
+                    return;
+                }
+                ArrayList<ChatMsg> tempList = (ArrayList<ChatMsg>) msgWraper.msglist;
 
                 if (tempList != null && tempList.size() > 0){
                     initLocalDataBaseData(tempList);

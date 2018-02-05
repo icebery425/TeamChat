@@ -56,7 +56,8 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initViews() {
-
+        String userAccount = ConfigUtil.getInstance(this).get(Key.USER_ACCOUNT, "");
+        mEtName.setText(userAccount);
     }
 
     @Override
