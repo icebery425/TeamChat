@@ -90,7 +90,7 @@ public class TimeConverterUtil {
         }
 
         SimpleDateFormat utcFormater = new SimpleDateFormat(utcTimePattern);
-        utcFormater.setTimeZone(TimeZone.getTimeZone("UTC"));
+        utcFormater.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         Date gpsUtcDate = null;
         try {
             gpsUtcDate = utcFormater.parse(utcTime);
@@ -99,7 +99,7 @@ public class TimeConverterUtil {
             return utcTime;
         }
         SimpleDateFormat localFormater = new SimpleDateFormat(localTimePattern);
-        localFormater.setTimeZone(TimeZone.getDefault());
+        localFormater.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         String localTime = localFormater.format(gpsUtcDate.getTime());
         return localTime;
     }
@@ -158,10 +158,9 @@ public class TimeConverterUtil {
         return str;
     }
 
-    public static String getTodayTime(){
-        long time = System.currentTimeMillis();
+    public static String getTodayTime(Date d1){
         final Calendar mCalendar = Calendar.getInstance();
-        mCalendar.setTimeInMillis(time);
+        mCalendar.setTime(d1);
 
         int hour = mCalendar.get(Calendar.HOUR);
         int apm = mCalendar.get(Calendar.AM_PM);
@@ -178,6 +177,47 @@ public class TimeConverterUtil {
         String   str   =   formatter.format(curDate);
         result=result + str;
         return result;
+    }
+
+    public static String getLastTime(String time){
+        String result = "";
+        //设定时间的模板
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try{
+            //得到指定模范的时间
+            Date d1 = sdf.parse(time);
+            //比较
+
+
+            long currentTime = System.currentTimeMillis();
+            Calendar calendar=Calendar.getInstance();
+            calendar.setTimeInMillis(currentTime);
+
+            //获取年
+            int curryear = calendar.get(Calendar.YEAR);
+            //获取月份，0表示1月份
+            int currmonth = calendar.get(Calendar.MONTH) + 1;
+            //获取当前天数
+            int currday = calendar.get(Calendar.DAY_OF_MONTH);
+
+            calendar.setTime(d1);
+            //获取年
+            int setyear = calendar.get(Calendar.YEAR);
+            //获取月份，0表示1月份
+            int setmonth = calendar.get(Calendar.MONTH) + 1;
+            //获取当前天数
+            int setday = calendar.get(Calendar.DAY_OF_MONTH);
+
+            if (curryear == setyear && currmonth == setmonth && currday == setday) {
+                result = getTodayTime(d1);
+            }else{
+                result = time;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
+
     }
 
 }

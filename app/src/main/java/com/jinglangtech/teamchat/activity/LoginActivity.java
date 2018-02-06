@@ -29,6 +29,7 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.btn_login)
     Button mBtnLogin;
 
+    private String mId;
     private String mName;
     private String mPwd;
     private String mAccount;
@@ -92,6 +93,7 @@ public class LoginActivity extends BaseActivity {
                     NetWorkInterceptor.setToken(user.token);
                     mAccount = user.account;
                     mName = user.name;
+                    mId = user._id;
                     saveSp();
                     startChatPage();
                 }
@@ -107,6 +109,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     public void saveSp(){
+        ConfigUtil.getInstance(this).put(Key.ID, mId);
         ConfigUtil.getInstance(this).put(Key.USER_ACCOUNT, mAccount);
         ConfigUtil.getInstance(this).put(Key.USER_NAME, mName);
         ConfigUtil.getInstance(this).put(Key.USER_PWD, mPwd);

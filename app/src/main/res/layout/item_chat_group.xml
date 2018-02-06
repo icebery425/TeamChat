@@ -45,14 +45,14 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:orientation="vertical">
-            <TextView
-                android:id="@+id/tv_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
 
-                android:text="星期三 10:40"
-                android:textColor="@color/dark_bg4"
-                android:textSize="11sp" />
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@color/dark_bg4"
+                    android:textSize="11sp" />
             <RelativeLayout
                 android:id="@+id/layout_unread"
                 android:layout_width="wrap_content"

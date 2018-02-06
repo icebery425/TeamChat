@@ -8,6 +8,7 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -30,13 +31,20 @@ import com.jinglangtech.teamchat.service.PushMessageToLocalService;
 import com.jinglangtech.teamchat.util.Constant;
 import com.jinglangtech.teamchat.util.Key;
 import com.jinglangtech.teamchat.util.ThreadUtil;
+import com.jinglangtech.teamchat.util.TimeConverterUtil;
 import com.jinglangtech.teamchat.util.ToastUtil;
 import com.jinglangtech.teamchat.util.ToastUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import butterknife.BindView;
+import io.realm.Realm;
 
 public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LScrollListener{
 
@@ -53,8 +61,10 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
     private int mPageSize = 15;
     private int mPageIndex = 1;
     private int mPageCount = 0;
+    private List<ChatGroup> mRoomList = new ArrayList<ChatGroup>();
 
     public final static String MESSAGE_INIT_FINISHED_ACTION = "msgInitFinished";
+    public final static String GROUP_INIT_FINISHED_ACTION = "groupInitFinished";
 
 
 
@@ -64,14 +74,65 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
         public void onReceive(Context context, Intent intent) {
             int result =getIntent().getIntExtra("result", 0);
             hideLoading();
-            if (result == -1){
-                ToastUtils.showToast(ChatGroupActivity.this, "获取聊天数据出错");
+            String actionStr = intent.getAction();
+            if (actionStr.equals(MESSAGE_INIT_FINISHED_ACTION)){
+                if (result == -1){
+                    ToastUtils.showToast(ChatGroupActivity.this, "获取聊天数据出错");
+                }else{
+                    getRoomLastMsg();
+                }
+            }else if (actionStr.equals(GROUP_INIT_FINISHED_ACTION)){
+                if (result == -1){
+                    ToastUtils.showToast(ChatGroupActivity.this, "获取群组数据出错");
+                }else {
+                    ThreadUtil.runAtBg(new Runnable() {
+                        @Override
+                        public void run() {
+                            PushMessageToLocalService.startToInitSkuDbIntent(ChatGroupActivity.this);// 启动IntentService
+                        }
+                    });
+                }
             }
 
-            ChatGroup group1 =  mGroupAdapter.mList.get(0);
-            ChatMsg skuList = (ChatMsg) DBFactory.getDBInstance().findMaxDateOne("roomid", group1._id);
         }
     }
+
+    private void getRoomLastMsg(){
+        ChatMsg maxOne;
+        long unRead = 0;
+        if (mRoomList != null && mRoomList.size() > 0){
+            for (ChatGroup group: mRoomList){
+                maxOne = (ChatMsg) DBFactory.getDBInstance().findMaxDateOne("roomid", group._id);
+                if (maxOne != null){
+                    Log.e("getRoomLastMsg", "#### TIME:" + maxOne.dTime.toString());
+                    Log.e("getRoomLastMsg", "#### CONTENT:" + maxOne.content);
+                    String tempTime = dateToString(maxOne.dTime);
+                    String from = maxOne.from.toString();
+                    String content = maxOne.content.toString();
+                    group.msg = content;
+                    group.time= tempTime;
+                }
+                unRead = DBFactory.getDBInstance().findUnread("roomid", group._id);
+                group.unread = unRead;
+                Log.e("getRoomLastMsg", "#### UNREAD:" + unRead);
+            }
+        }
+        ThreadUtil.runAtMain(new Runnable() {
+            @Override
+            public void run() {
+                mGroupAdapter.setDataList(mRoomList);
+            }
+        });
+
+    }
+
+    private String dateToString(Date date){
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
+        String str=sdf.format(date);
+        return str;
+    }
+
 
     private ChatMessagePulledReceiver mReceiver;
 
@@ -130,7 +191,9 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
     public void loadData() {
         //test();
         mReceiver = new ChatMessagePulledReceiver();
-        IntentFilter intentFilter = new IntentFilter(MESSAGE_INIT_FINISHED_ACTION);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(MESSAGE_INIT_FINISHED_ACTION);
+        intentFilter.addAction(GROUP_INIT_FINISHED_ACTION);
         this.registerReceiver(mReceiver, intentFilter);
 
         getRoomList(mPageIndex);
@@ -195,11 +258,12 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
 
                 //hideLoading();
                 if (tempList != null && tempList.roomlist.size() > 0){
+                    mRoomList = tempList.roomlist;
                     if (mPageIndex == 1){
-                        mGroupAdapter.setDataList(tempList.roomlist);
+                        mGroupAdapter.setDataList(mRoomList);
                         mRv.refreshComplete();
                     }else {
-                        mGroupAdapter.insertList(tempList.roomlist);
+                        mGroupAdapter.insertList(mRoomList);
 
                         if (mPageIndex == mPageCount){
                             RecyclerViewStateUtils.setFooterViewState(mRv, LoadingFooter.State.TheEnd);
@@ -208,12 +272,9 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
                         }
 
                     }
-                    ThreadUtil.runAtBg(new Runnable() {
-                        @Override
-                        public void run() {
-                            PushMessageToLocalService.startToInitSkuDbIntent(ChatGroupActivity.this);// 启动IntentService
-                        }
-                    });
+
+                    initLocalRoomDataBaseData(tempList.roomlist);
+
                     disLoading("正在加载聊天数据，请稍候");
 
                 }else{
@@ -259,6 +320,46 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
             public void requestFailed(boolean status, int code, String errorMessage) {
                 //hideLoading();
                 ToastUtils.showToast(ChatGroupActivity.this,errorMessage == null ? Constant.REQUEST_FAILED_STR:errorMessage);
+            }
+        });
+    }
+
+    public void initLocalRoomDataBaseData(final List<ChatGroup> msglist){
+
+        Realm.getDefaultInstance().executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+
+                //删除数据
+                //RealmResults<ChatMsg> results = realm.where(ChatMsg.class).findAll();
+                //results.deleteAllFromRealm();
+
+                //插入数据
+                try {
+                    for (ChatGroup localGroup : msglist) {
+                        realm.copyToRealmOrUpdate(localGroup);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                //sendBroadcast(new Intent(ChatGroupActivity.MESSAGE_INIT_FINISHED_ACTION));
+                Intent intent = new Intent(ChatGroupActivity.GROUP_INIT_FINISHED_ACTION);
+                intent.putExtra("result", 0);
+                sendBroadcast(intent);
+                //ToastUtils.showToast("获取聊天数据成功");
+            }
+        }, new Realm.Transaction.OnError() {
+            @Override
+            public void onError(Throwable error) {
+                //ToastUtils.showToast("初始化聊天数据失败，请重试");
+                Intent intent = new Intent(ChatGroupActivity.GROUP_INIT_FINISHED_ACTION);
+                intent.putExtra("result", -1);
+                sendBroadcast(intent);
             }
         });
     }

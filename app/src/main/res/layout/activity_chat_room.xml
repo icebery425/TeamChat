@@ -94,21 +94,20 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:background="@color/line_bg"/>
+
         <EditText
             android:id="@+id/et_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="33dp"
+            android:layout_gravity="center"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:layout_gravity="center"
-            android:paddingLeft="5dp"
             android:background="@drawable/circle_corner_white_bg"
-            android:textSize="13sp"
-            android:inputType="text"
             android:imeOptions="actionSend"
-            android:text="明天一起出发？"
-            />
+            android:inputType="text"
+            android:minHeight="33dp"
+            android:paddingLeft="5dp"
+            android:textSize="13sp" />
     </FrameLayout>
 
 </RelativeLayout>

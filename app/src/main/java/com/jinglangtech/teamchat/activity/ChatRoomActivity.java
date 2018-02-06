@@ -22,9 +22,13 @@ import com.jinglangtech.teamchat.adapter.BasicRecylerAdapter;
 import com.jinglangtech.teamchat.adapter.ChatGroupListAdapter;
 import com.jinglangtech.teamchat.adapter.ChatMemberListAdapter;
 import com.jinglangtech.teamchat.adapter.ChatRoomMsgAdapter;
+import com.jinglangtech.teamchat.dbmanager.DBFactory;
+import com.jinglangtech.teamchat.dbmanager.RealmDbManger;
 import com.jinglangtech.teamchat.listener.BaseListener;
 import com.jinglangtech.teamchat.model.ChatGroup;
 import com.jinglangtech.teamchat.model.ChatMsg;
+import com.jinglangtech.teamchat.model.ChatUser;
+import com.jinglangtech.teamchat.model.GroupList;
 import com.jinglangtech.teamchat.model.PageInfo;
 import com.jinglangtech.teamchat.network.CommonModel;
 import com.jinglangtech.teamchat.util.ConfigUtil;
@@ -40,6 +44,7 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import io.realm.RealmList;
 
 public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScrollListener, TextView.OnEditorActionListener{
 
@@ -54,7 +59,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
     @BindView(R.id.et_input)
     EditText mEtInput;
 
-
+    String mId;
     String mRoomId;
     String mRoomName;
     String mCurrentMsg;
@@ -63,6 +68,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
     ChatRoomMsgAdapter mChatRoomAdapter;
     LRecyclerViewAdapter mLRecyclerViewAdapter;
     LinearLayoutManager mRecyclerManager;
+    ChatGroup mGroupInfo;
 
     private int mPageSize = 15;
     private int mPageIndex = 1;
@@ -77,6 +83,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
     public void initVariables() {
         mRoomId = this.getIntent().getStringExtra(Key.ID);
         mRoomName = this.getIntent().getStringExtra(Key.ROOM_NAME);
+        mId = ConfigUtil.getInstance(this).get(Key.ID, "");
     }
 
     @Override
@@ -99,6 +106,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         mRv.setAdapter(mLRecyclerViewAdapter);
         mRv.setLScrollListener(this);
         //mRv.setRefreshing(true);
+        mChatRoomAdapter.setGroupInfo(mGroupInfo);
         mChatRoomAdapter.setMyItemOnclickListener(new BasicRecylerAdapter.MyItemOnclickListener() {
             @Override
             public void onItemClick(int position) {
@@ -129,7 +137,9 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
 
     @Override
     public void loadData() {
-        test();
+        //test();
+        getGroupInfo();
+        getLocalMessage();
     }
 
     @Override
@@ -191,6 +201,75 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         });
     }
 
+    private void getGroupInfo(){
+        mGroupInfo =  DBFactory.getDBInstance().findGroupInfoWithRoomId(mRoomId);
+    }
+
+    private void getLocalMessage(){
+        List<ChatMsg> msgList =  DBFactory.getDBInstance().findLocalMsgWithRoomId(mRoomId);
+//        if (msgList != null && msgList.size() > 0){
+//            for (ChatMsg cmsg: msgList){
+//                if (cmsg.from)
+//            }
+//        }
+
+
+
+        mChatMsgList.clear();
+        copyDbDateToTemp(msgList);
+        //mChatMsgList.addAll(msgList);
+        setFullName();
+        mChatRoomAdapter.setDataList(mChatMsgList);
+        mRv.refreshComplete();
+    }
+
+    private void copyDbDateToTemp(List<ChatMsg> msglist){
+        ChatMsg chatmsg = null;
+        ArrayList<ChatMsg> arrayList = new ArrayList<>(1);//初始化长度一，大多数商品只有一个
+        for (ChatMsg localMsg : msglist){
+            chatmsg = createMsg(localMsg);
+            mChatMsgList.add(chatmsg);
+        }
+    }
+
+    private  ChatMsg createMsg(ChatMsg localmsg){
+        if (localmsg == null){
+            return null;
+        }
+        ChatMsg newMsg = new ChatMsg();
+        newMsg.name = localmsg.name;
+        newMsg._id = localmsg._id;
+        newMsg.from= localmsg.from;
+        newMsg.content=localmsg.content;
+        newMsg.dTime=localmsg.dTime;
+        newMsg.time=localmsg.time;
+        newMsg.isMine=localmsg.isread;
+        newMsg.roomid=localmsg.roomid;
+        return newMsg;
+    }
+
+
+    private void setFullName(){
+        if (mGroupInfo == null ||mGroupInfo.group == null || mGroupInfo.group.size() <= 0){
+            Log.d("", "群组信息为空");
+            return;
+        }
+
+        if (mChatMsgList == null || mChatMsgList.size() <= 0){
+            Log.d("", "此群消息空");
+            return;
+        }
+
+        RealmList<ChatUser> tempGroup = mGroupInfo.group;
+        for (ChatUser chatuser: tempGroup){
+            for (ChatMsg chatmsg: mChatMsgList){
+                if (chatuser._id.equals(chatmsg.from)){
+                    chatmsg.name = chatuser.name;
+                }
+
+            }
+        }
+    }
 
 
     public void test(){
@@ -212,6 +291,9 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         mChatRoomAdapter.setDataList(tempList);
         mRv.refreshComplete();
     }
+
+
+
     @Override
     public void onRefresh() {
 

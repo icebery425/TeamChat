@@ -11,6 +11,16 @@ import android.widget.TextView;
 import com.jinglangtech.teamchat.R;
 import com.jinglangtech.teamchat.model.ChatGroup;
 import com.jinglangtech.teamchat.model.ChatMsg;
+import com.jinglangtech.teamchat.util.ConfigUtil;
+import com.jinglangtech.teamchat.util.Key;
+import com.jinglangtech.teamchat.util.TimeConverterUtil;
+
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 
 public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>  {
@@ -18,8 +28,20 @@ public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>  {
 
     public static int TYPE_OTHERS   = 1;
     public static int TYPE_MINE     = 2;
+
+    private Context mCtx;
+    private String mId;
+    private ChatGroup mGroupInfo;
+
     public ChatRoomMsgAdapter(Context context) {
         super(context);
+        mCtx = context;
+        mId =  ConfigUtil.getInstance(mCtx).get(Key.ID, "");
+    }
+
+
+    public void setGroupInfo(ChatGroup group){
+        mGroupInfo = group;
     }
 
     @Override
@@ -29,7 +51,7 @@ public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>  {
             return TYPE_OTHERS;
         }
         int tempType = TYPE_OTHERS;
-        if  (chatmsg.isMine){
+        if  (!TextUtils.isEmpty(mId) && mId.equals(chatmsg.from)){
             tempType = TYPE_MINE;
         }else{
             tempType = TYPE_OTHERS;
@@ -65,13 +87,12 @@ public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>  {
         TextView tvNickName = cHolder.obtainView(R.id.tv_nickname);
         TextView tvFullName = cHolder.obtainView(R.id.tv_fullname);
 
-        if (info.isMine){
-
-        }else{
-
+        String tempTime = dateToString(info.dTime);
+        if (!TextUtils.isEmpty(tempTime)){
+            String displayTime = TimeConverterUtil.getLastTime(tempTime);
+            tvTime.setText(displayTime);
         }
 
-        tvTime.setText(info.time);
         tvMsg.setText(info.content);
         tvFullName.setText(info.name);
         if(!TextUtils.isEmpty(info.name)){
@@ -90,5 +111,11 @@ public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>  {
         });
     }
 
+    private String dateToString(Date date){
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
+        String str=sdf.format(date);
+        return str;
+    }
 
 }

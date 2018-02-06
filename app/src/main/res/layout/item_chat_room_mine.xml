@@ -8,12 +8,14 @@
     <TextView
         android:id="@+id/tv_time"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="18dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/circle_corner_dark_bg"
         android:text="上午 10:30"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:textSize="10.5sp"
+        android:gravity="center_vertical"/>
 
     <RelativeLayout
         android:id="@+id/make_event_linear"

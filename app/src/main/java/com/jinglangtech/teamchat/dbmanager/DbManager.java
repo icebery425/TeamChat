@@ -1,5 +1,6 @@
 package com.jinglangtech.teamchat.dbmanager;
 
+import com.jinglangtech.teamchat.model.ChatGroup;
 import com.jinglangtech.teamchat.model.ChatMsg;
 
 import java.util.Collection;
@@ -23,8 +24,17 @@ public interface DbManager {
 
 
     //查询聊天数据表－ChatMsg
-    //查询某个聊天室最后一条聊天记录，用于聊天室分组显示
+    //查询每个聊天室最后一条聊天记录，用于聊天室分组显示
     public abstract Object findMaxDateOne(String key, String value);
+
+    //查询某个聊天室未读的聊天记录数量
+    public abstract long findUnread(String key, String value);
+
+    //查询每个聊天室所有聊天数据
+    public abstract List<ChatMsg> findLocalMsgWithRoomId(String msgId);
+
+    //查询某个聊天室的所有成员
+    public abstract ChatGroup findGroupInfoWithRoomId(String groupId);
 
     //编辑(单个)
     public abstract Object modifyOneElement(Object object);
@@ -57,5 +67,5 @@ public interface DbManager {
     //
     public abstract  void insertLocalMsgList(List<ChatMsg> localList);
 
-    public abstract List<ChatMsg> findLocalMsgWithRoomId(String msgId);
+
 }

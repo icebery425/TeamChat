@@ -10,6 +10,7 @@ import io.realm.annotations.PrimaryKey;
  */
 
 public class ChatMsg extends RealmObject {
+
     @PrimaryKey
     public String _id;
 
@@ -21,6 +22,8 @@ public class ChatMsg extends RealmObject {
 
     public String roomid;
     public String name;
+
+    public boolean isread = false;
 
     public boolean isMine;
 }

@@ -2,6 +2,7 @@ package com.jinglangtech.teamchat.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,6 +14,7 @@ import com.jinglangtech.teamchat.R;
 import com.jinglangtech.teamchat.model.ChatGroup;
 import com.jinglangtech.teamchat.util.Constant;
 import com.jinglangtech.teamchat.util.ImgLoadUtil;
+import com.jinglangtech.teamchat.util.TimeConverterUtil;
 
 
 public class ChatGroupListAdapter extends BasicRecylerAdapter<ChatGroup>{
@@ -40,7 +42,11 @@ public class ChatGroupListAdapter extends BasicRecylerAdapter<ChatGroup>{
 
 
         ChatGroup info = mList.get(position);
-        tvTime.setText(info.time);
+        if (!TextUtils.isEmpty(info.time)){
+            String displayTime = TimeConverterUtil.getLastTime(info.time);
+            tvTime.setText(displayTime);
+        }
+
         tvMsg.setText(info.msg);
         tvName.setText(info.name);
 

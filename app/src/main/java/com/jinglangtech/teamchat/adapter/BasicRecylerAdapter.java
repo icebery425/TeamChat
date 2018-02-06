@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jinglangtech.teamchat.model.ChatGroup;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -43,6 +45,7 @@ public abstract class BasicRecylerAdapter<T> extends RecyclerView.Adapter{
 	public void setMyItemOnclickListener(MyItemOnclickListener myItemOnclickListener){
 		this.myItemOnclickListener = myItemOnclickListener;
 	}
+
 	
 	public BasicRecylerAdapter(Context context){
 		this.mContext = context;

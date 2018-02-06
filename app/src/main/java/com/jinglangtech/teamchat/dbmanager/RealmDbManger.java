@@ -66,10 +66,16 @@ public class RealmDbManger implements DbManager {
         return results;
     }
 
-    //根据barcode查询LocalSku
+    //查询每个聊天室所有聊天数据
     @Override
     public List<ChatMsg> findLocalMsgWithRoomId(String roomId) {
         RealmResults<ChatMsg> realmResults = Realm.getDefaultInstance().where(ChatMsg.class).equalTo("roomid", roomId).findAll();
+        return realmResults;
+    }
+
+    //查询某个聊天室的所有成员
+    public ChatGroup findGroupInfoWithRoomId(String groupId){
+        ChatGroup realmResults = Realm.getDefaultInstance().where(ChatGroup.class).equalTo("_id", groupId).findFirst();
         return realmResults;
     }
 
@@ -85,10 +91,23 @@ public class RealmDbManger implements DbManager {
 
     @Override
     public ChatMsg findMaxDateOne(String key, String value){
-        return  Realm.getDefaultInstance().where(ChatMsg.class)
+        RealmResults<ChatMsg> result = Realm.getDefaultInstance().where(ChatMsg.class).equalTo(key, value).findAll();
+        if (result.size() > 0){
+            RealmResults<ChatMsg> msgList = result.sort("dTime", Sort.DESCENDING);//逆序排列
+            return  msgList.first();
+        }
+        return null;
+    }
+
+    //查询某个聊天室未读的聊天记录数量
+    @Override
+    public long findUnread(String key, String value){
+        long ret = -1;
+        ret = Realm.getDefaultInstance().where(ChatMsg.class)
                 .equalTo(key, value)
-                .findAllSorted("dTime", Sort.DESCENDING)
-                .first();
+                .equalTo("isread", false)
+                .count();
+        return ret;
     }
 
     @Override
