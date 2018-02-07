@@ -162,9 +162,9 @@ public class RealmDbManger implements DbManager {
     //单个元素的插入
     @Override
     public void insertOneElement(Object obj) {
-        ChatMsg sku = (ChatMsg) obj;
+        ChatMsg msg = (ChatMsg) obj;
         Realm.getDefaultInstance().beginTransaction();
-        Realm.getDefaultInstance().copyToRealmOrUpdate(sku);
+        Realm.getDefaultInstance().copyToRealmOrUpdate(msg);
         Realm.getDefaultInstance().commitTransaction();
     }
 

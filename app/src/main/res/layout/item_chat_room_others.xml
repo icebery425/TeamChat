@@ -15,6 +15,8 @@
         android:text="上午 10:30"
         android:textColor="@color/white"
         android:textSize="10.5sp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:gravity="center_vertical"/>
 
     <RelativeLayout

@@ -5,6 +5,7 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
 
@@ -22,12 +23,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import io.realm.Realm;
 import io.realm.RealmAsyncTask;
 
+import static android.content.ContentValues.TAG;
+
 public class PushMessageToLocalService extends IntentService {
 
+    public static String TAG = "PushMessageToLocalService";
     public PushMessageToLocalService() {
         super("PushMessageToLocalService");
     }
@@ -55,7 +60,6 @@ public class PushMessageToLocalService extends IntentService {
 
         if (intent != null && intent.getAction().equals(INIT_MSG_DB_ACTION)){
             getDataBaseAllMsgList();
-
         }
 
     }
@@ -104,7 +108,15 @@ public class PushMessageToLocalService extends IntentService {
                 //删除数据
                 //RealmResults<ChatMsg> results = realm.where(ChatMsg.class).findAll();
                 //results.deleteAllFromRealm();
-
+                String myString = "1900-01-01 01:01:01";
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+                Date Maxdate = null;
+                String MaxStrDate = null;
+                try {
+                    Maxdate = sdf.parse(myString);
+                } catch (Exception e) {
+                }
+                int compareValue = 0;
                 //插入数据
                 try {
                     for (ChatMsg localMsg : msglist) {
@@ -117,6 +129,12 @@ public class PushMessageToLocalService extends IntentService {
                         try {
                             date = dateFormat.parse(tempTime);
                             localMsg.dTime = date;
+
+                            compareValue = date.compareTo(Maxdate);
+                            if (compareValue >= 0){
+                                Maxdate = date;
+                                MaxStrDate = localMsg.time;
+                            }
                             //System.out.println(date.toLocaleString().split(" ")[0]);//切割掉不要的时分秒数据
                         } catch (ParseException e) {
                             e.printStackTrace();
@@ -124,6 +142,12 @@ public class PushMessageToLocalService extends IntentService {
 
                         realm.copyToRealmOrUpdate(localMsg);
                     }
+
+                    Log.d(TAG, "MAX DATE: " + MaxStrDate);
+                    if (!TextUtils.isEmpty(MaxStrDate)){
+                        setMsgReadStatus(MaxStrDate);
+                    }
+
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -145,6 +169,23 @@ public class PushMessageToLocalService extends IntentService {
                 Intent intent = new Intent(ChatGroupActivity.MESSAGE_INIT_FINISHED_ACTION);
                 intent.putExtra("result", -1);
                 sendBroadcast(intent);
+            }
+        });
+    }
+
+    private void setMsgReadStatus(String time){
+        CommonModel.getInstance().readMessage(time, new BaseListener(String.class){
+
+            @Override
+            public void responseResult(Object infoObj, Object listObj, int code, boolean status) {
+                super.responseResult(infoObj, listObj, code, status);
+                Log.d(TAG,"readMessage SUCCEED");
+            }
+
+            @Override
+            public void requestFailed(boolean status, int code, String errorMessage) {
+                super.requestFailed(status, code, errorMessage);
+                Log.d(TAG,"readMessage FAILED");
             }
         });
     }

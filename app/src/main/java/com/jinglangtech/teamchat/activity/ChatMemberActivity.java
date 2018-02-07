@@ -16,12 +16,15 @@ import com.jinglangtech.teamchat.R;
 import com.jinglangtech.teamchat.adapter.BasicRecylerAdapter;
 import com.jinglangtech.teamchat.adapter.ChatMemberListAdapter;
 import com.jinglangtech.teamchat.adapter.ChatRoomMsgAdapter;
+import com.jinglangtech.teamchat.dbmanager.DBFactory;
 import com.jinglangtech.teamchat.listener.BaseListener;
+import com.jinglangtech.teamchat.model.ChatGroup;
 import com.jinglangtech.teamchat.model.ChatMsg;
 import com.jinglangtech.teamchat.model.ChatUser;
 import com.jinglangtech.teamchat.model.PageInfo;
 import com.jinglangtech.teamchat.network.CommonModel;
 import com.jinglangtech.teamchat.util.Constant;
+import com.jinglangtech.teamchat.util.Key;
 import com.jinglangtech.teamchat.util.ToastUtil;
 import com.jinglangtech.teamchat.util.ToastUtils;
 
@@ -41,10 +44,14 @@ public class ChatMemberActivity extends BaseActivity implements LRecyclerView.LS
 
     ChatMemberListAdapter mChatUserAdapter;
     LRecyclerViewAdapter mLRecyclerViewAdapter;
+    ChatGroup mGroupInfo;
+    String mRoomId;
+    List<ChatUser> mUserList = new ArrayList<>();
 
     private int mPageSize = 15;
     private int mPageIndex = 1;
     private int mPageCount = 0;
+
 
     @Override
     public int getLayoutResourceId() {
@@ -53,7 +60,7 @@ public class ChatMemberActivity extends BaseActivity implements LRecyclerView.LS
 
     @Override
     public void initVariables() {
-
+        mRoomId = this.getIntent().getStringExtra(Key.ID);
     }
 
     @Override
@@ -95,7 +102,14 @@ public class ChatMemberActivity extends BaseActivity implements LRecyclerView.LS
 
     @Override
     public void loadData() {
-        test();
+        getGroupInfo();
+    }
+
+    private void getGroupInfo(){
+        mGroupInfo =  DBFactory.getDBInstance().findGroupInfoWithRoomId(mRoomId);
+        mUserList = mGroupInfo.group;
+        mChatUserAdapter.setDataList(mUserList);
+        mRv.refreshComplete();
     }
 
     public void test(){

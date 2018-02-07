@@ -62,9 +62,14 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
     private int mPageIndex = 1;
     private int mPageCount = 0;
     private List<ChatGroup> mRoomList = new ArrayList<ChatGroup>();
+    private boolean mIsJpushCustomMsg = false;
 
     public final static String MESSAGE_INIT_FINISHED_ACTION = "msgInitFinished";
     public final static String GROUP_INIT_FINISHED_ACTION = "groupInitFinished";
+    public final static String RECEIVE_MSG_NOTIFY_ACTION = "receiveMsgNotify";
+    public final static String RECEIVE_MSG_CUSTOM_ACTION = "receiveMsgCustom";
+
+    public final static String REFRESH_ROOM_MSG_ACTION = "refreshRoomMsg";
 
 
 
@@ -79,22 +84,26 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
                 if (result == -1){
                     ToastUtils.showToast(ChatGroupActivity.this, "获取聊天数据出错");
                 }else{
+                    sendNotifyToRefreshChatRoom();
                     getRoomLastMsg();
                 }
             }else if (actionStr.equals(GROUP_INIT_FINISHED_ACTION)){
                 if (result == -1){
                     ToastUtils.showToast(ChatGroupActivity.this, "获取群组数据出错");
                 }else {
-                    ThreadUtil.runAtBg(new Runnable() {
-                        @Override
-                        public void run() {
-                            PushMessageToLocalService.startToInitSkuDbIntent(ChatGroupActivity.this);// 启动IntentService
-                        }
-                    });
+                    PushMessageToLocalService.startToInitSkuDbIntent(ChatGroupActivity.this);// 启动IntentService
                 }
+            }else if (actionStr.equals(RECEIVE_MSG_CUSTOM_ACTION)){
+                mIsJpushCustomMsg = true;
+                PushMessageToLocalService.startToInitSkuDbIntent(ChatGroupActivity.this);// 启动IntentService
             }
 
         }
+    }
+
+    private void sendNotifyToRefreshChatRoom(){
+        Intent intent = new Intent(REFRESH_ROOM_MSG_ACTION);
+        this.sendBroadcast(intent);
     }
 
     private void getRoomLastMsg(){
@@ -339,6 +348,7 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
                     for (ChatGroup localGroup : msglist) {
                         realm.copyToRealmOrUpdate(localGroup);
                     }
+
                 }catch (Exception e){
                     e.printStackTrace();
                 }

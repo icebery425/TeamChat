@@ -1,6 +1,9 @@
 package com.jinglangtech.teamchat.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
@@ -31,6 +34,7 @@ import com.jinglangtech.teamchat.model.ChatUser;
 import com.jinglangtech.teamchat.model.GroupList;
 import com.jinglangtech.teamchat.model.PageInfo;
 import com.jinglangtech.teamchat.network.CommonModel;
+import com.jinglangtech.teamchat.service.PushMessageToLocalService;
 import com.jinglangtech.teamchat.util.ConfigUtil;
 import com.jinglangtech.teamchat.util.Constant;
 import com.jinglangtech.teamchat.util.Key;
@@ -44,6 +48,7 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import io.realm.Realm;
 import io.realm.RealmList;
 
 public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScrollListener, TextView.OnEditorActionListener{
@@ -74,6 +79,20 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
     private int mPageIndex = 1;
     private int mPageCount = 0;
 
+    private RefreshMsgReceiver mReceiver;
+
+    private class RefreshMsgReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String actionStr = intent.getAction();
+            if (actionStr.equals(ChatGroupActivity.REFRESH_ROOM_MSG_ACTION)){
+                getGroupInfo();
+                getLocalMessage();
+            }
+
+        }
+    }
+
     @Override
     public int getLayoutResourceId() {
         return R.layout.activity_chat_room;
@@ -84,6 +103,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         mRoomId = this.getIntent().getStringExtra(Key.ID);
         mRoomName = this.getIntent().getStringExtra(Key.ROOM_NAME);
         mId = ConfigUtil.getInstance(this).get(Key.ID, "");
+
     }
 
     @Override
@@ -121,7 +141,8 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                //intent.putExtra(Key.BEAN, eventBean);
+                intent.putExtra(Key.ID, mRoomId);
+
                 intent.setClass(ChatRoomActivity.this, ChatMemberActivity.class);
                 startActivityForResult(intent, 1);
             }
@@ -140,6 +161,17 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         //test();
         getGroupInfo();
         getLocalMessage();
+
+        mReceiver = new RefreshMsgReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ChatGroupActivity.REFRESH_ROOM_MSG_ACTION);
+        this.registerReceiver(mReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.unregisterReceiver(mReceiver);
     }
 
     @Override
@@ -188,11 +220,12 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
                 msg1.time = TimeConverterUtil.getCurrentUTCTime();
                 msg1.dTime= new Date();
                 msg1.isMine = true;
+                msg1.isread = true;
                 msg1.from = ConfigUtil.getInstance(ChatRoomActivity.this).get(Key.ID, "");
                 mChatMsgList.add(msg1);
                 mChatRoomAdapter.setDataList(mChatMsgList);
                 MoveToPosition(mChatMsgList.size()-1);
-
+                RealmDbManger.getRealmInstance().insertOneElement(msg1);
             }
 
             @Override
@@ -209,12 +242,15 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
 
     private void getLocalMessage(){
         List<ChatMsg> msgList =  DBFactory.getDBInstance().findLocalMsgWithRoomId(mRoomId);
-//        if (msgList != null && msgList.size() > 0){
-//            for (ChatMsg cmsg: msgList){
-//                if (cmsg.from)
-//            }
-//        }
 
+        //
+        Realm.getDefaultInstance().beginTransaction();
+        if (msgList != null && msgList.size() > 0){
+            for (ChatMsg cmsg: msgList){
+                cmsg.isread = true;
+            }
+        }
+        Realm.getDefaultInstance().commitTransaction();
 
 
         mChatMsgList.clear();
@@ -321,54 +357,4 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
 
     }
 
-    private void getEventList(final int pageIndex){
-        CommonModel.getInstance().getMessage(new BaseListener(ChatMsg.class){
-
-            @Override
-            public void responseListResult(Object infoObj, Object listObj, PageInfo pageInfo, int code, boolean status) {
-
-                List<ChatMsg> tempList = (List<ChatMsg>) listObj;
-
-                if (pageInfo != null){
-                    mPageIndex = pageInfo.index;
-                    mPageCount = pageInfo.count;
-                    mPageSize = pageInfo.size;
-                }
-
-                if (tempList != null && tempList.size() > 0){
-                    if (mPageIndex == 1){
-                        mChatRoomAdapter.setDataList(tempList);
-                        mRv.refreshComplete();
-                    }else {
-                        mChatRoomAdapter.insertList(tempList);
-
-                        if (mPageIndex == mPageCount){
-                            RecyclerViewStateUtils.setFooterViewState(mRv, LoadingFooter.State.TheEnd);
-                        }else{
-                            RecyclerViewStateUtils.setFooterViewState(mRv, LoadingFooter.State.Normal);
-                        }
-
-                    }
-                }else{
-                    mRv.refreshComplete();
-                }
-
-                if (mChatRoomAdapter.mList.size() > 0){
-                    if (mEmptyRealtive.getVisibility() == View.VISIBLE){
-                        mEmptyRealtive.setVisibility(View.GONE);
-                    }
-                }else{
-                    if (mEmptyRealtive.getVisibility() == View.GONE){
-                        mEmptyRealtive.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-
-            @Override
-            public void requestFailed(boolean status, int code, String errorMessage) {
-                ToastUtils.showToast(ChatRoomActivity.this,errorMessage == null ? Constant.REQUEST_FAILED_STR:errorMessage);
-                mRv.refreshComplete();
-            }
-        });
-    }
 }

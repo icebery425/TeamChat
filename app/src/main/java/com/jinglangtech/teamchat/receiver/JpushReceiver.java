@@ -42,8 +42,10 @@ public class JpushReceiver extends BroadcastReceiver {
             //send the Registration Id to your server...
 
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
-            Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
-            //processCustomMessage(context, bundle);
+            String extraMsg = bundle.getString(JPushInterface.EXTRA_MESSAGE);
+            String extraExtra = bundle.getString(JPushInterface.EXTRA_EXTRA);
+            Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + extraMsg);
+            processExtra(context, extraExtra);
 
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
@@ -53,7 +55,7 @@ public class JpushReceiver extends BroadcastReceiver {
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
 
-            processNotify(context, bundle);
+            //processNotify(context, bundle);
 
         } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
@@ -103,16 +105,13 @@ public class JpushReceiver extends BroadcastReceiver {
     }
 
 
-    private void processNotify(Context ctx, Bundle bundle){
-        String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
-        String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
+    private void processExtra(Context ctx, String extraMsg){
         PushData dateInfo = null;
-        if (!TextUtils.isEmpty(extras)) {
+        if (!TextUtils.isEmpty(extraMsg)) {
             try {
-                dateInfo = JSON.parseObject(extras, PushData.class);
-                if (null != dateInfo) {
-                    dateInfo.parseExtContent();
-                    parseExtraData(dateInfo);
+                dateInfo = JSON.parseObject(extraMsg, PushData.class);
+                if (dateInfo != null){
+                    //TODO
                 }
             } catch (Exception e) {
 
@@ -122,47 +121,5 @@ public class JpushReceiver extends BroadcastReceiver {
 
     }
 
-    private void parseExtraData(PushData info){
-        if (info.type.equals(PushData.TYPE_MSG))
-        {
-            //仅仅在状态栏显示
-        }
-        else if (info.type.equals(PushData.TYPE_WEB))
-        {
-            //打开网页
-            processWeb(info);
-        }
-        else if (info.type.equals(PushData.TYPE_EVENT))
-        {
-            //事件处理
-            processEvent(info);
-        }
-    }
-
-    private void processWeb(PushData detail)
-    {
-        if (detail.extValue != null)
-        {
-//            Intent i = new Intent(mCtx, WebViewActivity.class);
-//            i.putExtra("type", 3);
-//            i.putExtra("weburl", detail.extValue.webUrl);
-//            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
-//            mCtx.startActivity(i);
-        }
-    }
-
-    private void processEvent(PushData detail)
-    {
-        if (detail.extValue != null)
-        {
-            switch (detail.extValue.subType) {
-                case PushData.TARGET_NOTIFICATION:
-                    //openQuestionairDetail(detail.extValue.value);
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
 
 }
