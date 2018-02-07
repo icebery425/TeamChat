@@ -41,6 +41,7 @@ import com.jinglangtech.teamchat.util.Key;
 import com.jinglangtech.teamchat.util.TimeConverterUtil;
 import com.jinglangtech.teamchat.util.ToastUtil;
 import com.jinglangtech.teamchat.util.ToastUtils;
+import com.jinglangtech.teamchat.util.UuidUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -221,6 +222,8 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
                 msg1.dTime= new Date();
                 msg1.isMine = true;
                 msg1.isread = true;
+                msg1._id =  UuidUtil.get24UUID();
+                msg1.roomid = mRoomId;
                 msg1.from = ConfigUtil.getInstance(ChatRoomActivity.this).get(Key.ID, "");
                 mChatMsgList.add(msg1);
                 mChatRoomAdapter.setDataList(mChatMsgList);

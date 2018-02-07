@@ -19,6 +19,7 @@ import com.jinglangtech.teamchat.util.Constant;
 import com.jinglangtech.teamchat.util.Key;
 import com.jinglangtech.teamchat.util.ToastUtil;
 import com.jinglangtech.teamchat.util.ToastUtils;
+import com.jinglangtech.teamchat.util.UuidUtil;
 
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
@@ -83,7 +84,8 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void loadData() {
-
+        //
+        //String uuid2 = UuidUtil.get24UUID();
     }
 
     private void userLogin(){

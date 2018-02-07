@@ -1,5 +1,6 @@
 package com.jinglangtech.teamchat.activity;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -11,8 +12,10 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jinglangtech.teamchat.R;
+import com.jinglangtech.teamchat.dbmanager.RealmDbManger;
 import com.jinglangtech.teamchat.util.ConfigUtil;
 import com.jinglangtech.teamchat.util.DisPlayUtil;
 import com.jinglangtech.teamchat.util.Key;
@@ -119,7 +122,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void clearCacher(){
-
+        confirmClearDialog();
     }
 
     private void setNoticeOpen(){
@@ -164,5 +167,27 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         photoSelector.show();
         photoSelector.setCanceledOnTouchOutside(true);
 
+    }
+
+    private void confirmClearDialog(){
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("清除消息缓存")//设置对话框的标题
+                .setMessage("你确定要清除所有消息缓存吗？")//设置对话框的内容
+                //设置对话框的按钮
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        RealmDbManger.getRealmInstance().deleteAll();
+                        Toast.makeText(SettingActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                    }
+                }).create();
+        dialog.show();
     }
 }
