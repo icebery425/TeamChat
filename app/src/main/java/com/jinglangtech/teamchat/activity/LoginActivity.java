@@ -2,10 +2,12 @@ package com.jinglangtech.teamchat.activity;
 
 import android.content.Intent;
 import android.os.Build;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.jinglangtech.teamchat.R;
 import com.jinglangtech.teamchat.listener.BaseListener;
@@ -29,11 +31,14 @@ public class LoginActivity extends BaseActivity {
     EditText mEtPwd;
     @BindView(R.id.btn_login)
     Button mBtnLogin;
+    @BindView(R.id.iv_lock)
+    ImageView mIvOpen;
 
     private String mId;
     private String mName;
     private String mPwd;
     private String mAccount;
+    private boolean mPwdOpen = false;
 
     @Override
     public int getLayoutResourceId() {
@@ -60,6 +65,20 @@ public class LoginActivity extends BaseActivity {
     public void initViews() {
         String userAccount = ConfigUtil.getInstance(this).get(Key.USER_ACCOUNT, "");
         mEtName.setText(userAccount);
+        mIvOpen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mPwdOpen){
+                    mPwdOpen = false;
+                    mEtPwd.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    mIvOpen.setImageResource(R.mipmap.logologin_key_look);
+                }else{
+                    mPwdOpen = true;
+                    mEtPwd.setInputType(InputType.TYPE_CLASS_TEXT);
+                    mIvOpen.setImageResource(R.mipmap.logologin_key_unlook);
+                }
+            }
+        });
     }
 
     @Override
