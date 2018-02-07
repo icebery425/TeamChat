@@ -185,8 +185,10 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
                 String name = ConfigUtil.getInstance(ChatRoomActivity.this).get(Key.USER_NAME, "");
                 msg1.name = name;
                 msg1.content = mCurrentMsg;
-                msg1.time = TimeConverterUtil.getCurrentTime();
+                msg1.time = TimeConverterUtil.getCurrentUTCTime();
+                msg1.dTime= new Date();
                 msg1.isMine = true;
+                msg1.from = ConfigUtil.getInstance(ChatRoomActivity.this).get(Key.ID, "");
                 mChatMsgList.add(msg1);
                 mChatRoomAdapter.setDataList(mChatMsgList);
                 MoveToPosition(mChatMsgList.size()-1);

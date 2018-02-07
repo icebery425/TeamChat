@@ -158,6 +158,13 @@ public class TimeConverterUtil {
         return str;
     }
 
+    public static String getCurrentUTCTime(){
+        SimpleDateFormat formatter   =   new   SimpleDateFormat   ("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        Date curDate =  new Date(System.currentTimeMillis());
+        String   str   =   formatter.format(curDate);
+        return str;
+    }
+
     public static String getTodayTime(Date d1){
         final Calendar mCalendar = Calendar.getInstance();
         mCalendar.setTime(d1);
