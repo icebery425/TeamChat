@@ -19,6 +19,7 @@ import com.jinglangtech.teamchat.util.ToastUtil;
 import com.jinglangtech.teamchat.util.ToastUtils;
 
 import butterknife.BindView;
+import cn.jpush.android.api.JPushInterface;
 
 public class LoginActivity extends BaseActivity {
 
@@ -94,7 +95,9 @@ public class LoginActivity extends BaseActivity {
                     mAccount = user.account;
                     mName = user.name;
                     mId = user._id;
+
                     saveSp();
+                    setJPushAlias();
                     startChatPage();
                 }
 
@@ -106,6 +109,10 @@ public class LoginActivity extends BaseActivity {
                 ToastUtils.showToast(LoginActivity.this,"登录失败" + (TextUtils.isEmpty(errorMessage)?"":errorMessage));
             }
         });
+    }
+
+    private void setJPushAlias(){
+        JPushInterface.setAlias(this, 888, mId);
     }
 
     public void saveSp(){

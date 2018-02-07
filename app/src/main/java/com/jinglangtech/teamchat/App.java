@@ -6,6 +6,7 @@ import com.jinglangtech.teamchat.dbmanager.DbMigration;
 import com.jinglangtech.teamchat.network.RetrofitUtil;
 import com.jinglangtech.teamchat.util.ToastUtil;
 
+import cn.jpush.android.api.JPushInterface;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -23,8 +24,9 @@ public class App extends MultiDexApplication{
         ToastUtil.setContext(this);
 
 
-        //JPushInterface.setDebugMode(true);
-        //JPushInterface.init(this);
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
+
         //mJPushRegId =JPushInterface.getRegistrationID(this);
         initRealm();
 
