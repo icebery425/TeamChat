@@ -69,7 +69,9 @@ public class RealmDbManger implements DbManager {
     //查询每个聊天室所有聊天数据
     @Override
     public List<ChatMsg> findLocalMsgWithRoomId(String roomId) {
-        RealmResults<ChatMsg> realmResults = Realm.getDefaultInstance().where(ChatMsg.class).equalTo("roomid", roomId).findAll();
+        RealmResults<ChatMsg> realmResults = Realm.getDefaultInstance().where(ChatMsg.class)
+                .equalTo("roomid", roomId)
+                .findAllSorted("dTime");
         return realmResults;
     }
 

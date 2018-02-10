@@ -126,6 +126,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(this, mChatRoomAdapter);
         mRv.setAdapter(mLRecyclerViewAdapter);
         mRv.setLScrollListener(this);
+        mRv.setPullRefreshEnabled(false);
         //mRv.setRefreshing(true);
         mChatRoomAdapter.setGroupInfo(mGroupInfo);
         mChatRoomAdapter.setMyItemOnclickListener(new BasicRecylerAdapter.MyItemOnclickListener() {
@@ -229,6 +230,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
                 mChatRoomAdapter.setDataList(mChatMsgList);
                 MoveToPosition(mChatMsgList.size()-1);
                 RealmDbManger.getRealmInstance().insertOneElement(msg1);
+                updateGroupInfoBrodcast();
             }
 
             @Override
@@ -237,6 +239,12 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
                 ToastUtils.showToast(ChatRoomActivity.this,"发送消息失败");
             }
         });
+    }
+
+    private void updateGroupInfoBrodcast(){
+        Intent intent = new Intent(Constant.BROADCAST_UPDATE_GROUP_INFO);
+        intent.putExtra("roomId", mRoomId);
+        this.sendBroadcast(intent);
     }
 
     private void getGroupInfo(){
@@ -261,6 +269,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         //mChatMsgList.addAll(msgList);
         setFullName();
         mChatRoomAdapter.setDataList(mChatMsgList);
+        MoveToPosition(mChatMsgList.size()-1);
         mRv.refreshComplete();
     }
 

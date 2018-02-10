@@ -8,6 +8,7 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -96,6 +97,9 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
             }else if (actionStr.equals(RECEIVE_MSG_CUSTOM_ACTION)){
                 mIsJpushCustomMsg = true;
                 PushMessageToLocalService.startToInitSkuDbIntent(ChatGroupActivity.this);// 启动IntentService
+            }else if (actionStr.equals(Constant.BROADCAST_UPDATE_GROUP_INFO)){
+                String roomId = intent.getStringExtra("roomId");
+                getOneRoomLastMsg(roomId);
             }
 
         }
@@ -132,6 +136,41 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
                 mGroupAdapter.setDataList(mRoomList);
             }
         });
+
+    }
+
+    private void getOneRoomLastMsg(String roomId){
+        ChatMsg maxOne;
+        long unRead = 0;
+        if (TextUtils.isEmpty(roomId)){
+            Log.d("", "roomId为空");
+            return;
+        }
+        int index = 0;
+        if (mRoomList != null && mRoomList.size() > 0){
+            for (ChatGroup group: mRoomList){
+                if (group._id.equals(roomId)){
+                    maxOne = (ChatMsg) DBFactory.getDBInstance().findMaxDateOne("roomid", group._id);
+                    if (maxOne != null){
+                        Log.e("getRoomLastMsg", "#### TIME:" + maxOne.dTime.toString());
+                        Log.e("getRoomLastMsg", "#### CONTENT:" + maxOne.content);
+                        String tempTime = dateToString(maxOne.dTime);
+                        String from = maxOne.from.toString();
+                        String content = maxOne.content.toString();
+                        group.msg = content;
+                        group.time= tempTime;
+                    }
+                    //unRead = DBFactory.getDBInstance().findUnread("roomid", group._id);
+                    //group.unread = unRead;
+                    Log.e("getRoomLastMsg", "#### update room index:" + index + ", update room  name: " + group.name);
+
+                    mGroupAdapter.update(index);
+                    index++;
+                    break;
+                }
+
+            }
+        }
 
     }
 
@@ -203,6 +242,8 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(MESSAGE_INIT_FINISHED_ACTION);
         intentFilter.addAction(GROUP_INIT_FINISHED_ACTION);
+        intentFilter.addAction(RECEIVE_MSG_CUSTOM_ACTION);
+        intentFilter.addAction(Constant.BROADCAST_UPDATE_GROUP_INFO);
         this.registerReceiver(mReceiver, intentFilter);
 
         getRoomList(mPageIndex);

@@ -180,8 +180,8 @@ public class TimeConverterUtil {
         }
 
         SimpleDateFormat formatter   =   new   SimpleDateFormat   ("HH:mm");
-        Date curDate =  new Date(System.currentTimeMillis());
-        String   str   =   formatter.format(curDate);
+        //Date curDate =  new Date(System.currentTimeMillis());
+        String   str   =   formatter.format(d1);
         result=result + str;
         return result;
     }

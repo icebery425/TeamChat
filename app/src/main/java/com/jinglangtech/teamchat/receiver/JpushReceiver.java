@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
+import com.jinglangtech.teamchat.activity.ChatGroupActivity;
 import com.jinglangtech.teamchat.model.PushData;
 
 
@@ -112,6 +113,8 @@ public class JpushReceiver extends BroadcastReceiver {
                 dateInfo = JSON.parseObject(extraMsg, PushData.class);
                 if (dateInfo != null){
                     //TODO
+                    Intent intent = new Intent(ChatGroupActivity.RECEIVE_MSG_CUSTOM_ACTION);
+                    ctx.sendBroadcast(intent);
                 }
             } catch (Exception e) {
 
@@ -120,6 +123,7 @@ public class JpushReceiver extends BroadcastReceiver {
         }
 
     }
+
 
 
 }
