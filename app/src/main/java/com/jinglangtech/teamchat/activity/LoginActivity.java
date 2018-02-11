@@ -1,7 +1,11 @@
 package com.jinglangtech.teamchat.activity;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.support.v4.app.NotificationCompat;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
@@ -86,6 +90,7 @@ public class LoginActivity extends BaseActivity {
     public void loadData() {
         //
         //String uuid2 = UuidUtil.get24UUID();
+        //sendNotify();
     }
 
     private void userLogin(){
@@ -149,6 +154,20 @@ public class LoginActivity extends BaseActivity {
         intent.setClass(LoginActivity.this, ChatGroupActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private void sendNotify(){
+        int notifyId = -1;
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("TeamChat")
+                .setContentText("收到一条新消息")
+                .setOnlyAlertOnce(true)
+                .setDefaults(Notification.DEFAULT_SOUND);
+
+        NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(notifyId, builder.build());
+
     }
 
 
