@@ -29,6 +29,8 @@ public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>  {
     public static int TYPE_OTHERS   = 1;
     public static int TYPE_MINE     = 2;
 
+    private final static long MinuteIntervel = 5* 60 * 1000;// 如果两条聊天记录之间的间距相差5分钟，则显示后一条的聊天记录
+
     private Context mCtx;
     private String mId;
     private ChatGroup mGroupInfo;
@@ -87,6 +89,17 @@ public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>  {
         TextView tvNickName = cHolder.obtainView(R.id.tv_nickname);
         TextView tvFullName = cHolder.obtainView(R.id.tv_fullname);
 
+        if (position == 0){
+            tvTime.setVisibility(View.VISIBLE);
+        }else{
+            ChatMsg preMsg = mList.get(position-1);
+            long timeStamp = info.dTime.getTime()-preMsg.dTime.getTime();
+            if (timeStamp > MinuteIntervel){
+                tvTime.setVisibility(View.VISIBLE);
+            }else{
+                tvTime.setVisibility(View.GONE);
+            }
+        }
         String tempTime = dateToString(info.dTime);
         if (!TextUtils.isEmpty(tempTime)){
             String displayTime = TimeConverterUtil.getLastTime(tempTime);
