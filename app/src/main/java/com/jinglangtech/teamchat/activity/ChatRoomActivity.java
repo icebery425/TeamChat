@@ -108,6 +108,21 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
     }
 
     @Override
+    public void finishActivity(View v) {
+        updateGroupInfoBrodcast();
+        super.finishActivity(v);
+
+    }
+
+    // 捕获返回键的方法2
+    @Override
+    public void onBackPressed() {
+        Log.d("", "onBackPressed()");
+        updateGroupInfoBrodcast();
+        super.onBackPressed();
+    }
+
+    @Override
     public void initStatusColor(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.title_bg));

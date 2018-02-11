@@ -90,7 +90,8 @@ public class TimeConverterUtil {
         }
 
         SimpleDateFormat utcFormater = new SimpleDateFormat(utcTimePattern);
-        utcFormater.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+        //utcFormater.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+        utcFormater.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date gpsUtcDate = null;
         try {
             gpsUtcDate = utcFormater.parse(utcTime);
@@ -160,6 +161,7 @@ public class TimeConverterUtil {
 
     public static String getCurrentUTCTime(){
         SimpleDateFormat formatter   =   new   SimpleDateFormat   ("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        formatter.setTimeZone(TimeZone.getTimeZone("gmt"));
         Date curDate =  new Date(System.currentTimeMillis());
         String   str   =   formatter.format(curDate);
         return str;

@@ -160,8 +160,8 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
                         group.msg = content;
                         group.time= tempTime;
                     }
-                    //unRead = DBFactory.getDBInstance().findUnread("roomid", group._id);
-                    //group.unread = unRead;
+                    unRead = DBFactory.getDBInstance().findUnread("roomid", group._id);
+                    group.unread = unRead;
                     Log.e("getRoomLastMsg", "#### update room index:" + index + ", update room  name: " + group.name);
 
                     mGroupAdapter.update(index);
