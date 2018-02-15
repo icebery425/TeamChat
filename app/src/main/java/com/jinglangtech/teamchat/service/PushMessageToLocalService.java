@@ -41,10 +41,11 @@ public class PushMessageToLocalService extends IntentService {
 
     private final static String INIT_MSG_DB_ACTION = "init_msg_db";
 
-    public static void  startToInitSkuDbIntent(Context context){
+    public static void  startToInitSkuDbIntent(Context context, String roomId){
 
         Intent intent = new Intent(context,PushMessageToLocalService.class);
         intent.setAction(INIT_MSG_DB_ACTION);
+        intent.putExtra("jpushRoomId", roomId);
         context.startService(intent);
     }
 
@@ -59,12 +60,13 @@ public class PushMessageToLocalService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
 
         if (intent != null && intent.getAction().equals(INIT_MSG_DB_ACTION)){
-            getDataBaseAllMsgList();
+            String jpushRoomId = intent.getStringExtra("jpushRoomId");
+            getDataBaseAllMsgList(jpushRoomId);
         }
 
     }
 
-    private void getDataBaseAllMsgList(){
+    private void getDataBaseAllMsgList(final String roomId){
 
         CommonModel.getInstance().getMessage(new BaseListener(ChatMsgWraper.class) {
             public void responseResult(Object infoObj, Object listObj, int code, boolean status) {
@@ -73,16 +75,18 @@ public class PushMessageToLocalService extends IntentService {
                 if (msgWraper == null){
                     Intent intent = new Intent(ChatGroupActivity.MESSAGE_INIT_FINISHED_ACTION);
                     intent.putExtra("result", 1);
+                    intent.putExtra("jpushRoomId", roomId);
                     sendBroadcast(intent);
                     return;
                 }
                 ArrayList<ChatMsg> tempList = (ArrayList<ChatMsg>) msgWraper.msglist;
 
                 if (tempList != null && tempList.size() > 0){
-                    initLocalDataBaseData(tempList);
+                    initLocalDataBaseData(tempList, roomId);
                 } else {
                     Intent intent = new Intent(ChatGroupActivity.MESSAGE_INIT_FINISHED_ACTION);
                     intent.putExtra("result", 1);
+                    intent.putExtra("jpushRoomId", roomId);
                     sendBroadcast(intent);
                     //ToastUtils.showToast( "没有数据");
                 }
@@ -99,7 +103,7 @@ public class PushMessageToLocalService extends IntentService {
         });
     }
 
-    public void initLocalDataBaseData(final List<ChatMsg> msglist){
+    public void initLocalDataBaseData(final List<ChatMsg> msglist, final String roomId){
 
         realmAsyncTask =  Realm.getDefaultInstance().executeTransactionAsync(new Realm.Transaction() {
             @Override
@@ -159,6 +163,7 @@ public class PushMessageToLocalService extends IntentService {
                 //sendBroadcast(new Intent(ChatGroupActivity.MESSAGE_INIT_FINISHED_ACTION));
                 Intent intent = new Intent(ChatGroupActivity.MESSAGE_INIT_FINISHED_ACTION);
                 intent.putExtra("result", 0);
+                intent.putExtra("jpushRoomId", roomId);
                 sendBroadcast(intent);
                 //ToastUtils.showToast("获取聊天数据成功");
             }

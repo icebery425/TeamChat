@@ -119,6 +119,7 @@ public class JpushReceiver extends BroadcastReceiver {
                 if (dateInfo != null){
                     //TODO
                     Intent intent = new Intent(ChatGroupActivity.RECEIVE_MSG_CUSTOM_ACTION);
+                    intent.putExtra("jpushRoomId", dateInfo.roomid);
                     ctx.sendBroadcast(intent);
                 }
             } catch (Exception e) {

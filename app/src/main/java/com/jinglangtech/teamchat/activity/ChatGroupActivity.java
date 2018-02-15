@@ -63,12 +63,12 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
     private int mPageIndex = 1;
     private int mPageCount = 0;
     private List<ChatGroup> mRoomList = new ArrayList<ChatGroup>();
-    private boolean mIsJpushCustomMsg = false;
 
     public final static String MESSAGE_INIT_FINISHED_ACTION = "msgInitFinished";
     public final static String GROUP_INIT_FINISHED_ACTION = "groupInitFinished";
     public final static String RECEIVE_MSG_NOTIFY_ACTION = "receiveMsgNotify";
     public final static String RECEIVE_MSG_CUSTOM_ACTION = "receiveMsgCustom";
+    public final static String CLEAR_MSG_ACTION = "clearMsg";
 
     public final static String REFRESH_ROOM_MSG_ACTION = "refreshRoomMsg";
 
@@ -82,31 +82,35 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
             hideLoading();
             String actionStr = intent.getAction();
             if (actionStr.equals(MESSAGE_INIT_FINISHED_ACTION)){
+                String jpushRoomId = intent.getStringExtra("jpushRoomId");
                 if (result == -1){
                     ToastUtils.showToast(ChatGroupActivity.this, "获取聊天数据出错");
                 }else{
-                    sendNotifyToRefreshChatRoom();
+                    sendNotifyToRefreshChatRoom(jpushRoomId);
                     getRoomLastMsg();
                 }
             }else if (actionStr.equals(GROUP_INIT_FINISHED_ACTION)){
                 if (result == -1){
                     ToastUtils.showToast(ChatGroupActivity.this, "获取群组数据出错");
                 }else {
-                    PushMessageToLocalService.startToInitSkuDbIntent(ChatGroupActivity.this);// 启动IntentService
+                    PushMessageToLocalService.startToInitSkuDbIntent(ChatGroupActivity.this, "");// 启动IntentService
                 }
             }else if (actionStr.equals(RECEIVE_MSG_CUSTOM_ACTION)){
-                mIsJpushCustomMsg = true;
-                PushMessageToLocalService.startToInitSkuDbIntent(ChatGroupActivity.this);// 启动IntentService
+                String tempRoomId2= intent.getStringExtra("jpushRoomId");
+                PushMessageToLocalService.startToInitSkuDbIntent(ChatGroupActivity.this,tempRoomId2);// 启动IntentService
             }else if (actionStr.equals(Constant.BROADCAST_UPDATE_GROUP_INFO)){
                 String roomId = intent.getStringExtra("roomId");
                 getOneRoomLastMsg(roomId);
+            }else if (actionStr.equals(CLEAR_MSG_ACTION)){
+                refreshRoomList();
             }
 
         }
     }
 
-    private void sendNotifyToRefreshChatRoom(){
+    private void sendNotifyToRefreshChatRoom(String roomId){
         Intent intent = new Intent(REFRESH_ROOM_MSG_ACTION);
+        intent.putExtra("jpushRoomId", roomId);
         this.sendBroadcast(intent);
     }
 
@@ -165,10 +169,10 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
                     Log.e("getRoomLastMsg", "#### update room index:" + index + ", update room  name: " + group.name);
 
                     mGroupAdapter.update(index);
-                    index++;
+
                     break;
                 }
-
+                index++;
             }
         }
 
@@ -244,6 +248,7 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
         intentFilter.addAction(GROUP_INIT_FINISHED_ACTION);
         intentFilter.addAction(RECEIVE_MSG_CUSTOM_ACTION);
         intentFilter.addAction(Constant.BROADCAST_UPDATE_GROUP_INFO);
+        intentFilter.addAction(CLEAR_MSG_ACTION);
         this.registerReceiver(mReceiver, intentFilter);
 
         getRoomList(mPageIndex);
@@ -296,6 +301,21 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
     public void onScrolled(int distanceX, int distanceY) {
 
     }
+
+    private void refreshRoomList(){
+        long unRead = 0;
+        if (mRoomList != null && mRoomList.size() > 0){
+            for (ChatGroup group: mRoomList){
+                group.msg = "";
+                group.time= "";
+                group.unread = 0;
+            }
+        }
+
+        mGroupAdapter.setDataList(mRoomList);
+
+    }
+
 
     private void getRoomList(final int pageIndex){
         //disLoading();

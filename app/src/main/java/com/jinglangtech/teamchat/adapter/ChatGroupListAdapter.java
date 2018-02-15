@@ -45,6 +45,8 @@ public class ChatGroupListAdapter extends BasicRecylerAdapter<ChatGroup>{
         if (!TextUtils.isEmpty(info.time)){
             String displayTime = TimeConverterUtil.getLastTime(info.time);
             tvTime.setText(displayTime);
+        }else{
+            tvTime.setText("");
         }
 
         tvMsg.setText(info.msg);

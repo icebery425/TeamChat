@@ -87,8 +87,12 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         public void onReceive(Context context, Intent intent) {
             String actionStr = intent.getAction();
             if (actionStr.equals(ChatGroupActivity.REFRESH_ROOM_MSG_ACTION)){
-                getGroupInfo();
-                getLocalMessage();
+                String roomId = intent.getStringExtra("jpushRoomId");
+                if ((!TextUtils.isEmpty(roomId) && roomId.equals(mRoomId)) || TextUtils.isEmpty(roomId)){
+                    getGroupInfo();
+                    getLocalMessage();
+                }
+
             }
 
         }
@@ -169,8 +173,10 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
     }
 
     public void MoveToPosition(int n) {
-        mRecyclerManager.scrollToPositionWithOffset(n, 0);
-        mRecyclerManager.setStackFromEnd(true);
+        //mRecyclerManager.scrollToPositionWithOffset(n, 0);
+        //mRv.smoothScrollToPosition(n);
+        mRv.scrollToPosition(n);
+        //mRecyclerManager.setStackFromEnd(true);
     }
 
     @Override
@@ -243,7 +249,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
                 msg1.from = ConfigUtil.getInstance(ChatRoomActivity.this).get(Key.ID, "");
                 mChatMsgList.add(msg1);
                 mChatRoomAdapter.setDataList(mChatMsgList);
-                MoveToPosition(mChatMsgList.size()-1);
+                MoveToPosition(mChatMsgList.size());
                 RealmDbManger.getRealmInstance().insertOneElement(msg1);
                 updateGroupInfoBrodcast();
             }
@@ -284,7 +290,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         //mChatMsgList.addAll(msgList);
         setFullName();
         mChatRoomAdapter.setDataList(mChatMsgList);
-        MoveToPosition(mChatMsgList.size()-1);
+        MoveToPosition(mChatMsgList.size());
         mRv.refreshComplete();
     }
 

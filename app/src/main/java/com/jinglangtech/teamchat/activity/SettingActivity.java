@@ -185,6 +185,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         RealmDbManger.getRealmInstance().deleteAll();
+
+                        Intent intent = new Intent(ChatGroupActivity.CLEAR_MSG_ACTION);
+                        SettingActivity.this.sendBroadcast(intent);
+
                         Toast.makeText(SettingActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
                     }
                 }).create();
