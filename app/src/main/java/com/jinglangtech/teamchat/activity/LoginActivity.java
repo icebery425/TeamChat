@@ -8,16 +8,19 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.jinglangtech.teamchat.R;
 import com.jinglangtech.teamchat.listener.BaseListener;
 import com.jinglangtech.teamchat.model.LoginUser;
 import com.jinglangtech.teamchat.network.CommonModel;
 import com.jinglangtech.teamchat.network.NetWorkInterceptor;
+import com.jinglangtech.teamchat.util.ActivityContainer;
 import com.jinglangtech.teamchat.util.ConfigUtil;
 import com.jinglangtech.teamchat.util.Constant;
 import com.jinglangtech.teamchat.util.Key;
@@ -28,7 +31,7 @@ import com.jinglangtech.teamchat.util.UuidUtil;
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity{
 
     @BindView(R.id.editLoginName)
     EditText mEtName;
@@ -44,6 +47,8 @@ public class LoginActivity extends BaseActivity {
     private String mPwd;
     private String mAccount;
     private boolean mPwdOpen = false;
+
+    private ChatGroupActivity mGroupActivity;
 
     @Override
     public int getLayoutResourceId() {
@@ -64,6 +69,18 @@ public class LoginActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.common_status_color));
         }
+    }
+
+
+    // 捕获返回键的方法2
+    @Override
+    public void onBackPressed() {
+        Log.d("", "onBackPressed()");
+        //System.exit(0);
+        super.onBackPressed();
+        ActivityContainer.getInstance().finishAllActivity();
+        //android.os.Process.killProcess(android.os.Process.myPid());  //获取PID
+
     }
 
     @Override
@@ -88,7 +105,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void loadData() {
-        //
+
         //String uuid2 = UuidUtil.get24UUID();
         //sendNotify();
     }

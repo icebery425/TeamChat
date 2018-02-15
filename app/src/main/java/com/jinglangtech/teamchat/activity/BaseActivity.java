@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.jinglangtech.teamchat.R;
+import com.jinglangtech.teamchat.util.ActivityContainer;
 
 import butterknife.ButterKnife;
 
@@ -29,6 +30,9 @@ public abstract class BaseActivity extends AppCompatActivity{
         setContentView(getLayoutResourceId());
         ButterKnife.bind(this);
         initStatusColor();
+
+        ActivityContainer.getInstance().addActivity(this);
+
         initVariables();
         initViews();
         loadData();

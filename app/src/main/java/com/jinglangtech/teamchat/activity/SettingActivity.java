@@ -141,14 +141,20 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             switch (v.getId()) {
                 // 退出
                 case R.id.tv_logout:
-                    SettingActivity.this.finish();
-                    System.exit(0);
+                    startLoginChatPage();
                     break;
                 default:
                     break;
             }
         }
     };
+
+    public void startLoginChatPage(){
+        Intent intent = new Intent();
+        intent.setClass(SettingActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
     protected void photoSelectAction() {
         photoBuilder = new CustomPhotoSelect.Builder(this);
