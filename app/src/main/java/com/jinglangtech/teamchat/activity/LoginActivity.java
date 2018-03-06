@@ -46,6 +46,7 @@ public class LoginActivity extends BaseActivity{
     private String mName;
     private String mPwd;
     private String mAccount;
+    private String mToken;
     private boolean mPwdOpen = false;
 
     private ChatGroupActivity mGroupActivity;
@@ -108,6 +109,13 @@ public class LoginActivity extends BaseActivity{
 
         //String uuid2 = UuidUtil.get24UUID();
         //sendNotify();
+        mId = ConfigUtil.getInstance(this).get(Key.ID, "");
+        String userToken = ConfigUtil.getInstance(this).get(Key.TOKEN, "");
+        if (!TextUtils.isEmpty(userToken) && !TextUtils.isEmpty(mId)){
+            setJPushAlias();
+            startChatPage();
+        }
+
     }
 
     private void userLogin(){
@@ -138,6 +146,7 @@ public class LoginActivity extends BaseActivity{
                     mAccount = user.account;
                     mName = user.name;
                     mId = user._id;
+                    mToken = user.token;
 
                     saveSp();
                     setJPushAlias();
@@ -163,6 +172,7 @@ public class LoginActivity extends BaseActivity{
         ConfigUtil.getInstance(this).put(Key.USER_ACCOUNT, mAccount);
         ConfigUtil.getInstance(this).put(Key.USER_NAME, mName);
         ConfigUtil.getInstance(this).put(Key.USER_PWD, mPwd);
+        ConfigUtil.getInstance(this).put(Key.TOKEN, mToken);
         ConfigUtil.getInstance(this).commit();
     }
 

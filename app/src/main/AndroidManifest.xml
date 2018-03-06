@@ -38,7 +38,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.ChatGroupActivity" />
-        <activity android:windowSoftInputMode="stateHidden|adjustPan" android:name=".activity.ChatRoomActivity" />
+        <activity android:windowSoftInputMode="stateHidden|adjustUnspecified" android:name=".activity.ChatRoomActivity" />
         <activity android:name=".activity.SettingActivity"/>
         <activity android:name=".activity.PwdModifyActivity"/>
         <activity android:name=".activity.ChatMemberActivity"/>
