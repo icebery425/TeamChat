@@ -195,7 +195,14 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
 
     @Override
     public void initVariables() {
-
+        mReceiver = new ChatMessagePulledReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(MESSAGE_INIT_FINISHED_ACTION);
+        intentFilter.addAction(GROUP_INIT_FINISHED_ACTION);
+        intentFilter.addAction(RECEIVE_MSG_CUSTOM_ACTION);
+        intentFilter.addAction(Constant.BROADCAST_UPDATE_GROUP_INFO);
+        intentFilter.addAction(CLEAR_MSG_ACTION);
+        this.registerReceiver(mReceiver, intentFilter);
     }
     @Override
     public void initStatusColor(){
@@ -242,16 +249,9 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
     @Override
     public void loadData() {
         //test();
-        mReceiver = new ChatMessagePulledReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(MESSAGE_INIT_FINISHED_ACTION);
-        intentFilter.addAction(GROUP_INIT_FINISHED_ACTION);
-        intentFilter.addAction(RECEIVE_MSG_CUSTOM_ACTION);
-        intentFilter.addAction(Constant.BROADCAST_UPDATE_GROUP_INFO);
-        intentFilter.addAction(CLEAR_MSG_ACTION);
-        this.registerReceiver(mReceiver, intentFilter);
 
-        getRoomList(mPageIndex);
+
+        //getRoomList(mPageIndex);
     }
 
     @Override
@@ -279,7 +279,8 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
     }
     @Override
     public void onRefresh() {
-
+        mPageIndex = 1;
+        getRoomList(mPageIndex);
     }
 
     @Override
@@ -319,13 +320,14 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
 
     private void getRoomList(final int pageIndex){
         //disLoading();
+        Log.e("", "getRoomList call ######");
         CommonModel.getInstance().getRoomList(new BaseListener(GroupList.class){
 
             @Override
             public void responseResult(Object infoObj, Object listObj, int code, boolean status) {
 
                 GroupList tempList = (GroupList) infoObj;
-
+                Log.e("", "getRoomList finish ######");
                 //hideLoading();
                 if (tempList != null && tempList.roomlist.size() > 0){
                     mRoomList = tempList.roomlist;
@@ -345,7 +347,7 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
 
                     initLocalRoomDataBaseData(tempList.roomlist);
 
-                    disLoading("正在加载聊天数据，请稍候");
+                    //disLoading("正在加载聊天数据，请稍候");
 
                 }else{
                     mRv.refreshComplete();

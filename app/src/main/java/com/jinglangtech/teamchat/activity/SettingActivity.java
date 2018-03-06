@@ -141,6 +141,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             switch (v.getId()) {
                 // 退出
                 case R.id.tv_logout:
+                    clearSp();
                     startLoginChatPage();
                     break;
                 default:
@@ -148,6 +149,15 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             }
         }
     };
+
+    public void clearSp(){
+        ConfigUtil.getInstance(this).put(Key.ID, "");
+        ConfigUtil.getInstance(this).put(Key.USER_ACCOUNT, "");
+        ConfigUtil.getInstance(this).put(Key.USER_NAME, "");
+        ConfigUtil.getInstance(this).put(Key.USER_PWD, "");
+        ConfigUtil.getInstance(this).put(Key.TOKEN, "");
+        ConfigUtil.getInstance(this).commit();
+    }
 
     public void startLoginChatPage(){
         Intent intent = new Intent();

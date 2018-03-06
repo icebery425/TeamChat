@@ -112,6 +112,7 @@ public class LoginActivity extends BaseActivity{
         mId = ConfigUtil.getInstance(this).get(Key.ID, "");
         String userToken = ConfigUtil.getInstance(this).get(Key.TOKEN, "");
         if (!TextUtils.isEmpty(userToken) && !TextUtils.isEmpty(mId)){
+            NetWorkInterceptor.setToken(userToken);
             setJPushAlias();
             startChatPage();
         }
