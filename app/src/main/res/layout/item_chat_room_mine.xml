@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/dark_bg1"
@@ -39,13 +40,15 @@
             android:background="@drawable/circle_corner_blue_bg"
             android:gravity="center"
             android:text="静"
+            android:textSize="15sp"
             android:textColor="@color/white" />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/tv_nickname"
             android:layout_marginBottom="10dp"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:id="@+id/linearLayout">
 
             <TextView
                 android:id="@+id/tv_fullname"
@@ -57,21 +60,35 @@
                 android:textColor="@color/dark_bg3"
                 android:textSize="13sp"
                 android:visibility="gone"/>
-
+            <ImageView
+                android:id="@+id/iv_send_failed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/linearLayout"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_toLeftOf="@+id/linearLayout"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                app:srcCompat="@mipmap/news_ic_fail" />
             <TextView
                 android:id="@+id/tv_last_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/ic_bubble_left"
                 android:minHeight="40dp"
-                android:text="不客气~~~~"
+                android:maxWidth="252dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:text="不客气~~~~不客不客不客不客不客不客不客不客不客不客不客不客不客"
                 android:gravity="center_vertical"
                 android:textColor="@android:color/black"
-                android:textSize="13sp"
+                android:textSize="15sp"
                 android:visibility="visible" />
 
-        </LinearLayout>
 
+
+        </LinearLayout>
 
 
     </RelativeLayout>

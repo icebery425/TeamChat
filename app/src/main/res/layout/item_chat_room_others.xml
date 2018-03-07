@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/dark_bg1"
@@ -38,6 +39,7 @@
             android:background="@drawable/circle_corner_blue_bg"
             android:gravity="center"
             android:text="静"
+            android:textSize="15sp"
             android:textColor="@color/white" />
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -56,18 +58,35 @@
                     android:textColor="@color/dark_bg3"
                     android:textSize="13sp" />
 
-                <TextView
-                    android:id="@+id/tv_last_message"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@mipmap/ic_bubble_right"
-                    android:gravity="center_vertical"
-                    android:minHeight="40dp"
-                    android:text="不客气~~~~"
-                    android:textColor="@android:color/black"
-                    android:textSize="13sp"
-                    android:visibility="visible" />
+                <LinearLayout
+                    android:id="@+id/layout_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_last_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="1"
+                        android:background="@mipmap/ic_bubble_right"
+                        android:gravity="center_vertical"
+                        android:minHeight="40dp"
+                        android:text="不客气~~~~"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp"
+                        android:visibility="visible" />
+                    <ImageView
+                        android:id="@+id/iv_send_failed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_weight="1"
+                        android:visibility="invisible"
+                        app:srcCompat="@mipmap/news_ic_fail" />
+                </LinearLayout>
 
             </LinearLayout>
 

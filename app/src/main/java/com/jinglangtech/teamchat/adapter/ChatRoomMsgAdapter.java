@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -88,6 +89,7 @@ public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>  {
         TextView tvMsg = cHolder.obtainView(R.id.tv_last_message);
         TextView tvNickName = cHolder.obtainView(R.id.tv_nickname);
         TextView tvFullName = cHolder.obtainView(R.id.tv_fullname);
+        ImageView ivSendFailed = cHolder.obtainView(R.id.iv_send_failed);
 
         if (position == 0){
             tvTime.setVisibility(View.VISIBLE);
