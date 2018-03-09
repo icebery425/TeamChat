@@ -122,6 +122,19 @@ public class RealmDbManger implements DbManager {
         return sku;
     }
 
+    //修改消息发送结果及更新此条消息发送时间
+    @Override
+    public  void modifySendResult(Object object){
+        ChatMsg msg = (ChatMsg)object;
+        ChatMsg oldMsg = Realm.getDefaultInstance().where(ChatMsg.class).equalTo("_id", msg._id).findFirst();
+        Realm.getDefaultInstance().beginTransaction();
+        oldMsg.isSend = msg.isSend;
+        oldMsg.dTime = msg.dTime;
+        oldMsg.time = msg.time;
+        Realm.getDefaultInstance().commitTransaction();
+
+    }
+
     @Override
     public   void modifyGroupUnreadQuatity(Object obj){
         ChatGroup sku = (ChatGroup) obj;

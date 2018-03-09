@@ -59,6 +59,9 @@ public interface DbManager {
     //修改数量
     public abstract  void modifyGroupUnreadQuatity(Object object);
 
+    //修改消息发送结果及更新此条消息发送时间
+    public abstract  void modifySendResult(Object object);
+
     public abstract void delOneElement(Object object);
 
     //删除指定时间下所有的sku
