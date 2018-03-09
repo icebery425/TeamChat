@@ -5,9 +5,9 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/make_event_linear"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"
             android:paddingLeft="15dp"
@@ -17,9 +17,10 @@
             android:visibility="visible">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_weight="8">
 
                 <TextView
                     android:id="@+id/tv_name"
@@ -42,16 +43,17 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_weight="1">
 
                 <TextView
                     android:id="@+id/tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                    android:text="3月5日"
                     android:textColor="@color/dark_bg4"
                     android:textSize="11sp" />
             <RelativeLayout
@@ -81,7 +83,7 @@
                     android:visibility="visible" />
             </RelativeLayout>
             </LinearLayout>
-        </RelativeLayout>
+        </LinearLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"

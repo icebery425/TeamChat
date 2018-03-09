@@ -1,6 +1,7 @@
 package com.jinglangtech.teamchat.activity;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import com.jinglangtech.teamchat.util.ConfigUtil;
 import com.jinglangtech.teamchat.util.Key;
 import com.jinglangtech.teamchat.util.ThreadUtil;
 import com.jinglangtech.teamchat.util.ToastUtils;
+import com.jinglangtech.teamchat.widget.CustomDialog;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -42,6 +44,8 @@ public class AppStartActivity extends BaseActivity {
             @Override
             public void run() {
                 startPage();
+
+                //displayResendDialog();
             }
         }, 1000);
     }
@@ -132,4 +136,24 @@ public class AppStartActivity extends BaseActivity {
     public void initStatusColor() {
 
     }
+
+    private CustomDialog mDialog = null;
+    private void displayResendDialog(){
+        CustomDialog.Builder customBuilder = new CustomDialog.Builder(this);
+        customBuilder.setNegativeButton(
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                    }
+                }).setPositiveButton(
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        mDialog = customBuilder.create();
+        mDialog.show();
+    }
+
 }

@@ -244,6 +244,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
                 msg1.dTime= new Date();
                 msg1.isMine = true;
                 msg1.isread = true;
+                msg1.isSend = true;
                 msg1._id =  UuidUtil.get24UUID();
                 msg1.roomid = mRoomId;
                 msg1.from = ConfigUtil.getInstance(ChatRoomActivity.this).get(Key.ID, "");
@@ -257,6 +258,24 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
             @Override
             public void requestFailed(boolean status, int code, String errorMessage) {
                 super.requestFailed(status, code, errorMessage);
+
+                ChatMsg msg1 = new ChatMsg();
+                String name = ConfigUtil.getInstance(ChatRoomActivity.this).get(Key.USER_NAME, "");
+                msg1.name = name;
+                msg1.content = mCurrentMsg;
+                msg1.time = TimeConverterUtil.getCurrentUTCTime();
+                msg1.dTime= new Date();
+                msg1.isMine = true;
+                msg1.isread = true;
+                msg1.isSend = false;
+                msg1._id =  UuidUtil.get24UUID();
+                msg1.roomid = mRoomId;
+                msg1.from = ConfigUtil.getInstance(ChatRoomActivity.this).get(Key.ID, "");
+                mChatMsgList.add(msg1);
+                mChatRoomAdapter.setDataList(mChatMsgList);
+                MoveToPosition(mChatMsgList.size());
+                RealmDbManger.getRealmInstance().insertOneElement(msg1);
+                updateGroupInfoBrodcast();
                 ToastUtils.showToast(ChatRoomActivity.this,"发送消息失败");
             }
         });

@@ -1,6 +1,8 @@
 package com.jinglangtech.teamchat.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,6 +17,7 @@ import com.jinglangtech.teamchat.model.ChatMsg;
 import com.jinglangtech.teamchat.util.ConfigUtil;
 import com.jinglangtech.teamchat.util.Key;
 import com.jinglangtech.teamchat.util.TimeConverterUtil;
+import com.jinglangtech.teamchat.widget.CustomDialog;
 
 import org.w3c.dom.Text;
 
@@ -115,6 +118,15 @@ public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>  {
             tvNickName.setText(info.name.substring(len-1));
         }
 
+        if (info.isSend)
+        {
+            ivSendFailed.setVisibility(View.INVISIBLE);
+        }else{
+            ivSendFailed.setVisibility(View.VISIBLE);
+            ivSendFailed.setTag(position);
+            ivSendFailed.setOnClickListener(mSendFailedListener);
+        }
+
 
         cHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +136,34 @@ public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>  {
                }
             }
         });
+    }
+
+    public View.OnClickListener mSendFailedListener = new View.OnClickListener(){
+
+        @Override
+        public void onClick(View v) {
+            int pos =  (int)v.getTag();
+            displayResendDialog();
+        }
+    };
+
+    private CustomDialog mDialog = null;
+    private void displayResendDialog(){
+        CustomDialog.Builder customBuilder = new CustomDialog.Builder(mCtx);
+        customBuilder.setNegativeButton(
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                    }
+                }).setPositiveButton(
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        mDialog = customBuilder.create();
+        mDialog.show();
     }
 
     private String dateToString(Date date){

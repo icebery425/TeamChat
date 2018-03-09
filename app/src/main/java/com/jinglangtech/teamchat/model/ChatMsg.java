@@ -26,4 +26,5 @@ public class ChatMsg extends RealmObject {
     public boolean isread = false;
 
     public boolean isMine;
+    public boolean isSend = true;  //是否发送成功
 }
