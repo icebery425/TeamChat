@@ -52,7 +52,7 @@ import butterknife.BindView;
 import io.realm.Realm;
 import io.realm.RealmList;
 
-public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScrollListener, TextView.OnEditorActionListener{
+public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScrollListener, TextView.OnEditorActionListener, ChatRoomMsgAdapter.IReSendLister {
 
     @BindView(R.id.tv_room_name)
     TextView mTvRoomName;
@@ -81,6 +81,11 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
     private int mPageCount = 0;
 
     private RefreshMsgReceiver mReceiver;
+
+    @Override
+    public void reRend(int position) {
+
+    }
 
     private class RefreshMsgReceiver extends BroadcastReceiver {
         @Override

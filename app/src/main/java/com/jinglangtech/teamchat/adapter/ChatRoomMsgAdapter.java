@@ -39,6 +39,16 @@ public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>  {
     private String mId;
     private ChatGroup mGroupInfo;
 
+    public interface IReSendLister{
+        public void reRend(int postion);
+    }
+
+    private IReSendLister mResendLister = null;
+
+    public void setResendLister(IReSendLister lister){
+        mResendLister = lister;
+    }
+
     public ChatRoomMsgAdapter(Context context) {
         super(context);
         mCtx = context;
@@ -143,12 +153,12 @@ public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>  {
         @Override
         public void onClick(View v) {
             int pos =  (int)v.getTag();
-            displayResendDialog();
+            displayResendDialog(pos);
         }
     };
 
     private CustomDialog mDialog = null;
-    private void displayResendDialog(){
+    private void displayResendDialog(final int position){
         CustomDialog.Builder customBuilder = new CustomDialog.Builder(mCtx);
         customBuilder.setNegativeButton(
                 new DialogInterface.OnClickListener() {
@@ -160,6 +170,9 @@ public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>  {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        if (mResendLister != null){
+                            mResendLister.reRend(position);
+                        }
                     }
                 });
         mDialog = customBuilder.create();
