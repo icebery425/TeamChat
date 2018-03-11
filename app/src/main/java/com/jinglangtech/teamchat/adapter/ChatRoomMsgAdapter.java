@@ -16,8 +16,10 @@ import com.jinglangtech.teamchat.model.ChatGroup;
 import com.jinglangtech.teamchat.model.ChatMsg;
 import com.jinglangtech.teamchat.util.ConfigUtil;
 import com.jinglangtech.teamchat.util.Key;
+import com.jinglangtech.teamchat.util.TextUtil;
 import com.jinglangtech.teamchat.util.TimeConverterUtil;
 import com.jinglangtech.teamchat.widget.CustomDialog;
+import com.jinglangtech.teamchat.widget.MenuDialog;
 
 import org.w3c.dom.Text;
 
@@ -128,6 +130,9 @@ public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>  {
             tvNickName.setText(info.name.substring(len-1));
         }
 
+        tvMsg.setTag(position);
+        tvMsg.setOnLongClickListener(mLongClickListener);
+
         if (info.isSend)
         {
             ivSendFailed.setVisibility(View.INVISIBLE);
@@ -157,6 +162,16 @@ public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>  {
         }
     };
 
+    public View.OnLongClickListener mLongClickListener = new View.OnLongClickListener(){
+
+        @Override
+        public boolean onLongClick(View v) {
+            int position = (int)v.getTag();
+            displayMenuDialog(position);
+            return false;
+        }
+    };
+
     private CustomDialog mDialog = null;
     private void displayResendDialog(final int position){
         CustomDialog.Builder customBuilder = new CustomDialog.Builder(mCtx);
@@ -177,6 +192,28 @@ public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>  {
                 });
         mDialog = customBuilder.create();
         mDialog.show();
+    }
+
+    private MenuDialog mMenuDialog = null;
+    private void displayMenuDialog(final int position){
+        MenuDialog.Builder customBuilder = new MenuDialog.Builder(mCtx);
+        customBuilder.setMenuButtonListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ChatMsg info = mList.get(position);
+                        int viewId  = v.getId();
+                        if (viewId == R.id.tv_copy){
+                            TextUtil.setClipboardText(info.content, mCtx);
+                            mMenuDialog.cancel();
+                        }else if (viewId == R.id.tv_delete){
+                            mMenuDialog.cancel();
+                        }
+                    }
+
+                });
+        mMenuDialog = customBuilder.create();
+        mMenuDialog.show();
     }
 
     private String dateToString(Date date){

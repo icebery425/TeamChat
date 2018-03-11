@@ -3,7 +3,6 @@ package com.jinglangtech.teamchat.widget;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -38,8 +37,7 @@ public class MenuDialog extends Dialog {
 
 		private View contentView;
 
-		private OnClickListener positiveButtonClickListener,
-				negativeButtonClickListener;
+		private View.OnClickListener menuClickListener;
 
 		public Builder(Context context) {
 
@@ -84,31 +82,14 @@ public class MenuDialog extends Dialog {
 		 * @return
 		 */
 
-		public Builder setPositiveButton(
-				OnClickListener listener) {
+		public Builder setMenuButtonListener(
+				View.OnClickListener listener) {
 
-			this.positiveButtonClickListener = listener;
-
-			return this;
-
-		}
-
-
-		/**
-		 * 
-		 * Set the negative button resource and it's listener
-		 *
-		 * @param listener
-		 * 
-		 * @return
-		 */
-
-		public Builder setNegativeButton(OnClickListener listener) {
-			this.negativeButtonClickListener = listener;
+			this.menuClickListener = listener;
 
 			return this;
-
 		}
+
 
 
 		/**
@@ -129,53 +110,15 @@ public class MenuDialog extends Dialog {
 			dialog.setCanceledOnTouchOutside(false);
 
 			View layout = inflater.inflate(R.layout.dialog_menu, null);
+			TextView tvcopy = ((TextView)layout.findViewById(R.id.tv_copy));
+			TextView tvdelete = ((TextView)layout.findViewById(R.id.tv_delete));
 
 			dialog.addContentView(layout, new LayoutParams(274, 180));
 			
-			if(content != null){
-				((TextView)layout.findViewById(R.id.tv_content)).setText(content);
+			if(menuClickListener != null){
+				tvcopy.setOnClickListener(menuClickListener);
+				tvdelete.setOnClickListener(menuClickListener);
 			}
-
-
-			// set the confirm button
-
-
-
-				if (positiveButtonClickListener != null) {
-
-					((TextView) layout.findViewById(R.id.tv_confirm))
-							.setOnClickListener(new View.OnClickListener() {
-
-								public void onClick(View v) {
-
-									positiveButtonClickListener.onClick(dialog,
-											DialogInterface.BUTTON_POSITIVE);
-
-								}
-
-							});
-
-				}
-
-
-			// set the cancel button
-
-
-				if (negativeButtonClickListener != null) {
-
-					((TextView) layout.findViewById(R.id.tv_cancel))
-							.setOnClickListener(new View.OnClickListener() {
-
-								public void onClick(View v) {
-
-									negativeButtonClickListener.onClick(dialog,
-											DialogInterface.BUTTON_NEGATIVE);
-
-								}
-
-							});
-
-				}
 
 
 
