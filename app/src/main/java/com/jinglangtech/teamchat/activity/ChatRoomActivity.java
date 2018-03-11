@@ -154,11 +154,12 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         mRv.setPullRefreshEnabled(false);
         //mRv.setRefreshing(true);
         mChatRoomAdapter.setGroupInfo(mGroupInfo);
+        mChatRoomAdapter.setResendLister(this);
         mChatRoomAdapter.setMyItemOnclickListener(new BasicRecylerAdapter.MyItemOnclickListener() {
             @Override
             public void onItemClick(int position) {
                 //ChatGroup eventBean = mChatRoomAdapter.mList.get(position);
-                Intent intent = new Intent();
+                //Intent intent = new Intent();
                 //intent.putExtra(Key.BEAN, eventBean);
                // intent.setClass(ReportListActivity.this, ReportConfirmActivity.class);
                 //startActivityForResult(intent, 1);
@@ -264,7 +265,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
             @Override
             public void requestFailed(boolean status, int code, String errorMessage) {
                 super.requestFailed(status, code, errorMessage);
-
+                mEtInput.setText("");
                 ChatMsg msg1 = new ChatMsg();
                 String name = ConfigUtil.getInstance(ChatRoomActivity.this).get(Key.USER_NAME, "");
                 msg1.name = name;
@@ -287,7 +288,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         });
     }
 
-    private void sendMessageExt(ChatMsg msg){
+    private void sendMessageExt(final ChatMsg msg){
         if (TextUtils.isEmpty(mRoomId)){
             ToastUtils.showToast(ChatRoomActivity.this,"聊天室ID为空");
             return;
@@ -309,10 +310,13 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
                 msg1.isMine = true;
                 msg1.isread = true;
                 msg1.isSend = true;
-                msg1._id =  UuidUtil.get24UUID();
+                msg1._id =  msg._id;
                 msg1.roomid = mRoomId;
                 msg1.from = ConfigUtil.getInstance(ChatRoomActivity.this).get(Key.ID, "");
-                mChatMsgList.add(msg1);
+
+                msg.time = msg1.time;
+                msg.isSend = msg1.isSend;
+                //mChatMsgList.add(msg1);
                 mChatRoomAdapter.setDataList(mChatMsgList);
                 MoveToPosition(mChatMsgList.size());
                 RealmDbManger.getRealmInstance().modifySendResult(msg1);
@@ -332,10 +336,14 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
                 msg1.isMine = true;
                 msg1.isread = true;
                 msg1.isSend = false;
-                msg1._id =  UuidUtil.get24UUID();
+                msg1._id =  msg._id;
                 msg1.roomid = mRoomId;
                 msg1.from = ConfigUtil.getInstance(ChatRoomActivity.this).get(Key.ID, "");
-                mChatMsgList.add(msg1);
+                //mChatMsgList.add(msg1);
+
+                msg.time = msg1.time;
+                msg.isSend = msg1.isSend;
+
                 mChatRoomAdapter.setDataList(mChatMsgList);
                 MoveToPosition(mChatMsgList.size());
                 RealmDbManger.getRealmInstance().modifySendResult(msg1);
