@@ -1,8 +1,11 @@
 package com.jinglangtech.teamchat.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -66,6 +69,19 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         String nickName = ConfigUtil.getInstance(this).get(Key.USER_NAME, "");
         mTvAccount.setText(account);
         mTvNickName.setText(nickName);
+
+        mTvVersion.setText(getVerName());
+    }
+
+    public String getVerName() {
+        String verName = "";
+        try {
+            verName = this.getPackageManager().
+                    getPackageInfo(this.getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return verName;
     }
 
     @Override
@@ -107,7 +123,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     private void modifyNickName(){
         Intent intent = new Intent();
         intent.setClass(SettingActivity.this, NameModifyActivity.class);
-        startActivity(intent);
+        this.startActivityForResult(intent, 10);
     }
 
     //注销
@@ -209,5 +225,19 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     }
                 }).create();
         dialog.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 10){
+            if (data != null){
+                int ismodify = data.getIntExtra("isModified", 0);
+                if (ismodify == 1){
+                    String nickName = ConfigUtil.getInstance(this).get(Key.USER_NAME, "");
+                    mTvNickName.setText(nickName);
+                }
+            }
+        }
     }
 }

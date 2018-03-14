@@ -1,5 +1,6 @@
 package com.jinglangtech.teamchat.activity;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -63,7 +64,7 @@ public class NameModifyActivity extends BaseActivity implements View.OnClickList
 
     //注销
     private void saveNickName(){
-        String newName = mEtNewNickName.getText().toString();
+        final String newName = mEtNewNickName.getText().toString();
         if (TextUtils.isEmpty(newName)){
             ToastUtils.showToast(NameModifyActivity.this,"请输入新用户名");
             return;
@@ -79,6 +80,11 @@ public class NameModifyActivity extends BaseActivity implements View.OnClickList
             public void responseResult(Object infoObj, Object listObj, int code, boolean status) {
                 super.responseResult(infoObj, listObj, code, status);
                 ToastUtils.showToast(NameModifyActivity.this,"修改用户名称成功");
+                ConfigUtil.getInstance(NameModifyActivity.this).put(Key.USER_NAME, newName);
+                ConfigUtil.getInstance(NameModifyActivity.this).commit();
+                Intent intent = new Intent();
+                intent.putExtra("isModified", 1);
+                NameModifyActivity.this.setResult(10, intent);
                 NameModifyActivity.this.finish();
             }
 
