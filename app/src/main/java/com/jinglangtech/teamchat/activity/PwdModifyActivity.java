@@ -1,5 +1,6 @@
 package com.jinglangtech.teamchat.activity;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
@@ -10,6 +11,9 @@ import android.widget.TextView;
 import com.jinglangtech.teamchat.R;
 import com.jinglangtech.teamchat.listener.BaseListener;
 import com.jinglangtech.teamchat.network.CommonModel;
+import com.jinglangtech.teamchat.util.ConfigUtil;
+import com.jinglangtech.teamchat.util.Constant;
+import com.jinglangtech.teamchat.util.Key;
 import com.jinglangtech.teamchat.util.ToastUtil;
 import com.jinglangtech.teamchat.util.ToastUtils;
 
@@ -39,6 +43,8 @@ public class PwdModifyActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void initViews() {
+        String tvname = ConfigUtil.getInstance(this).get(Key.USER_NAME, "");
+        mTvName.setText(tvname);
         mTvSave.setOnClickListener(this);
     }
 
@@ -85,8 +91,9 @@ public class PwdModifyActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void responseResult(Object infoObj, Object listObj, int code, boolean status) {
                 super.responseResult(infoObj, listObj, code, status);
-                ToastUtils.showToast(PwdModifyActivity.this,"修改密码成功");
-                PwdModifyActivity.this.finish();
+                ToastUtils.showToast(PwdModifyActivity.this,"修改密码成功, 请重新登录!");
+                clearSp();
+                startLoginChatPage();
             }
 
             @Override
@@ -95,6 +102,21 @@ public class PwdModifyActivity extends BaseActivity implements View.OnClickListe
                 ToastUtils.showToast(PwdModifyActivity.this,"修改密码失败");
             }
         });
+    }
+
+    public void clearSp(){
+        ConfigUtil.getInstance(this).put(Key.ID, "");
+        ConfigUtil.getInstance(this).put(Key.USER_ACCOUNT, "");
+        ConfigUtil.getInstance(this).put(Key.USER_PWD, "");
+        ConfigUtil.getInstance(this).put(Key.TOKEN, "");
+        ConfigUtil.getInstance(this).commit();
+    }
+
+    public void startLoginChatPage(){
+        Intent intent = new Intent();
+        intent.setClass(PwdModifyActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 
