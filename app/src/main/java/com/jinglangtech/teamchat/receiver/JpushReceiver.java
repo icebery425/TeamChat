@@ -1,15 +1,22 @@
 package com.jinglangtech.teamchat.receiver;
 
+import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
+import com.jinglangtech.teamchat.App;
+import com.jinglangtech.teamchat.R;
+import com.jinglangtech.teamchat.activity.AppStartActivity;
 import com.jinglangtech.teamchat.activity.ChatGroupActivity;
+import com.jinglangtech.teamchat.activity.MainActivity;
 import com.jinglangtech.teamchat.model.PushData;
 
 
@@ -46,8 +53,10 @@ public class JpushReceiver extends BroadcastReceiver {
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
             String extraMsg = bundle.getString(JPushInterface.EXTRA_MESSAGE);
             String extraExtra = bundle.getString(JPushInterface.EXTRA_EXTRA);
+
             Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + extraMsg);
             processExtra(context, extraExtra);
+            sendNotify();
 
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
@@ -74,6 +83,32 @@ public class JpushReceiver extends BroadcastReceiver {
             Log.d(TAG, "[MyReceiver] Unhandled intent - " + intent.getAction());
         }
     }
+
+    private void sendNotify(){
+        if (App.mIsChatPage){
+            return;
+        }
+
+        Context application = mCtx.getApplicationContext();
+        Intent resultIntent = new Intent(application, AppStartActivity.class);
+        resultIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(application, 0, resultIntent, 0);
+
+        int notifyId = -1;
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mCtx)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("TeamChat")
+                .setContentText("收到一条新消息")
+                .setOnlyAlertOnce(true)
+                .setDefaults(Notification.DEFAULT_SOUND)
+                .setContentIntent(resultPendingIntent);
+
+
+        NotificationManager manager = (NotificationManager) mCtx.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(notifyId, builder.build());
+
+    }
+
 
 
     // 打印所有的 intent extra 数据

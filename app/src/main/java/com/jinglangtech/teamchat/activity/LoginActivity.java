@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -102,7 +104,20 @@ public class LoginActivity extends BaseActivity{
                 }
             }
         });
+        mEtPwd.setFilters(new InputFilter[] { filter });
     }
+
+    private final String FILTER_ASCII = "\\A\\p{ASCII}*\\z";
+    InputFilter filter = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            if (!(source + "").matches(FILTER_ASCII)){
+                return "";
+            }
+
+            return null;
+        }
+    };
 
     @Override
     public void loadData() {

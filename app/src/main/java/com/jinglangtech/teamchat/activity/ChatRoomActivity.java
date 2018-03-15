@@ -20,6 +20,7 @@ import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.util.RecyclerViewStateUtils;
 import com.github.jdsjlzx.view.LoadingFooter;
+import com.jinglangtech.teamchat.App;
 import com.jinglangtech.teamchat.R;
 import com.jinglangtech.teamchat.adapter.BasicRecylerAdapter;
 import com.jinglangtech.teamchat.adapter.ChatGroupListAdapter;
@@ -452,6 +453,29 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         tempList.add(msg2);
         mChatRoomAdapter.setDataList(tempList);
         mRv.refreshComplete();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        App.mIsChatPage = false;
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        App.mIsChatPage = true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        App.mIsChatPage = false;
     }
 
 

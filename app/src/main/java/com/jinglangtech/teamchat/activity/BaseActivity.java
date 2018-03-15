@@ -39,6 +39,8 @@ public abstract class BaseActivity extends AppCompatActivity{
     }
 
 
+
+
     public void disLoading(){
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("加载中…");

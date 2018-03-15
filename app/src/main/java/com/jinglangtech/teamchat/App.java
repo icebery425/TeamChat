@@ -16,6 +16,7 @@ import io.realm.RealmConfiguration;
 public class App extends MultiDexApplication{
 
     public static String mJPushRegId = "";
+    public static boolean mIsChatPage = false;
     @Override
     public void onCreate() {
         super.onCreate();
