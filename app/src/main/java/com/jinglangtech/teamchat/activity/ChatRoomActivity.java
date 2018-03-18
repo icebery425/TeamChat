@@ -232,6 +232,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
             }
         });
 
+
     }
 
 
