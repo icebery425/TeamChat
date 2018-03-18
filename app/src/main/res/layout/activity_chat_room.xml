@@ -67,23 +67,14 @@
             android:textSize="18sp" />
 
     </RelativeLayout>
-    <FrameLayout
-        android:id="@+id/layout_room_chat"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_above="@+id/layout_input"
-        android:background="@color/dark_bg1">
 
         <com.github.jdsjlzx.recyclerview.LRecyclerView
             android:id="@+id/eventlist_lv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/dark_bg1"
             android:overScrollMode="never"/>
-
-        <include layout="@layout/list_empty_layout" />
-
-    </FrameLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"

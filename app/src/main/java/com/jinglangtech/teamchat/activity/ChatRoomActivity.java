@@ -65,8 +65,6 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
     TextView mTvRoomName;
     @BindView(R.id.eventlist_lv)
     LRecyclerView mRv;
-    @BindView(R.id.empty_rel)
-    RelativeLayout mEmptyRealtive;
     @BindView(R.id.add_event_rel)
     RelativeLayout mLayoutChatInfo;
     @BindView(R.id.et_input)
@@ -167,7 +165,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         mChatRoomAdapter = new ChatRoomMsgAdapter(this);
         mRecyclerManager = new LinearLayoutManager(this);
         mRecyclerManager.setOrientation(LinearLayoutManager.VERTICAL);
-        //mRecyclerManager.setStackFromEnd(true);
+        mRecyclerManager.setStackFromEnd(true);
         mRv.setLayoutManager(mRecyclerManager);
         mRv.setRefreshProgressStyle(AVLoadingIndicatorView.BallSpinFadeLoader);
         mRv.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
