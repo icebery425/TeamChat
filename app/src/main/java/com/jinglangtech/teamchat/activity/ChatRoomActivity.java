@@ -50,6 +50,7 @@ import com.jinglangtech.teamchat.util.ToastUtil;
 import com.jinglangtech.teamchat.util.ToastUtils;
 import com.jinglangtech.teamchat.util.UuidUtil;
 
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -95,18 +96,32 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         sendMessageExt(cmsg);
     }
 
-    private Handler handler = new Handler(){
+    private static class MyHandler  extends Handler{
+        WeakReference<ChatRoomActivity> mActivity;
+
+        public MyHandler(ChatRoomActivity activity) {
+            mActivity = new WeakReference<ChatRoomActivity>(activity);
+        }
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+
+            ChatRoomActivity selfActivity = mActivity.get();
             switch (msg.what){
                 case 0:
-                    mRv.scrollToPosition(mChatMsgList.size()-1);
+                    selfActivity.setRecycleViewPosition();
                     break;
             }
         }
 
     };
+
+    public void setRecycleViewPosition()
+    {
+        mRv.scrollToPosition(mChatMsgList.size()-1);
+    }
+
+    private Handler mHandler;
 
     private class RefreshMsgReceiver extends BroadcastReceiver {
         @Override
@@ -134,6 +149,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         mRoomId = this.getIntent().getStringExtra(Key.ID);
         mRoomName = this.getIntent().getStringExtra(Key.ROOM_NAME);
         mId = ConfigUtil.getInstance(this).get(Key.ID, "");
+        mHandler = new MyHandler(this);
 
     }
 
@@ -204,7 +220,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
             public void onClick(View view) {
                 mEtInput.requestFocus();
                 showSoftInput(ChatRoomActivity.this, mEtInput);
-                handler.sendEmptyMessageDelayed(0,250);
+                mHandler.sendEmptyMessageDelayed(0,250);
             }
         });
 
