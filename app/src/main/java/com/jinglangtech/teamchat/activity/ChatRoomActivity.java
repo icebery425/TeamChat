@@ -1,17 +1,23 @@
 package com.jinglangtech.teamchat.activity;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -65,6 +71,8 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
     RelativeLayout mLayoutChatInfo;
     @BindView(R.id.et_input)
     EditText mEtInput;
+    @BindView(R.id.layout_edit)
+    LinearLayout mOverLayout;
 
     String mId;
     String mRoomId;
@@ -88,6 +96,19 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         ChatMsg cmsg = mChatMsgList.get(position);
         sendMessageExt(cmsg);
     }
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 0:
+                    mRv.scrollToPosition(mChatMsgList.size()-1);
+                    break;
+            }
+        }
+
+    };
 
     private class RefreshMsgReceiver extends BroadcastReceiver {
         @Override
@@ -146,6 +167,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         mChatRoomAdapter = new ChatRoomMsgAdapter(this);
         mRecyclerManager = new LinearLayoutManager(this);
         mRecyclerManager.setOrientation(LinearLayoutManager.VERTICAL);
+        //mRecyclerManager.setStackFromEnd(true);
         mRv.setLayoutManager(mRecyclerManager);
         mRv.setRefreshProgressStyle(AVLoadingIndicatorView.BallSpinFadeLoader);
         mRv.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
@@ -178,6 +200,36 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         });
 
         mEtInput.setOnEditorActionListener(this);
+
+        mOverLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mEtInput.requestFocus();
+                showSoftInput(ChatRoomActivity.this, mEtInput);
+                handler.sendEmptyMessageDelayed(0,250);
+            }
+        });
+
+        mRv.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                hideSoftInput(ChatRoomActivity.this, mEtInput);
+                return false;
+            }
+        });
+
+    }
+
+
+    public static void showSoftInput(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
+    }
+
+    public static void hideSoftInput(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
     }
 
     public void MoveToPosition(int n) {

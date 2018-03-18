@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_bg1"
+    android:orientation="vertical"
     tools:context="com.jinglangtech.teamchat.activity.ChatGroupActivity">
 
     <RelativeLayout
@@ -69,8 +70,8 @@
     <FrameLayout
         android:id="@+id/layout_room_chat"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/layout_title"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_above="@+id/layout_input"
         android:background="@color/dark_bg1">
 
@@ -83,6 +84,10 @@
         <include layout="@layout/list_empty_layout" />
 
     </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/line_bg"/>
     <FrameLayout
         android:id="@+id/layout_input"
         android:layout_width="match_parent"
@@ -90,10 +95,6 @@
         android:minHeight="48dp"
         android:layout_alignParentBottom="true"
         android:background="@color/dark_bg6">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/line_bg"/>
 
         <EditText
             android:id="@+id/et_input"
@@ -108,6 +109,14 @@
             android:minHeight="33dp"
             android:paddingLeft="5dp"
             android:textSize="13sp" />
-    </FrameLayout>
 
-</RelativeLayout>
+        <LinearLayout
+            android:id="@+id/layout_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:minHeight="33dp"
+            android:orientation="vertical"/>
+
+    </FrameLayout>
+</LinearLayout>
