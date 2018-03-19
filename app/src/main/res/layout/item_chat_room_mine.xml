@@ -82,7 +82,7 @@
                 android:paddingTop="5dp"
                 android:text="不客气~~~~不客不客不客不客不客不客不客不客不客不客不客不客不客"
                 android:gravity="center_vertical"
-                android:textColor="@android:color/black"
+                android:textColor="@color/menu_font"
                 android:textSize="15sp"
                 android:visibility="visible" />
 
