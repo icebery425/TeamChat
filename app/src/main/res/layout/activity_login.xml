@@ -27,7 +27,7 @@
         android:background="@null"
         android:ems="10"
         android:hint="请输入用户名"
-        android:inputType="textPersonName"
+        android:inputType="text"
         android:textSize="13.5dp" />
     <View
         android:layout_width="match_parent"
