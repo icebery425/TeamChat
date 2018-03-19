@@ -134,8 +134,17 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
                     getLocalMessage();
                 }
 
+            }else if (actionStr.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)){
+                hideSoftInput(ChatRoomActivity.this, mEtInput);
             }
 
+        }
+    }
+
+    @Override
+    public void initStatusColor(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.common_status_color));
         }
     }
 
@@ -168,12 +177,6 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         super.onBackPressed();
     }
 
-    @Override
-    public void initStatusColor(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.title_bg));
-        }
-    }
 
     @Override
     public void initViews() {
@@ -235,6 +238,14 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
 
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (KeyEvent.KEYCODE_HOME == keyCode) {
+            hideSoftInput(ChatRoomActivity.this, mEtInput);
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 
     public static void showSoftInput(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -263,6 +274,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         mReceiver = new RefreshMsgReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ChatGroupActivity.REFRESH_ROOM_MSG_ACTION);
+        intentFilter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
         this.registerReceiver(mReceiver, intentFilter);
     }
 

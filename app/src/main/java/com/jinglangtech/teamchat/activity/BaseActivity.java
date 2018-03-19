@@ -27,6 +27,7 @@ public abstract class BaseActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setActivityInit();
         setContentView(getLayoutResourceId());
         ButterKnife.bind(this);
         initStatusColor();
@@ -39,7 +40,9 @@ public abstract class BaseActivity extends AppCompatActivity{
     }
 
 
+    public void setActivityInit(){
 
+    }
 
     public void disLoading(){
         mProgressDialog = new ProgressDialog(this);

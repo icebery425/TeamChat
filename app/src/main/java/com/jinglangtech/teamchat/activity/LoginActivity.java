@@ -96,15 +96,16 @@ public class LoginActivity extends BaseActivity{
                 if (mPwdOpen){
                     mPwdOpen = false;
                     mEtPwd.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    mIvOpen.setImageResource(R.mipmap.logologin_key_look);
+                    mIvOpen.setImageResource(R.mipmap.logologin_key_unlook);
                 }else{
                     mPwdOpen = true;
                     mEtPwd.setInputType(InputType.TYPE_CLASS_TEXT);
-                    mIvOpen.setImageResource(R.mipmap.logologin_key_unlook);
+                    mIvOpen.setImageResource(R.mipmap.logologin_key_look);
                 }
             }
         });
         mEtPwd.setFilters(new InputFilter[] { filter });
+        mEtName.setFilters(new InputFilter[] { filter });
     }
 
     private final String FILTER_ASCII = "\\A\\p{ASCII}*\\z";

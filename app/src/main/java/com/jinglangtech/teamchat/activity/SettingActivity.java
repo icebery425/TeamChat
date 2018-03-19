@@ -45,6 +45,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     private CustomPhotoSelect photoSelector;
     private CustomPhotoSelect.Builder photoBuilder;
+    private boolean mIsNoticeOpen = false;
 
     @Override
     public int getLayoutResourceId() {
@@ -71,6 +72,14 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         mTvNickName.setText(nickName);
 
         mTvVersion.setText(getVerName());
+
+
+        mIsNoticeOpen = ConfigUtil.getInstance(this).get(Key.NOTICE_OPEN, true);
+        if (mIsNoticeOpen){
+            mCbNotice.setChecked(true);
+        }else{
+            mCbNotice.setChecked(false);
+        }
     }
 
     public String getVerName() {
@@ -142,7 +151,14 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void setNoticeOpen(){
-
+        if (mIsNoticeOpen){
+            ConfigUtil.getInstance(this).put(Key.NOTICE_OPEN, false);
+            mIsNoticeOpen = false;
+        }else{
+            ConfigUtil.getInstance(this).put(Key.NOTICE_OPEN, true);
+            mIsNoticeOpen = true;
+        }
+        ConfigUtil.getInstance(this).commit();
     }
 
     private void displayVersion(){

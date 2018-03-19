@@ -18,6 +18,8 @@ import com.jinglangtech.teamchat.activity.AppStartActivity;
 import com.jinglangtech.teamchat.activity.ChatGroupActivity;
 import com.jinglangtech.teamchat.activity.MainActivity;
 import com.jinglangtech.teamchat.model.PushData;
+import com.jinglangtech.teamchat.util.ConfigUtil;
+import com.jinglangtech.teamchat.util.Key;
 
 
 import org.json.JSONException;
@@ -89,17 +91,23 @@ public class JpushReceiver extends BroadcastReceiver {
             return;
         }
 
+        boolean issNoticeOpen = ConfigUtil.getInstance(mCtx).get(Key.NOTICE_OPEN, true);
+        if (!issNoticeOpen){
+            return;
+        }
+
         Context application = mCtx.getApplicationContext();
         Intent resultIntent = new Intent(application, AppStartActivity.class);
         resultIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(application, 0, resultIntent, 0);
+
 
         int notifyId = -1;
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mCtx)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("TeamChat")
                 .setContentText("收到一条新消息")
-                .setOnlyAlertOnce(true)
+                .setOnlyAlertOnce(false)
                 .setDefaults(Notification.DEFAULT_SOUND)
                 .setContentIntent(resultPendingIntent);
 

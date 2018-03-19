@@ -23,6 +23,8 @@ public class Key {
     public static final String USER_PWD    = "user_pwd";
     public static final String USER_AVATAR  = "user_avatar";
 
+    public static final String NOTICE_OPEN = "notice_open";
+
 
 
 }
