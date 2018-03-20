@@ -43,6 +43,12 @@ android {
             signingConfig signingConfigs.android_ms_config
         }
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 dependencies {
@@ -71,6 +77,5 @@ dependencies {
     compile 'com.android.support:multidex:1.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
     compile project(path: ':lib_recyclerview')
-    compile 'cn.jiguang.sdk:jpush:3.1.1'  // 此处以JPush 3.1.1 版本为例。
-    compile 'cn.jiguang.sdk:jcore:1.1.9'  // 此处以JCore 1.1.9 版本为例。
+
 }
