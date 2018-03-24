@@ -45,11 +45,7 @@ public class CommonModel extends BaseModel{
         sb.append("{");
         sb.append("\"account\":\"").append(userName).append("\"");
         sb.append(",\"password\":\"").append(psd).append("\"");
-        sb.append(",\"deviceInfo\":{");
-             sb.append("\"type\":10,");
-             sb.append("\"deviceDesc\":\"" + Build.MODEL+ "\",");
-             sb.append("\"pushId\":\"" + App.mJPushRegId + "\",");
-             sb.append("\"deviceToken\":\" \"}}");
+        sb.append(",\"platform\":\"").append("android").append("\"}");
 
 
         RequestBody body=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),sb.toString());
