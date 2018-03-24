@@ -89,6 +89,23 @@ public class CommonModel extends BaseModel{
 
     }
 
+    public void modifySetting(String platform, boolean notifyOpen,final BaseListener baseListener){
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        sb.append("\"platform\":\"").append(platform).append("\",");
+        sb.append("\"notification\":").append(notifyOpen).append("}");
+
+        RequestBody body=RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),sb.toString());
+        mCommonApi.userSetting(body).subscribeOn(Schedulers.io())//请求在子线程
+                .observeOn(AndroidSchedulers.mainThread())//回调在主线程
+                .subscribe(new CommonSubscriber(baseListener){
+                    @Override
+                    public void onNext(ResponseInfo responseInfo) {
+                        dealJsonStr(responseInfo, baseListener);
+                    }
+                });
+    }
+
     public void modifyUserPwd(String oldpwd, String newPwd, final BaseListener baseListener){
         StringBuilder sb = new StringBuilder();
         sb.append("{");

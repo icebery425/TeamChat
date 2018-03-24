@@ -60,6 +60,8 @@ public interface CommonApi {
     @HTTP(method = "DELETE", path = "api/readmsg", hasBody = true)
     Observable<ResponseInfo> readMessage(@Body RequestBody route);
 
-
+    //用户设置
+    @PUT("api/usersettings")
+    Observable<ResponseInfo> userSetting(@Body RequestBody route);
 
 }
