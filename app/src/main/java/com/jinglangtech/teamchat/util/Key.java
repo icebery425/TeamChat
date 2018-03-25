@@ -24,6 +24,8 @@ public class Key {
     public static final String USER_AVATAR  = "user_avatar";
 
     public static final String NOTICE_OPEN = "notice_open";
+    public static final String NOTICE_VOICE_OPEN = "notice_voice_open";
+    public static final String NOTICE_VIBRATE_OPEN = "notice_vibrate_open";
 
 
 

@@ -423,7 +423,9 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
                 //mChatMsgList.add(msg1);
                 mChatRoomAdapter.setDataList(mChatMsgList);
                 MoveToPosition(mChatMsgList.size());
-                RealmDbManger.getRealmInstance().modifySendResultExt(msg1, modifyId);
+                RealmDbManger.getRealmInstance().delOneElement(msg);
+                RealmDbManger.getRealmInstance().insertOneElement(msg1);
+                //RealmDbManger.getRealmInstance().modifySendResultExt(msg1, modifyId);
                 updateGroupInfoBrodcast();
             }
 

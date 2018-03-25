@@ -149,6 +149,16 @@ public class RealmDbManger implements DbManager {
 
     }
 
+    //删除指定ID的记录
+    @Override
+    public void delOneElement(Object obj) {
+        ChatMsg sku = (ChatMsg)obj;
+        ChatMsg result = Realm.getDefaultInstance().where(ChatMsg.class).equalTo("_id", sku._id).findFirst();
+        Realm.getDefaultInstance().beginTransaction();
+        result.deleteFromRealm();
+        Realm.getDefaultInstance().commitTransaction();
+    }
+
     @Override
     public   void modifyGroupUnreadQuatity(Object obj){
         ChatGroup sku = (ChatGroup) obj;
@@ -177,14 +187,7 @@ public class RealmDbManger implements DbManager {
         Realm.getDefaultInstance().commitTransaction();
     }
 
-    @Override
-    public void delOneElement(Object obj) {
-        ChatMsg sku = (ChatMsg)obj;
-        ChatMsg result = Realm.getDefaultInstance().where(ChatMsg.class).equalTo("_id", sku._id).findFirst();
-        Realm.getDefaultInstance().beginTransaction();
-        result.deleteFromRealm();
-        Realm.getDefaultInstance().commitTransaction();
-    }
+
 
 
 

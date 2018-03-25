@@ -38,6 +38,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     TextView mTvClearCache;
     @BindView(R.id.cb_notice)
     CheckBox mCbNotice;
+    @BindView(R.id.cb_notice_voice)
+    CheckBox mCbNoticeVoice;
+    @BindView(R.id.cb_notice_vibrate)
+    CheckBox mCbNoticeVibrate;
     @BindView(R.id.tv_version)
     TextView mTvVersion;
     @BindView(R.id.layout_mine_exit)
@@ -46,6 +50,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     private CustomPhotoSelect photoSelector;
     private CustomPhotoSelect.Builder photoBuilder;
     private boolean mIsNoticeOpen = false;
+    private boolean mIsNoticeVoiceOpen = false;
+    private boolean mIsNoticeVibrateOpen = false;
 
     @Override
     public int getLayoutResourceId() {
@@ -64,6 +70,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         mTvModifyPwd.setOnClickListener(this);
         mTvClearCache.setOnClickListener(this);
         mCbNotice.setOnClickListener(this);
+        mCbNoticeVoice.setOnClickListener(this);
+        mCbNoticeVibrate.setOnClickListener(this);
         mTvVersion.setOnClickListener(this);
 
         String account = ConfigUtil.getInstance(this).get(Key.USER_ACCOUNT, "");
@@ -73,12 +81,25 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
         mTvVersion.setText(getVerName());
 
-
         mIsNoticeOpen = ConfigUtil.getInstance(this).get(Key.NOTICE_OPEN, true);
         if (mIsNoticeOpen){
             mCbNotice.setChecked(true);
         }else{
             mCbNotice.setChecked(false);
+        }
+
+        mIsNoticeVoiceOpen = ConfigUtil.getInstance(this).get(Key.NOTICE_VOICE_OPEN, true);
+        if (mIsNoticeVoiceOpen){
+            mCbNoticeVoice.setChecked(true);
+        }else{
+            mCbNoticeVoice.setChecked(false);
+        }
+
+        mIsNoticeVibrateOpen = ConfigUtil.getInstance(this).get(Key.NOTICE_VIBRATE_OPEN, true);
+        if (mIsNoticeVibrateOpen){
+            mCbNoticeVibrate.setChecked(true);
+        }else{
+            mCbNoticeVibrate.setChecked(false);
         }
     }
 
@@ -121,6 +142,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.cb_notice:
                 setNoticeOpen();
                 break;
+            case R.id.cb_notice_voice:
+                setNoticeVoiceOpen();
+                break;
+            case R.id.cb_notice_vibrate:
+                setNoticeVibrateOpen();
+                break;
             case R.id.tv_version:
                 displayVersion();
                 break;
@@ -157,6 +184,26 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         }else{
             ConfigUtil.getInstance(this).put(Key.NOTICE_OPEN, true);
             mIsNoticeOpen = true;
+        }
+        ConfigUtil.getInstance(this).commit();
+    }
+    private void setNoticeVoiceOpen(){
+        if (mIsNoticeVoiceOpen){
+            ConfigUtil.getInstance(this).put(Key.NOTICE_VOICE_OPEN, false);
+            mIsNoticeVoiceOpen = false;
+        }else{
+            ConfigUtil.getInstance(this).put(Key.NOTICE_VOICE_OPEN, true);
+            mIsNoticeVoiceOpen = true;
+        }
+        ConfigUtil.getInstance(this).commit();
+    }
+    private void setNoticeVibrateOpen(){
+        if (mIsNoticeVibrateOpen){
+            ConfigUtil.getInstance(this).put(Key.NOTICE_VIBRATE_OPEN, false);
+            mIsNoticeVibrateOpen = false;
+        }else{
+            ConfigUtil.getInstance(this).put(Key.NOTICE_VIBRATE_OPEN, true);
+            mIsNoticeVibrateOpen = true;
         }
         ConfigUtil.getInstance(this).commit();
     }

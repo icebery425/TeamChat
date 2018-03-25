@@ -108,8 +108,18 @@ public class JpushReceiver extends BroadcastReceiver {
                 .setContentTitle("TeamChat")
                 .setContentText("收到一条新消息")
                 .setOnlyAlertOnce(false)
-                .setDefaults(Notification.DEFAULT_SOUND)
+                //.setDefaults(Notification.DEFAULT_SOUND)
                 .setContentIntent(resultPendingIntent);
+
+        boolean issNoticeVoiceOpen = ConfigUtil.getInstance(mCtx).get(Key.NOTICE_VOICE_OPEN, true);
+        boolean issNoticeVibrateOpen = ConfigUtil.getInstance(mCtx).get(Key.NOTICE_VIBRATE_OPEN, true);
+        if (issNoticeVoiceOpen && issNoticeVibrateOpen){
+            builder.setDefaults(Notification.DEFAULT_SOUND|Notification.DEFAULT_VIBRATE);
+        }else if(issNoticeVoiceOpen){
+            builder.setDefaults(Notification.DEFAULT_SOUND);
+        }else if (issNoticeVibrateOpen){
+            builder.setDefaults(Notification.DEFAULT_VIBRATE);
+        }
 
 
         NotificationManager manager = (NotificationManager) mCtx.getSystemService(Context.NOTIFICATION_SERVICE);
