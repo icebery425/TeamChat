@@ -4,6 +4,7 @@ package com.jinglangtech.teamchat.util;
  * Created by think on 2018/2/5.
  */
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.text.ParseException;
@@ -227,6 +228,22 @@ public class TimeConverterUtil {
         }
         return result;
 
+    }
+
+    public static Date Utc2LocateDate(String utcDate){
+        if (TextUtils.isEmpty(utcDate)){
+            return null;
+        }
+        String tempTime = TimeConverterUtil.utc2Local(utcDate, "yyyy-MM-dd HH:mm:ss");
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = null;
+        try {
+            date = dateFormat.parse(tempTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 
 }
