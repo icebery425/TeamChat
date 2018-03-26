@@ -4,7 +4,11 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -63,6 +67,7 @@ public class LoginActivity extends BaseActivity{
         mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //test();
                 userLogin();
             }
         });
@@ -73,6 +78,9 @@ public class LoginActivity extends BaseActivity{
             getWindow().setStatusBarColor(getResources().getColor(R.color.common_status_color));
         }
     }
+
+
+
 
 
     // 捕获返回键的方法2

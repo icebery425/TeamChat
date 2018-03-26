@@ -6,7 +6,11 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -88,6 +92,7 @@ public class JpushReceiver extends BroadcastReceiver {
 
     private void sendNotify(){
         if (App.mIsChatPage){
+            notificationOper();
             return;
         }
 
@@ -111,20 +116,38 @@ public class JpushReceiver extends BroadcastReceiver {
                 //.setDefaults(Notification.DEFAULT_SOUND)
                 .setContentIntent(resultPendingIntent);
 
-        boolean issNoticeVoiceOpen = ConfigUtil.getInstance(mCtx).get(Key.NOTICE_VOICE_OPEN, true);
-        boolean issNoticeVibrateOpen = ConfigUtil.getInstance(mCtx).get(Key.NOTICE_VIBRATE_OPEN, true);
-        if (issNoticeVoiceOpen && issNoticeVibrateOpen){
             builder.setDefaults(Notification.DEFAULT_SOUND|Notification.DEFAULT_VIBRATE);
-        }else if(issNoticeVoiceOpen){
-            builder.setDefaults(Notification.DEFAULT_SOUND);
-        }else if (issNoticeVibrateOpen){
-            builder.setDefaults(Notification.DEFAULT_VIBRATE);
-        }
 
 
         NotificationManager manager = (NotificationManager) mCtx.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(notifyId, builder.build());
 
+    }
+
+    private void notificationOper(){
+        boolean issNoticeVoiceOpen = ConfigUtil.getInstance(mCtx).get(Key.NOTICE_VOICE_OPEN, true);
+        boolean issNoticeVibrateOpen = ConfigUtil.getInstance(mCtx).get(Key.NOTICE_VIBRATE_OPEN, true);
+        if (issNoticeVoiceOpen && issNoticeVibrateOpen) {
+            sendNotificationVoice();
+            sendNotificationVibrate();
+        }else if(issNoticeVoiceOpen){
+            sendNotificationVoice();
+        }else if (issNoticeVibrateOpen){
+            sendNotificationVibrate();
+        }
+
+    }
+
+    private void sendNotificationVoice(){
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Ringtone r = RingtoneManager.getRingtone(mCtx.getApplicationContext(), notification);
+        r.play();
+    }
+
+    private void sendNotificationVibrate(){
+        Vibrator vibrator;
+        vibrator = (Vibrator) mCtx.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(300);
     }
 
 
