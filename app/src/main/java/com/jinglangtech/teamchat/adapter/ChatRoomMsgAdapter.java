@@ -127,7 +127,7 @@ public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>  {
         tvFullName.setText(info.name);
         if(!TextUtils.isEmpty(info.name)){
             int len = info.name.length();
-            tvNickName.setText(info.name.substring(len-1));
+            tvNickName.setText(info.name.substring(0, 1));
         }
 
         tvMsg.setTag(position);

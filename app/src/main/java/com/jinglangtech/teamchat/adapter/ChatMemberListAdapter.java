@@ -36,7 +36,7 @@ public class ChatMemberListAdapter extends BasicRecylerAdapter<ChatUser>{
         tvName.setText(info.name);
         if (!TextUtils.isEmpty(info.name)){
             int len = info.name.length();
-            tvNickTime.setText(info.name.substring(len-1));
+            tvNickTime.setText(info.name.substring(0,1));
         }
 
 
