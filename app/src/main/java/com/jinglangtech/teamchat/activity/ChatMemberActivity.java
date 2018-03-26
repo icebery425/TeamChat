@@ -1,11 +1,14 @@
 package com.jinglangtech.teamchat.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.jdsjlzx.progressindicator.AVLoadingIndicatorView;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -17,6 +20,7 @@ import com.jinglangtech.teamchat.adapter.BasicRecylerAdapter;
 import com.jinglangtech.teamchat.adapter.ChatMemberListAdapter;
 import com.jinglangtech.teamchat.adapter.ChatRoomMsgAdapter;
 import com.jinglangtech.teamchat.dbmanager.DBFactory;
+import com.jinglangtech.teamchat.dbmanager.RealmDbManger;
 import com.jinglangtech.teamchat.listener.BaseListener;
 import com.jinglangtech.teamchat.model.ChatGroup;
 import com.jinglangtech.teamchat.model.ChatMsg;
@@ -95,7 +99,7 @@ public class ChatMemberActivity extends BaseActivity implements LRecyclerView.LS
         mTvClearMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                confirmClearDialog();
             }
         });
     }
@@ -199,5 +203,32 @@ public class ChatMemberActivity extends BaseActivity implements LRecyclerView.LS
                 mRv.refreshComplete();
             }
         });
+    }
+
+    private void confirmClearDialog(){
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("清除消息缓存")//设置对话框的标题
+                .setMessage("确定清除当前聊天室的消息缓存吗？")//设置对话框的内容
+                //设置对话框的按钮
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        RealmDbManger.getRealmInstance().deleteGroupByChatId(mRoomId);
+
+                        Intent intent = new Intent(ChatGroupActivity.CLEAR_GROUP_ACTION);
+                        intent.putExtra("roomId", mRoomId);
+                        ChatMemberActivity.this.sendBroadcast(intent);
+
+                        Toast.makeText(ChatMemberActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                    }
+                }).create();
+        dialog.show();
     }
 }

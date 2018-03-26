@@ -42,6 +42,9 @@ public interface DbManager {
     //删除
     public abstract  void deleteAll();
 
+    //删除指定聊天室的消息
+    public abstract  void deleteGroupByChatId(String oldId);
+
     //增加
     public abstract  void insertOneElement(Object obj);
 

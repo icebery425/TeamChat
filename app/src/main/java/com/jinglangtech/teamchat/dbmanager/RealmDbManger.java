@@ -159,6 +159,14 @@ public class RealmDbManger implements DbManager {
         Realm.getDefaultInstance().commitTransaction();
     }
 
+    //删除指定聊天室的消息
+    public  void deleteGroupByChatId(String roomId){
+        RealmResults<ChatMsg> results = Realm.getDefaultInstance().where(ChatMsg.class).equalTo("roomid", roomId).findAll();
+        Realm.getDefaultInstance().beginTransaction();
+        results.deleteAllFromRealm();
+        Realm.getDefaultInstance().commitTransaction();
+    }
+
     @Override
     public   void modifyGroupUnreadQuatity(Object obj){
         ChatGroup sku = (ChatGroup) obj;

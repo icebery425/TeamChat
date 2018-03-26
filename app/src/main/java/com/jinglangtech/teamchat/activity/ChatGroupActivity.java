@@ -70,6 +70,7 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
     public final static String RECEIVE_MSG_NOTIFY_ACTION = "receiveMsgNotify";
     public final static String RECEIVE_MSG_CUSTOM_ACTION = "receiveMsgCustom";
     public final static String CLEAR_MSG_ACTION = "clearMsg";
+    public final static String CLEAR_GROUP_ACTION = "clearGroupMsg";
 
     public final static String REFRESH_ROOM_MSG_ACTION = "refreshRoomMsg";
 
@@ -104,6 +105,9 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
                 getOneRoomLastMsg(roomId);
             }else if (actionStr.equals(CLEAR_MSG_ACTION)){
                 refreshRoomList();
+            }else if (actionStr.equals(CLEAR_GROUP_ACTION)){
+                String roomId = intent.getStringExtra("roomId");
+                refreshRoomByID(roomId);
             }
 
         }
@@ -203,6 +207,7 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
         intentFilter.addAction(RECEIVE_MSG_CUSTOM_ACTION);
         intentFilter.addAction(Constant.BROADCAST_UPDATE_GROUP_INFO);
         intentFilter.addAction(CLEAR_MSG_ACTION);
+        intentFilter.addAction(CLEAR_GROUP_ACTION);
         this.registerReceiver(mReceiver, intentFilter);
     }
     @Override
@@ -304,6 +309,7 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
 
     }
 
+
     private void refreshRoomList(){
         long unRead = 0;
         if (mRoomList != null && mRoomList.size() > 0){
@@ -311,6 +317,23 @@ public class ChatGroupActivity extends BaseActivity implements LRecyclerView.LSc
                 group.msg = "";
                 group.time= "";
                 group.unread = 0;
+            }
+        }
+
+        mGroupAdapter.setDataList(mRoomList);
+
+    }
+
+    private void refreshRoomByID(String ID){
+        long unRead = 0;
+        if (mRoomList != null && mRoomList.size() > 0){
+            for (ChatGroup group: mRoomList){
+                if (group._id.equals(ID)){
+                    group.msg = "";
+                    group.time= "";
+                    group.unread = 0;
+                }
+                break;
             }
         }
 

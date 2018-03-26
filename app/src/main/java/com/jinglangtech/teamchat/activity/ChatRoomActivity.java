@@ -137,6 +137,12 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
 
             }else if (actionStr.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)){
                 hideSoftInput(ChatRoomActivity.this, mEtInput);
+            }else if (actionStr.equals(ChatGroupActivity.CLEAR_GROUP_ACTION)){
+                if (mChatMsgList != null){
+                    mChatMsgList.clear();
+                    mChatRoomAdapter.setDataList(mChatMsgList);
+                }
+
             }
 
         }
@@ -276,6 +282,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ChatGroupActivity.REFRESH_ROOM_MSG_ACTION);
         intentFilter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+        intentFilter.addAction(ChatGroupActivity.CLEAR_GROUP_ACTION);
         this.registerReceiver(mReceiver, intentFilter);
     }
 

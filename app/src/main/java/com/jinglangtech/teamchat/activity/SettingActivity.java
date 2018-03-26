@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -105,13 +106,19 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     public String getVerName() {
         String verName = "";
+        int verCode = 0;
         try {
             verName = this.getPackageManager().
                     getPackageInfo(this.getPackageName(), 0).versionName;
+            verCode = this.getPackageManager().
+                    getPackageInfo(this.getPackageName(), 0).versionCode;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        return verName;
+        if (!TextUtils.isEmpty(verName)){
+            verName = verName + "(" + verCode+")";
+        }
+        return verName ;
     }
 
     @Override
