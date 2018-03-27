@@ -173,6 +173,13 @@
                 android:text="通知"
                 android:textColor="@color/menu_font"
                 android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:text="TeamChat未打开时"
+                android:textColor="@color/dark_bg4"
+                android:textSize="12sp" />
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -199,9 +206,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="通知声音开关"
+                android:text="声音"
                 android:textColor="@color/menu_font"
                 android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:text="TeamChat打开时"
+                android:textColor="@color/dark_bg4"
+                android:textSize="12sp" />
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -226,9 +240,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="通知振动开关"
+                android:text="振动"
                 android:textColor="@color/menu_font"
                 android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:text="TeamChat打开时"
+                android:textColor="@color/dark_bg4"
+                android:textSize="12sp" />
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
