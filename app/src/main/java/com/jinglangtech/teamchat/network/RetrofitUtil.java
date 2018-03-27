@@ -24,8 +24,8 @@ public class RetrofitUtil {
     //测试环境
     //public static String BASE_URL = "https://sadxu.top:8443/";
     //正式环境
-    public static String BASE_URL = "https://e2038576k7.iok.la:8081/";
-    //public static String BASE_URL = "https://teamchat.jinglangtech.com:8081/";
+    //public static String BASE_URL = "https://e2038576k7.iok.la:8081/";
+    public static String BASE_URL = "https://teamchat.jinglangtech.com:8081/";
 
 
     public static String PHOTO_URL = "http://54.223.26.249:925";
