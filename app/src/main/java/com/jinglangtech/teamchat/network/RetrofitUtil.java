@@ -32,6 +32,7 @@ public class RetrofitUtil {
 
     //113.98.235.212
     public final static int DEFAULT_ITMEOUT = 30;
+    public final static int SEND_ITMEOUT = 15;
     public final static boolean DEBUG = true;
 
     private static OkHttpClient client = null;
@@ -88,7 +89,7 @@ public class RetrofitUtil {
         OkHttpClient.Builder mBuilder = new OkHttpClient().newBuilder();
         //设置超时
         mBuilder.connectTimeout(DEFAULT_ITMEOUT, TimeUnit.SECONDS);
-        mBuilder.writeTimeout(DEFAULT_ITMEOUT, TimeUnit.SECONDS);
+        mBuilder.writeTimeout(SEND_ITMEOUT, TimeUnit.SECONDS);
         mBuilder.readTimeout(DEFAULT_ITMEOUT, TimeUnit.SECONDS);
         if (DEBUG) {
             mBuilder.addNetworkInterceptor(new NetWorkInterceptor());

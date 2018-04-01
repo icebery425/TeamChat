@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -106,6 +107,7 @@ public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>  {
         TextView tvFullName = cHolder.obtainView(R.id.tv_fullname);
         ImageView ivSendFailed = cHolder.obtainView(R.id.iv_send_failed);
 
+
         if (position == 0){
             tvTime.setVisibility(View.VISIBLE);
         }else{
@@ -133,11 +135,28 @@ public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>  {
         tvMsg.setTag(position);
         tvMsg.setOnLongClickListener(mLongClickListener);
 
+
         if (info.isSend)
         {
             ivSendFailed.setVisibility(View.INVISIBLE);
+            if (info.isMine){
+                ProgressBar sendProgress = cHolder.obtainView(R.id.progressBar);
+                sendProgress.setVisibility(View.GONE);
+            }
         }else{
-            ivSendFailed.setVisibility(View.VISIBLE);
+            if (info.isMine){
+                ProgressBar sendProgress = cHolder.obtainView(R.id.progressBar);
+                if (info.isSending){
+                    sendProgress.setVisibility(View.VISIBLE);
+                    ivSendFailed.setVisibility(View.GONE);
+                }else {
+                    sendProgress.setVisibility(View.GONE);
+                    ivSendFailed.setVisibility(View.VISIBLE);
+                }
+            }else{
+                ivSendFailed.setVisibility(View.VISIBLE);
+            }
+
             ivSendFailed.setTag(position);
             ivSendFailed.setOnClickListener(mSendFailedListener);
         }

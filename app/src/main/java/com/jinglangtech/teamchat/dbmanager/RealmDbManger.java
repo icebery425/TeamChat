@@ -129,6 +129,7 @@ public class RealmDbManger implements DbManager {
         ChatMsg oldMsg = Realm.getDefaultInstance().where(ChatMsg.class).equalTo("_id", msg._id).findFirst();
         Realm.getDefaultInstance().beginTransaction();
         oldMsg.isSend = msg.isSend;
+        oldMsg.isSending = msg.isSending;
         oldMsg.dTime = msg.dTime;
         oldMsg.time = msg.time;
         Realm.getDefaultInstance().commitTransaction();

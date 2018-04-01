@@ -89,11 +89,13 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
     private int mPageIndex = 1;
     private int mPageCount = 0;
 
+    private boolean mIsSending = false;
+
     private RefreshMsgReceiver mReceiver;
 
     @Override
     public void reRend(int position) {
-        ChatMsg cmsg = mChatMsgList.get(position);
+        ChatMsg cmsg = mChatRoomAdapter.mList.get(position);
         sendMessageExt(cmsg);
     }
 
@@ -325,6 +327,33 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
             ToastUtils.showToast(ChatRoomActivity.this,"发送内容不能为空");
             return;
         }
+
+        if (mIsSending)
+        {
+            return;
+        }
+        mIsSending = true;
+
+        final ChatMsg newMsg = new ChatMsg();
+        String name = ConfigUtil.getInstance(ChatRoomActivity.this).get(Key.USER_NAME, "");
+        newMsg.name = name;
+        newMsg.content = mCurrentMsg;
+        newMsg.isMine = true;
+        newMsg.isread = true;
+        newMsg.isSend = false;
+        newMsg.isSending = true;
+        newMsg._id =   UuidUtil.get24UUID();
+        newMsg.time = TimeConverterUtil.getCurrentUTCTime();
+        newMsg.dTime= new Date();
+        newMsg.roomid = mRoomId;
+        newMsg.from = ConfigUtil.getInstance(ChatRoomActivity.this).get(Key.ID, "");
+        //mChatMsgList.add(newMsg);
+        mChatRoomAdapter.addOneData(newMsg);
+        MoveToPosition(mChatRoomAdapter.getItemCount());
+        RealmDbManger.getRealmInstance().insertOneElement(newMsg);
+        updateGroupInfoBrodcast();
+
+        mEtInput.setText("");
         CommonModel.getInstance().sendToRoom(mRoomId,mCurrentMsg, new BaseListener(SendResponse.class){
 
             @Override
@@ -340,6 +369,8 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
                 msg1.isMine = true;
                 msg1.isread = true;
                 msg1.isSend = true;
+                msg1.isSending = false;
+
                 if (sendRes == null){
                     msg1._id =   UuidUtil.get24UUID();
                     msg1.time = TimeConverterUtil.getCurrentUTCTime();
@@ -352,11 +383,18 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
 
                 msg1.roomid = mRoomId;
                 msg1.from = ConfigUtil.getInstance(ChatRoomActivity.this).get(Key.ID, "");
-                mChatMsgList.add(msg1);
-                mChatRoomAdapter.setDataList(mChatMsgList);
+
+                newMsg.isSending = false;
+                newMsg.isSend = true;
+
+                //mChatMsgList.add(msg1);
+                //mChatRoomAdapter.setDataList(mChatMsgList);
+                mChatRoomAdapter.notifyDataSetChanged();
                 MoveToPosition(mChatMsgList.size());
+                RealmDbManger.getRealmInstance().delOneElement(newMsg);
                 RealmDbManger.getRealmInstance().insertOneElement(msg1);
                 updateGroupInfoBrodcast();
+                mIsSending = false;
             }
 
             @Override
@@ -373,14 +411,23 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
                 msg1.isMine = true;
                 msg1.isread = true;
                 msg1.isSend = false;
-                msg1._id =  UuidUtil.get24UUID();
+                msg1.isSending = false;
+                msg1._id =  newMsg._id;
                 msg1.roomid = mRoomId;
                 msg1.from = ConfigUtil.getInstance(ChatRoomActivity.this).get(Key.ID, "");
-                mChatMsgList.add(msg1);
-                mChatRoomAdapter.setDataList(mChatMsgList);
-                MoveToPosition(mChatMsgList.size());
-                RealmDbManger.getRealmInstance().insertOneElement(msg1);
+                //mChatMsgList.add(msg1);
+                //mChatRoomAdapter.setDataList(mChatMsgList);
+
+                newMsg.isSending = false;
+                newMsg.isSend = false;
+
+                mChatRoomAdapter.notifyDataSetChanged();
+                MoveToPosition(mChatRoomAdapter.mList.size());
+
+                RealmDbManger.getRealmInstance().modifySendResult(msg1);
+                //RealmDbManger.getRealmInstance().insertOneElement(msg1);
                 updateGroupInfoBrodcast();
+                mIsSending = false;
                 ToastUtils.showToast(ChatRoomActivity.this,"发送消息失败");
             }
         });
@@ -391,7 +438,15 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
             ToastUtils.showToast(ChatRoomActivity.this,"聊天室ID为空");
             return;
         }
+
+        if (mIsSending){
+            return;
+        }
+
+        mIsSending = true;
         mCurrentMsg = msg.content;
+        msg.isSending = true;
+        mChatRoomAdapter.notifyDataSetChanged();
 
         CommonModel.getInstance().sendToRoom(mRoomId,mCurrentMsg, new BaseListener(SendResponse.class){
 
@@ -411,6 +466,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
                 msg1.isMine = true;
                 msg1.isread = true;
                 msg1.isSend = true;
+                msg1.isSending = false;
                 if (sendRes == null){
                     msg1._id =  msg._id;
                     msg1.time = TimeConverterUtil.getCurrentUTCTime();
@@ -426,14 +482,17 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
 
                 msg.time = msg1.time;
                 msg.isSend = msg1.isSend;
+                msg.isSending = false;
 
                 //mChatMsgList.add(msg1);
-                mChatRoomAdapter.setDataList(mChatMsgList);
-                MoveToPosition(mChatMsgList.size());
+                //mChatRoomAdapter.setDataList(mChatMsgList);
+                mChatRoomAdapter.notifyDataSetChanged();
+                MoveToPosition(mChatRoomAdapter.mList.size());
                 RealmDbManger.getRealmInstance().delOneElement(msg);
                 RealmDbManger.getRealmInstance().insertOneElement(msg1);
                 //RealmDbManger.getRealmInstance().modifySendResultExt(msg1, modifyId);
                 updateGroupInfoBrodcast();
+                mIsSending = false;
             }
 
             @Override
@@ -449,6 +508,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
                 msg1.isMine = true;
                 msg1.isread = true;
                 msg1.isSend = false;
+                msg1.isSending = false;
                 msg1._id =  msg._id;
                 msg1.roomid = mRoomId;
                 msg1.from = ConfigUtil.getInstance(ChatRoomActivity.this).get(Key.ID, "");
@@ -456,11 +516,14 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
 
                 msg.time = msg1.time;
                 msg.isSend = msg1.isSend;
+                msg.isSending = msg1.isSending;
 
-                mChatRoomAdapter.setDataList(mChatMsgList);
-                MoveToPosition(mChatMsgList.size());
+                mChatRoomAdapter.notifyDataSetChanged();
+                //mChatRoomAdapter.setDataList(mChatMsgList);
+                MoveToPosition(mChatRoomAdapter.mList.size());
                 RealmDbManger.getRealmInstance().modifySendResult(msg1);
                 updateGroupInfoBrodcast();
+                mIsSending = false;
                 ToastUtils.showToast(ChatRoomActivity.this,"发送消息失败");
             }
         });
@@ -520,6 +583,8 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         newMsg.time=localmsg.time;
         newMsg.isMine=localmsg.isread;
         newMsg.roomid=localmsg.roomid;
+        newMsg.isSend=localmsg.isSend;
+        newMsg.isSending=false;
         return newMsg;
     }
 

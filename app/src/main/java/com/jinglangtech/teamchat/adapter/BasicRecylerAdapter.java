@@ -74,6 +74,14 @@ public abstract class BasicRecylerAdapter<T> extends RecyclerView.Adapter{
 	        this.mList.addAll(list);
 	        notifyDataSetChanged();
 	 }
+
+	 public void addOneData(T one){
+		 this.mList.add(one);
+		 int len = this.mList.size();
+		 this.notifyItemInserted(len-1);
+	 }
+
+
 	
 	public abstract int getLayoutId();
 

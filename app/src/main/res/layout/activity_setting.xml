@@ -181,7 +181,7 @@
                 android:textColor="@color/dark_bg4"
                 android:textSize="12sp" />
             <FrameLayout
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 >
 
@@ -217,7 +217,7 @@
                 android:textColor="@color/dark_bg4"
                 android:textSize="12sp" />
             <FrameLayout
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 >
 
@@ -251,7 +251,7 @@
                 android:textColor="@color/dark_bg4"
                 android:textSize="12sp" />
             <FrameLayout
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 >
 
