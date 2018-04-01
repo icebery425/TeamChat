@@ -1,9 +1,14 @@
 package com.jinglangtech.teamchat.activity;
 
 
+import android.app.AppOpsManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -18,6 +23,11 @@ import com.jinglangtech.teamchat.util.Key;
 import com.jinglangtech.teamchat.util.ThreadUtil;
 import com.jinglangtech.teamchat.util.ToastUtils;
 import com.jinglangtech.teamchat.widget.CustomDialog;
+import com.jinglangtech.teamchat.widget.OpenNotifyDialog;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -43,9 +53,9 @@ public class AppStartActivity extends BaseActivity {
         ThreadUtil.runAtMain(new Runnable() {
             @Override
             public void run() {
-                startPage();
 
-                //displayResendDialog();
+                openNotificationSetting();
+
             }
         }, 1000);
     }
@@ -92,6 +102,7 @@ public class AppStartActivity extends BaseActivity {
                     saveSp();
                     setJPushAlias();
                     startChatPage();
+
                 }
 
             }
@@ -137,23 +148,93 @@ public class AppStartActivity extends BaseActivity {
 
     }
 
-    private CustomDialog mDialog = null;
-    private void displayResendDialog(){
-        CustomDialog.Builder customBuilder = new CustomDialog.Builder(this);
+    private OpenNotifyDialog mDialog = null;
+    private void displayOpenNotifyDialog(){
+        OpenNotifyDialog.Builder customBuilder = new OpenNotifyDialog.Builder(this);
         customBuilder.setNegativeButton(
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        startPage();
 
                     }
                 }).setPositiveButton(
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
+                        goToSet();
                     }
                 });
         mDialog = customBuilder.create();
         mDialog.show();
     }
 
+    private void openNotificationSetting(){
+        boolean isOpen = isNotificationEnabled(this);
+        if (!isOpen){
+            displayOpenNotifyDialog();
+        }else{
+            startPage();
+        }
+    }
+
+    //判断通知栏是否打开本应用通知
+    private boolean isNotificationEnabled(Context context) {
+
+        String CHECK_OP_NO_THROW = "checkOpNoThrow";
+        String OP_POST_NOTIFICATION = "OP_POST_NOTIFICATION";
+
+        AppOpsManager mAppOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+        ApplicationInfo appInfo = context.getApplicationInfo();
+        String pkg = context.getApplicationContext().getPackageName();
+        int uid = appInfo.uid;
+
+        Class appOpsClass = null;
+     /* Context.APP_OPS_MANAGER */
+        try {
+            appOpsClass = Class.forName(AppOpsManager.class.getName());
+            Method checkOpNoThrowMethod = appOpsClass.getMethod(CHECK_OP_NO_THROW, Integer.TYPE, Integer.TYPE,
+                    String.class);
+            Field opPostNotificationValue = appOpsClass.getDeclaredField(OP_POST_NOTIFICATION);
+
+            int value = (Integer) opPostNotificationValue.get(Integer.class);
+            return ((Integer) checkOpNoThrowMethod.invoke(mAppOps, value, uid, pkg) == AppOpsManager.MODE_ALLOWED);
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    //去通知栏打开此应用通知
+    private void goToSet(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BASE) {
+            // 进入设置系统应用权限界面
+            Intent intent = new Intent(Settings.ACTION_SETTINGS);
+            startActivityForResult(intent, 100);
+            //startActivity(intent);
+            return;
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {// 运行系统在5.x环境使用
+            // 进入设置系统应用权限界面
+            Intent intent = new Intent(Settings.ACTION_SETTINGS);
+            startActivityForResult(intent, 100);
+            //startActivity(intent);
+            return;
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        startPage();
+    }
 }

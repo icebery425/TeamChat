@@ -35,6 +35,7 @@
                         android:text="张三风"
                         android:textColor="@android:color/black"
                         android:textSize="15sp" />
+
                     <TextView
                         android:id="@+id/tv_time"
                         android:layout_width="0dp"
@@ -43,13 +44,13 @@
                         android:gravity="right"
                         android:text="上午01:28"
                         android:textColor="@color/dark_bg4"
-                        android:textSize="11sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingTop="6dp"
+                    android:paddingTop="4dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -60,7 +61,7 @@
                         android:singleLine="true"
                         android:text="不客气~~~~"
                         android:textColor="@color/dark_bg3"
-                        android:textSize="13sp"
+                        android:textSize="14sp"
                         android:visibility="visible" />
 
 

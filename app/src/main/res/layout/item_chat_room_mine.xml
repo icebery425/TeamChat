@@ -71,19 +71,20 @@
                 android:layout_weight="1"
                 android:visibility="invisible"
                 app:srcCompat="@mipmap/news_ic_fail" />
+
             <TextView
                 android:id="@+id/tv_last_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/ic_bubble_left"
-                android:minHeight="40dp"
+                android:gravity="center_vertical"
                 android:maxWidth="252dp"
+                android:minHeight="40dp"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
                 android:text="不客气~~~~不客不客不客不客不客不客不客不客不客不客不客不客不客"
-                android:gravity="center_vertical"
                 android:textColor="@color/menu_font"
-                android:textSize="15sp"
+                android:textSize="16sp"
                 android:visibility="visible" />
 
 
