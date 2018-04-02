@@ -72,8 +72,10 @@ public class ChatRoomMsgAdapter extends BasicRecylerAdapter<ChatMsg>  {
         int tempType = TYPE_OTHERS;
         if  (!TextUtils.isEmpty(mId) && mId.equals(chatmsg.from)){
             tempType = TYPE_MINE;
+            chatmsg.isMine = true;
         }else{
             tempType = TYPE_OTHERS;
+            chatmsg.isMine = false;
         }
         return tempType;
     }
