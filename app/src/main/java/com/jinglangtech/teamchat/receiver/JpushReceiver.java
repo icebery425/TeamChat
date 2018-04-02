@@ -114,9 +114,10 @@ public class JpushReceiver extends BroadcastReceiver {
                 .setContentText("收到一条新消息")
                 .setOnlyAlertOnce(false)
                 //.setDefaults(Notification.DEFAULT_SOUND)
-                .setContentIntent(resultPendingIntent);
+                .setContentIntent(resultPendingIntent)
+                .setAutoCancel(true);
 
-            builder.setDefaults(Notification.DEFAULT_SOUND|Notification.DEFAULT_VIBRATE);
+        builder.setDefaults(Notification.DEFAULT_SOUND|Notification.DEFAULT_VIBRATE|Notification.DEFAULT_LIGHTS);
 
 
         NotificationManager manager = (NotificationManager) mCtx.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -147,7 +148,7 @@ public class JpushReceiver extends BroadcastReceiver {
     private void sendNotificationVibrate(){
         Vibrator vibrator;
         vibrator = (Vibrator) mCtx.getSystemService(Context.VIBRATOR_SERVICE);
-        vibrator.vibrate(300);
+        vibrator.vibrate(260);
     }
 
 
