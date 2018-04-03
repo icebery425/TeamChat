@@ -107,7 +107,7 @@ public class JpushReceiver extends BroadcastReceiver {
         PendingIntent resultPendingIntent = PendingIntent.getActivity(application, 0, resultIntent, 0);
 
 
-        int notifyId = -1;
+        int notifyId = 1000;
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mCtx)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("TeamChat")

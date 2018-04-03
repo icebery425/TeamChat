@@ -322,8 +322,8 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
             ToastUtils.showToast(ChatRoomActivity.this,"聊天室ID为空");
             return;
         }
-        mCurrentMsg = mEtInput.getText().toString().trim();
-        if (mCurrentMsg.length() <= 0){
+        String tempMsg =  mEtInput.getText().toString().trim();
+        if (tempMsg.length() <= 0){
             ToastUtils.showToast(ChatRoomActivity.this,"发送内容不能为空");
             return;
         }
@@ -333,7 +333,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
             return;
         }
         mIsSending = true;
-
+        mCurrentMsg = tempMsg;
         final ChatMsg newMsg = new ChatMsg();
         String name = ConfigUtil.getInstance(ChatRoomActivity.this).get(Key.USER_NAME, "");
         newMsg.name = name;

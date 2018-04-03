@@ -2,6 +2,7 @@ package com.jinglangtech.teamchat.activity;
 
 
 import android.app.AppOpsManager;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -68,7 +69,8 @@ public class AppStartActivity extends BaseActivity {
 
     @Override
     public void loadData() {
-
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancelAll();
     }
 
     public void startPage(){
