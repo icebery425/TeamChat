@@ -83,7 +83,7 @@ public class AppStartActivity extends BaseActivity {
             startLoginPage();
         }
     }
-    
+
     private void appLogin(String name, String pwd){
 
         CommonModel.getInstance().login(name, pwd, new BaseListener(LoginUser.class){
