@@ -70,7 +70,7 @@ public class AppStartActivity extends BaseActivity {
     @Override
     public void loadData() {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.cancelAll();
+        manager.cancel(1000);
     }
 
     public void startPage(){
@@ -83,9 +83,7 @@ public class AppStartActivity extends BaseActivity {
             startLoginPage();
         }
     }
-
-
-
+    
     private void appLogin(String name, String pwd){
 
         CommonModel.getInstance().login(name, pwd, new BaseListener(LoginUser.class){
