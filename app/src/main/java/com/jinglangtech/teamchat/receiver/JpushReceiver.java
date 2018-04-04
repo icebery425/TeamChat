@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -110,6 +111,7 @@ public class JpushReceiver extends BroadcastReceiver {
         int notifyId = 1000;
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mCtx)
                 .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(mCtx.getResources(), R.mipmap.ic_launcher))
                 .setContentTitle("TeamChat")
                 .setContentText("收到一条新消息")
                 .setOnlyAlertOnce(false)
