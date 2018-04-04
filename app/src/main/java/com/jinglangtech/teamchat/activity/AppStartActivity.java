@@ -3,12 +3,15 @@ package com.jinglangtech.teamchat.activity;
 
 import android.app.AppOpsManager;
 import android.app.NotificationManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.ApplicationInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +22,7 @@ import com.jinglangtech.teamchat.listener.BaseListener;
 import com.jinglangtech.teamchat.model.LoginUser;
 import com.jinglangtech.teamchat.network.CommonModel;
 import com.jinglangtech.teamchat.network.NetWorkInterceptor;
+import com.jinglangtech.teamchat.service.KeepAliveService;
 import com.jinglangtech.teamchat.util.ConfigUtil;
 import com.jinglangtech.teamchat.util.Key;
 import com.jinglangtech.teamchat.util.ThreadUtil;
@@ -37,7 +41,21 @@ import cn.jpush.android.api.JPushInterface;
  */
 public class AppStartActivity extends BaseActivity {
 
+    KeepAliveService mForegroundService;
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            KeepAliveService.LocalBinder binder = (KeepAliveService.LocalBinder) service;
+            mForegroundService = binder.getService();
+            //调用服务中的方法
+            //foregroundService.doSomeThingOne();
+        }
 
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+
+        }
+    };
 
     @Override
     public int getLayoutResourceId() {
@@ -71,6 +89,7 @@ public class AppStartActivity extends BaseActivity {
     public void loadData() {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(1000);
+        startForeground();
     }
 
     public void startPage(){
@@ -236,5 +255,26 @@ public class AppStartActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         startPage();
+    }
+
+    //启动前台服务
+    private void startForeground(){
+        Intent intent = new Intent(AppStartActivity.this,KeepAliveService.class);
+        startService(intent);
+    }
+    //结束前台服务
+    private void stopForeground(){
+        Intent intent = new Intent(AppStartActivity.this,KeepAliveService.class);
+        stopService(intent);
+    }
+
+    //绑定前台服务
+    private void bindForeground(){
+        Intent intent = new Intent(this, KeepAliveService.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+    }
+    //解绑前台服务
+    private void unbindForeground(){
+        unbindService(mConnection);
     }
 }
