@@ -1,6 +1,8 @@
 package com.jinglangtech.teamchat.activity;
 
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -37,6 +39,13 @@ public abstract class BaseActivity extends AppCompatActivity{
         initVariables();
         initViews();
         loadData();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancel(1000);
     }
 
 

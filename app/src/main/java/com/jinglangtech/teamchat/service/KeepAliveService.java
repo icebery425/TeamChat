@@ -47,7 +47,7 @@ public class KeepAliveService extends Service {
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                 .setContentIntent(pi)
                 .build();
-        startForeground(999, notification);
+        startForeground(9999, notification);
     }
 
     @Override
