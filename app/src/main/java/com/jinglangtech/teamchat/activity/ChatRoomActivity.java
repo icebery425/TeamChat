@@ -649,7 +649,7 @@ public class ChatRoomActivity extends BaseActivity implements LRecyclerView.LScr
         App.mIsChatPage = true;
     }
 
-    
+
     @Override
     public void onRefresh() {
 
