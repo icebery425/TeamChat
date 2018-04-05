@@ -29,20 +29,18 @@
 
                     <TextView
                         android:id="@+id/tv_name"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
                         android:text="张三风"
                         android:textColor="@android:color/black"
                         android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/tv_time"
-                        android:layout_width="0dp"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:gravity="right"
-                        android:text="上午01:28"
+                        android:text="2018-04-06 00:50:28"
                         android:textColor="@color/dark_bg4"
                         android:textSize="12sp" />
                 </LinearLayout>
