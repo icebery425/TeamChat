@@ -43,8 +43,8 @@ public class KeepAliveService extends Service {
                 .setContentTitle("TeamChat")
                 .setContentText("服务运行中")
                 .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+                .setSmallIcon(R.mipmap.service_logo)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.service_logo))
                 .setContentIntent(pi)
                 .build();
         startForeground(9999, notification);
