@@ -1,8 +1,10 @@
 package com.jinglangtech.teamchat.service;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Binder;
@@ -10,6 +12,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.jinglangtech.teamchat.R;
 import com.jinglangtech.teamchat.activity.AppStartActivity;
@@ -36,6 +39,12 @@ public class KeepAliveService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.i(TAG, "onCreate:");
+        //showSystemNotify();
+        showCustomNotify();
+    }
+
+
+    private void showSystemNotify() {
         Intent intent = new Intent(this, AppStartActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);
@@ -49,6 +58,32 @@ public class KeepAliveService extends Service {
                 .build();
         startForeground(9999, notification);
     }
+
+    private void showCustomNotify(){
+        Notification noti = new Notification();
+        noti.flags = Notification.FLAG_AUTO_CANCEL;
+        noti.icon = R.drawable.ic_launcher;
+        // 1、创建一个自定义的消息布局 notification.xml
+        // 2、在程序代码中使用RemoteViews的方法来定义image和text。然后把RemoteViews对象传到contentView字段
+        RemoteViews rv = new RemoteViews(this.getPackageName(),
+                R.layout.notify_layout);
+        //rv.setImageViewResource(R.id.image,
+        //        R.drawable.ic_launcher);
+        //rv.setImageViewBitmap(R.id.image, bitmap);
+       // rv.setTextViewText(R.id.text,
+        //        "Hello,this message is in a custom expanded view");
+        noti.contentView = rv;
+        // 3、为Notification的contentIntent字段定义一个Intent(注意，使用自定义View不需要setLatestEventInfo()方法)
+
+        // 这儿点击后简答启动Settings模块
+        Intent intent = new Intent(this, AppStartActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);
+        noti.contentIntent = pi;
+
+        startForeground(9999, noti);
+    }
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
