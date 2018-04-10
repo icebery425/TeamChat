@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.jinglangtech.teamchat.R;
 import com.jinglangtech.teamchat.util.ActivityContainer;
+import com.umeng.message.PushAgent;
 
 import butterknife.ButterKnife;
 
@@ -35,6 +36,7 @@ public abstract class BaseActivity extends AppCompatActivity{
         initStatusColor();
 
         ActivityContainer.getInstance().addActivity(this);
+        PushAgent.getInstance(this).onAppStart();
 
         initVariables();
         initViews();

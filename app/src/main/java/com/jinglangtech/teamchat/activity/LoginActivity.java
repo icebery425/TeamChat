@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jinglangtech.teamchat.App;
 import com.jinglangtech.teamchat.R;
 import com.jinglangtech.teamchat.listener.BaseListener;
 import com.jinglangtech.teamchat.model.LoginUser;
@@ -33,6 +34,7 @@ import com.jinglangtech.teamchat.util.Key;
 import com.jinglangtech.teamchat.util.ToastUtil;
 import com.jinglangtech.teamchat.util.ToastUtils;
 import com.jinglangtech.teamchat.util.UuidUtil;
+import com.umeng.message.UTrack;
 
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
@@ -190,6 +192,17 @@ public class LoginActivity extends BaseActivity{
 
     private void setJPushAlias(){
         JPushInterface.setAlias(this, 888, mId);
+
+        App mApp = (App)this.getApplication();
+        if (mApp != null && mApp.mPushAgent != null){
+            mApp.mPushAgent.setAlias(mId, "user_id",
+                    new UTrack.ICallBack() {
+                        @Override
+                        public void onMessage(boolean isSuccess, String message) {
+                        }
+                    });
+        }
+
     }
 
     public void saveSp(){
