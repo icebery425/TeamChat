@@ -89,7 +89,8 @@ public class App extends MultiDexApplication{
     private UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
         @Override
         public void dealWithCustomAction(Context context, UMessage msg) {
-            Log.e("", msg.text);
+            Log.e("############", msg.custom);
+
         }
     };
 
