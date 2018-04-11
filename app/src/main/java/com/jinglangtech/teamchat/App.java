@@ -2,7 +2,11 @@ package com.jinglangtech.teamchat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,6 +16,8 @@ import com.jinglangtech.teamchat.activity.ChatGroupActivity;
 import com.jinglangtech.teamchat.dbmanager.DbMigration;
 import com.jinglangtech.teamchat.model.PushData;
 import com.jinglangtech.teamchat.network.RetrofitUtil;
+import com.jinglangtech.teamchat.util.ConfigUtil;
+import com.jinglangtech.teamchat.util.Key;
 import com.jinglangtech.teamchat.util.ToastUtil;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.IUmengRegisterCallback;
@@ -86,7 +92,7 @@ public class App extends MultiDexApplication{
 
         mPushAgent = PushAgent.getInstance(this);
         //应用在前台时否显示通知
-        //mPushAgent.setNotificaitonOnForeground(false);
+        mPushAgent.setNotificaitonOnForeground(false);
         //注册推送服务，每次调用register方法都会回调该接口
         mPushAgent.register(new IUmengRegisterCallback() {
             @Override
@@ -161,6 +167,8 @@ public class App extends MultiDexApplication{
                 dateInfo = JSON.parseObject(extraMsg, PushData.class);
                 if (dateInfo != null){
                     //TODO
+                    notificationOper();
+
                     Intent intent = new Intent(ChatGroupActivity.RECEIVE_MSG_CUSTOM_ACTION);
                     intent.putExtra("jpushRoomId", dateInfo.roomid);
                     ctx.sendBroadcast(intent);
@@ -172,4 +180,34 @@ public class App extends MultiDexApplication{
         }
 
     }
+
+
+
+
+    private void notificationOper(){
+        boolean issNoticeVoiceOpen = ConfigUtil.getInstance(this).get(Key.NOTICE_VOICE_OPEN, true);
+        boolean issNoticeVibrateOpen = ConfigUtil.getInstance(this).get(Key.NOTICE_VIBRATE_OPEN, true);
+        if (issNoticeVoiceOpen && issNoticeVibrateOpen) {
+            sendNotificationVoice();
+            sendNotificationVibrate();
+        }else if(issNoticeVoiceOpen){
+            sendNotificationVoice();
+        }else if (issNoticeVibrateOpen){
+            sendNotificationVibrate();
+        }
+
+    }
+
+    private void sendNotificationVoice(){
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Ringtone r = RingtoneManager.getRingtone(this.getApplicationContext(), notification);
+        r.play();
+    }
+
+    private void sendNotificationVibrate(){
+        Vibrator vibrator;
+        vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(260);
+    }
+
 }

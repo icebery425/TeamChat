@@ -20,9 +20,12 @@ import android.widget.Toast;
 
 import com.jinglangtech.teamchat.R;
 import com.jinglangtech.teamchat.dbmanager.RealmDbManger;
+import com.jinglangtech.teamchat.listener.BaseListener;
+import com.jinglangtech.teamchat.network.CommonModel;
 import com.jinglangtech.teamchat.util.ConfigUtil;
 import com.jinglangtech.teamchat.util.DisPlayUtil;
 import com.jinglangtech.teamchat.util.Key;
+import com.jinglangtech.teamchat.util.ToastUtils;
 import com.jinglangtech.teamchat.widget.CustomPhotoSelect;
 
 import butterknife.BindView;
@@ -186,14 +189,34 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     private void setNoticeOpen(){
         if (mIsNoticeOpen){
-            ConfigUtil.getInstance(this).put(Key.NOTICE_OPEN, false);
-            mIsNoticeOpen = false;
+            setNotifyOpen(false);
         }else{
-            ConfigUtil.getInstance(this).put(Key.NOTICE_OPEN, true);
-            mIsNoticeOpen = true;
+            setNotifyOpen(true);
         }
-        ConfigUtil.getInstance(this).commit();
+
     }
+
+    private void setNotifyOpen(final boolean value){
+        CommonModel.getInstance().modifySetting("android", value, new BaseListener(String.class) {
+
+            @Override
+            public void responseResult(Object infoObj, Object listObj, int code, boolean status) {
+                super.responseResult(infoObj, listObj, code, status);
+                //ToastUtils.showToast(SettingActivity.this, "设置通知开关成功!");
+                ConfigUtil.getInstance(SettingActivity.this).put(Key.NOTICE_OPEN, value);
+                mIsNoticeOpen = value;
+                ConfigUtil.getInstance(SettingActivity.this).commit();
+            }
+
+            @Override
+            public void requestFailed(boolean status, int code, String errorMessage) {
+                super.requestFailed(status, code, errorMessage);
+                ToastUtils.showToast(SettingActivity.this, "设置通知开关失败");
+                mCbNotice.setChecked(!value);
+            }
+        });
+    }
+
     private void setNoticeVoiceOpen(){
         if (mIsNoticeVoiceOpen){
             ConfigUtil.getInstance(this).put(Key.NOTICE_VOICE_OPEN, false);

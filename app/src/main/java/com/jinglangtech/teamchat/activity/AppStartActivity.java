@@ -17,6 +17,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
+import com.jinglangtech.teamchat.App;
 import com.jinglangtech.teamchat.R;
 import com.jinglangtech.teamchat.listener.BaseListener;
 import com.jinglangtech.teamchat.model.LoginUser;
@@ -29,6 +30,7 @@ import com.jinglangtech.teamchat.util.ThreadUtil;
 import com.jinglangtech.teamchat.util.ToastUtils;
 import com.jinglangtech.teamchat.widget.CustomDialog;
 import com.jinglangtech.teamchat.widget.OpenNotifyDialog;
+import com.umeng.message.UTrack;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -137,6 +139,17 @@ public class AppStartActivity extends BaseActivity {
 
     private void setJPushAlias(){
         JPushInterface.setAlias(this, 888, mId);
+
+        App mApp = (App)this.getApplication();
+        if (mApp != null && mApp.mPushAgent != null){
+            mApp.mPushAgent.setAlias(mId, "user_id",
+                    new UTrack.ICallBack() {
+                        @Override
+                        public void onMessage(boolean isSuccess, String message) {
+                        }
+                    });
+        }
+
     }
 
     public void saveSp(){
