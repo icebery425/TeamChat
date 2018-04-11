@@ -93,13 +93,15 @@ public class App extends MultiDexApplication{
             public void onSuccess(String deviceToken) {
                 //注册成功会返回device token
                 mUmengToken = deviceToken;
-                umengNotifyProcess();
+
             }
             @Override
             public void onFailure(String s, String s1) {
                 Log.e("", "registerUmengPushService failed: " + s +", "+ s1);
             }
         });
+
+        umengNotifyProcess();
     }
 
     private UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
@@ -111,7 +113,19 @@ public class App extends MultiDexApplication{
     };
 
     private UmengMessageHandler messageHandler = new UmengMessageHandler(){
+        /**
+         * 通知的回调方法（通知送达时会回调）
+         */
+        @Override
+        public void dealWithNotificationMessage(Context context, UMessage msg) {
+            //调用super，会展示通知，不调用super，则不展示通知。
+            super.dealWithNotificationMessage(context, msg);
+            Log.e("############ Notify:", "############ dealWithNotificationMessage:" + msg.toString());
+        }
 
+        /**
+         * 自定义消息的回调方法
+         */
         @Override
         public void dealWithCustomMessage(final Context context, final UMessage msg) {
             new Handler(getMainLooper()).post(new Runnable() {
