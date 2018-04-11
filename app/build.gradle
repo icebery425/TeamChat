@@ -17,9 +17,9 @@ android {
             // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
         }
         manifestPlaceholders = [
-                JPUSH_PKGNAME : applicationId,
+                JPUSH_PKGNAME: applicationId,
                 JPUSH_APPKEY : "a0ed14bc3dfe7ca7f8c32cfa", //JPush上注册的包名对应的appkey.
-                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
         ]
     }
 
@@ -84,5 +84,12 @@ dependencies {
     compile 'com.umeng.sdk:utdid:1.1.5.3'
     //PushSDK
     compile 'com.umeng.sdk:push:4.1.0'
+
+    //小米Push通道
+    compile 'com.umeng.sdk:push-xiaomi:1.0.0'
+    //华为Push通道
+    compile 'com.umeng.sdk:push-huawei:1.0.0'
+    //魅族Push通道
+    compile 'com.umeng.sdk:push-meizu:1.0.0'
 
 }

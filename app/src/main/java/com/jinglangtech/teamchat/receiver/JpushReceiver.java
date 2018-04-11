@@ -1,5 +1,6 @@
 package com.jinglangtech.teamchat.receiver;
 
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -31,8 +32,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
+import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
+
+import static android.content.Context.ACTIVITY_SERVICE;
 
 /**
  * Created by icebery on 2017/5/24 0024.
@@ -207,6 +211,25 @@ public class JpushReceiver extends BroadcastReceiver {
 
         }
 
+    }
+
+    private boolean isAppForceground(Context ctx){
+        boolean ret = false;
+        ActivityManager am = (ActivityManager) ctx.getSystemService(ACTIVITY_SERVICE);
+                 List<ActivityManager.RunningAppProcessInfo> runnings = am.getRunningAppProcesses();
+                 for(ActivityManager.RunningAppProcessInfo running : runnings){
+                         if(running.processName.equals(ctx.getPackageName())){
+                                 if(running.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
+                                         || running.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE){
+                                         //前台显示... 8
+                                     ret = true;
+                                 }else{
+                                         //后台显示...10
+                                 }
+                                    break;
+                                }
+                        }
+        return ret ;
     }
 
 

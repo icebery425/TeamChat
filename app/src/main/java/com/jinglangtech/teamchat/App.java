@@ -1,6 +1,7 @@
 package com.jinglangtech.teamchat;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
@@ -10,8 +11,14 @@ import com.jinglangtech.teamchat.util.ToastUtil;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
+import com.umeng.message.UTrack;
+import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.UmengNotificationClickHandler;
 import com.umeng.message.entity.UMessage;
+
+import org.android.agoo.huawei.HuaWeiRegister;
+import org.android.agoo.mezu.MeizuRegister;
+import org.android.agoo.xiaomi.MiPushRegistar;
 
 import cn.jpush.android.api.JPushInterface;
 import io.realm.Realm;
@@ -68,6 +75,10 @@ public class App extends MultiDexApplication{
 
     //注册友盟推送服务
     public void registerUmengPushService(){
+        HuaWeiRegister.register(this);
+        MiPushRegistar.register(this, "2882303761517763828", "5101776331828");
+        MeizuRegister.register(this, "1000103", "e1bd9a94a46d4cffbfe288a1204a0c87");
+
         mPushAgent = PushAgent.getInstance(this);
         //应用在前台时否显示通知
         mPushAgent.setNotificaitonOnForeground(false);
@@ -89,12 +100,36 @@ public class App extends MultiDexApplication{
     private UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
         @Override
         public void dealWithCustomAction(Context context, UMessage msg) {
-            Log.e("############", msg.custom);
+            Log.e("############ Notify: ", "############ Notify:" + msg.custom);
 
+        }
+    };
+
+    private UmengMessageHandler messageHandler = new UmengMessageHandler(){
+
+        @Override
+        public void dealWithCustomMessage(final Context context, final UMessage msg) {
+            new Handler(getMainLooper()).post(new Runnable() {
+
+                @Override
+                public void run() {
+                    // 对于自定义消息，PushSDK默认只统计送达。若开发者需要统计点击和忽略，则需手动调用统计方法。
+                    boolean isClickOrDismissed = true;
+                    if(isClickOrDismissed) {
+                        //自定义消息的点击统计
+                        UTrack.getInstance(getApplicationContext()).trackMsgClick(msg);
+                    } else {
+                        //自定义消息的忽略统计
+                        UTrack.getInstance(getApplicationContext()).trackMsgDismissed(msg);
+                    }
+                    Log.e("############ Notify:", "############ Message:" + msg.custom);
+                }
+            });
         }
     };
 
     public void umengNotifyProcess(){
         mPushAgent.setNotificationClickHandler(notificationClickHandler);
+        mPushAgent.setMessageHandler(messageHandler);
     }
 }
