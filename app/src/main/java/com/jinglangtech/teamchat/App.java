@@ -1,11 +1,16 @@
 package com.jinglangtech.teamchat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.support.multidex.MultiDexApplication;
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.alibaba.fastjson.JSON;
+import com.jinglangtech.teamchat.activity.ChatGroupActivity;
 import com.jinglangtech.teamchat.dbmanager.DbMigration;
+import com.jinglangtech.teamchat.model.PushData;
 import com.jinglangtech.teamchat.network.RetrofitUtil;
 import com.jinglangtech.teamchat.util.ToastUtil;
 import com.umeng.commonsdk.UMConfigure;
@@ -81,7 +86,7 @@ public class App extends MultiDexApplication{
 
         mPushAgent = PushAgent.getInstance(this);
         //应用在前台时否显示通知
-        mPushAgent.setNotificaitonOnForeground(false);
+        //mPushAgent.setNotificaitonOnForeground(false);
         //注册推送服务，每次调用register方法都会回调该接口
         mPushAgent.register(new IUmengRegisterCallback() {
             @Override
@@ -123,6 +128,7 @@ public class App extends MultiDexApplication{
                         UTrack.getInstance(getApplicationContext()).trackMsgDismissed(msg);
                     }
                     Log.e("############ Notify:", "############ Message:" + msg.custom);
+                    processExtra(context, msg.custom);
                 }
             });
         }
@@ -131,5 +137,25 @@ public class App extends MultiDexApplication{
     public void umengNotifyProcess(){
         mPushAgent.setNotificationClickHandler(notificationClickHandler);
         mPushAgent.setMessageHandler(messageHandler);
+    }
+
+
+    private void processExtra(Context ctx, String extraMsg){
+        PushData dateInfo = null;
+        if (!TextUtils.isEmpty(extraMsg)) {
+            try {
+                dateInfo = JSON.parseObject(extraMsg, PushData.class);
+                if (dateInfo != null){
+                    //TODO
+                    Intent intent = new Intent(ChatGroupActivity.RECEIVE_MSG_CUSTOM_ACTION);
+                    intent.putExtra("jpushRoomId", dateInfo.roomid);
+                    ctx.sendBroadcast(intent);
+                }
+            } catch (Exception e) {
+
+            }
+
+        }
+
     }
 }

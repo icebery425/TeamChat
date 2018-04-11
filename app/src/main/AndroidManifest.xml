@@ -249,8 +249,6 @@
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="a0ed14bc3dfe7ca7f8c32cfa" />
-
-        <activity android:name=".activity.MeizuPushActivity"></activity>
     </application>
 
 </manifest>
