@@ -135,6 +135,10 @@ public class AppStartActivity extends BaseActivity {
         });
     }
 
+    private  void getUserInfo(){
+
+    }
+
     private void setJPushAlias(){
         JPushInterface.setAlias(this, 888, mId);
     }
