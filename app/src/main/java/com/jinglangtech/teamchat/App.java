@@ -1,5 +1,6 @@
 package com.jinglangtech.teamchat;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Ringtone;
@@ -31,6 +32,8 @@ import com.umeng.message.entity.UMessage;
 import org.android.agoo.huawei.HuaWeiRegister;
 import org.android.agoo.mezu.MeizuRegister;
 import org.android.agoo.xiaomi.MiPushRegistar;
+
+import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
 import io.realm.Realm;
@@ -164,6 +167,14 @@ public class App extends MultiDexApplication{
 
 
     private void processExtra(Context ctx, String extraMsg){
+
+        //if (!isAppForceground(ctx)){
+        //    return;
+        //}
+        if (!App.mIsChatPage){
+            return;
+        }
+
         PushData dateInfo = null;
         if (!TextUtils.isEmpty(extraMsg)) {
             try {
@@ -235,6 +246,26 @@ public class App extends MultiDexApplication{
             });
         }
 
+    }
+
+    private boolean isAppForceground(Context ctx){
+        boolean ret = false;
+        ActivityManager am = (ActivityManager) ctx.getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> runnings = am.getRunningAppProcesses();
+        for(ActivityManager.RunningAppProcessInfo running : runnings){
+            if(running.processName.equals(ctx.getPackageName())){
+                if(running.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
+                        || running.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE){
+                    //前台显示... 8
+                    ret = true;
+                }else{
+                    //后台显示...10
+                    ret = false;
+                }
+                break;
+            }
+        }
+        return ret ;
     }
 
 

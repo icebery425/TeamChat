@@ -3,21 +3,25 @@ package com.jinglangtech.teamchat.activity;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.jinglangtech.teamchat.App;
-import com.jinglangtech.teamchat.R;
 import com.jinglangtech.teamchat.util.ActivityContainer;
 import com.umeng.message.PushAgent;
+import com.umeng.message.UmengNotifyClickActivity;
+
+import org.android.agoo.common.AgooConstants;
 
 import butterknife.ButterKnife;
 
 
-public abstract class BaseActivity extends AppCompatActivity{
+public abstract class BaseStartActivity extends UmengNotifyClickActivity {
 
 
     public abstract int getLayoutResourceId();
@@ -42,18 +46,6 @@ public abstract class BaseActivity extends AppCompatActivity{
         initVariables();
         initViews();
         loadData();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        App.mIsChatPage = false;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        App.mIsChatPage = true;
     }
 
     @Override
@@ -97,5 +89,26 @@ public abstract class BaseActivity extends AppCompatActivity{
 
     public void finishActivity(View v){
         this.finish();
+    }
+
+
+    @Override
+    public void onMessage(Intent intent) {
+        super.onMessage(intent);  //此方法必须调用，否则无法统计打开数
+        final String body = intent.getStringExtra(AgooConstants.MESSAGE_BODY);
+        Log.i("onMessage", body);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        App.mIsChatPage = false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        App.mIsChatPage = true;
     }
 }

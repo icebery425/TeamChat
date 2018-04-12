@@ -221,19 +221,6 @@ public class LoginActivity extends BaseActivity{
         finish();
     }
 
-    private void sendNotify(){
-        int notifyId = -1;
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("TeamChat")
-                .setContentText("收到一条新消息")
-                .setOnlyAlertOnce(true)
-                .setDefaults(Notification.DEFAULT_SOUND);
-
-        NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(notifyId, builder.build());
-
-    }
 
 
 }

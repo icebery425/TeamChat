@@ -1,5 +1,7 @@
 package com.jinglangtech.teamchat;
 
+import android.content.Context;
+
 import com.umeng.message.meizu.UmengMeizuPushReceiver;
 
 /**
@@ -8,4 +10,8 @@ import com.umeng.message.meizu.UmengMeizuPushReceiver;
 
 public class JltMeizuPushReceiver extends UmengMeizuPushReceiver {
 
+    @Override
+    public void onMessage(Context context, String s) {
+        super.onMessage(context, s);
+    }
 }

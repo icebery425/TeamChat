@@ -41,7 +41,7 @@ import cn.jpush.android.api.JPushInterface;
 /**
  *  App 启动页
  */
-public class AppStartActivity extends BaseActivity {
+public class AppStartActivity extends BaseStartActivity {
 
     KeepAliveService mForegroundService;
     private ServiceConnection mConnection = new ServiceConnection() {

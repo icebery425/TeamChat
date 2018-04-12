@@ -216,24 +216,7 @@ public class JpushReceiver extends BroadcastReceiver {
 
     }
 
-    private boolean isAppForceground(Context ctx){
-        boolean ret = false;
-        ActivityManager am = (ActivityManager) ctx.getSystemService(ACTIVITY_SERVICE);
-                 List<ActivityManager.RunningAppProcessInfo> runnings = am.getRunningAppProcesses();
-                 for(ActivityManager.RunningAppProcessInfo running : runnings){
-                         if(running.processName.equals(ctx.getPackageName())){
-                                 if(running.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
-                                         || running.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE){
-                                         //前台显示... 8
-                                     ret = true;
-                                 }else{
-                                         //后台显示...10
-                                 }
-                                    break;
-                                }
-                        }
-        return ret ;
-    }
+
 
 
 
