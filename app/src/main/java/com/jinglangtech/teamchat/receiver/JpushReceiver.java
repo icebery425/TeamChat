@@ -25,6 +25,7 @@ import com.jinglangtech.teamchat.activity.ChatGroupActivity;
 import com.jinglangtech.teamchat.activity.MainActivity;
 import com.jinglangtech.teamchat.model.PushData;
 import com.jinglangtech.teamchat.util.ConfigUtil;
+import com.jinglangtech.teamchat.util.Constant;
 import com.jinglangtech.teamchat.util.Key;
 
 
@@ -66,8 +67,10 @@ public class JpushReceiver extends BroadcastReceiver {
             String extraExtra = bundle.getString(JPushInterface.EXTRA_EXTRA);
 
             Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + extraMsg);
-            processExtra(context, extraExtra);
-            sendNotify();
+            if (Constant.JPUSH_ENABLE){
+                processExtra(context, extraExtra);
+                sendNotify();
+            }
 
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");

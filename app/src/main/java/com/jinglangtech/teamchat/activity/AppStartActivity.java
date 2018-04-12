@@ -86,6 +86,7 @@ public class AppStartActivity extends BaseActivity {
     private String mId = null;
     private String mAccount = null;
     private String mToken = null;
+    private boolean mIsNotifyOpen = false;
 
     @Override
     public void loadData() {
@@ -122,7 +123,7 @@ public class AppStartActivity extends BaseActivity {
 
                     saveSp();
                     setJPushAlias();
-                    startChatPage();
+                    getUserInfo(mId);
 
                 }
 
@@ -137,8 +138,28 @@ public class AppStartActivity extends BaseActivity {
         });
     }
 
-    private  void getUserInfo(){
+    private  void getUserInfo(String uid){
+        CommonModel.getInstance().getUserInfo(uid,new BaseListener(LoginUser.class){
 
+            @Override
+            public void responseResult(Object infoObj, Object listObj, int code, boolean status) {
+                super.responseResult(infoObj, listObj, code, status);
+                LoginUser user = (LoginUser)infoObj;
+                if (user != null){
+                    NetWorkInterceptor.setToken(user.token);
+                    mIsNotifyOpen = user.notification;
+                    ConfigUtil.getInstance(AppStartActivity.this).put(Key.NOTICE_OPEN, mIsNotifyOpen);
+                    ConfigUtil.getInstance(AppStartActivity.this).commit();
+                }
+                startChatPage();
+            }
+
+            @Override
+            public void requestFailed(boolean status, int code, String errorMessage) {
+                super.requestFailed(status, code, errorMessage);
+                startChatPage();
+            }
+        });
     }
 
     private void setJPushAlias(){

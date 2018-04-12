@@ -14,4 +14,5 @@ public class LoginUser {
     public String avatar;
     public String account;
     public boolean isUpdated;
+    public boolean notification;
 }

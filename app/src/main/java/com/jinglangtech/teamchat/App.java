@@ -20,6 +20,7 @@ import com.jinglangtech.teamchat.util.ConfigUtil;
 import com.jinglangtech.teamchat.util.Key;
 import com.jinglangtech.teamchat.util.ToastUtil;
 import com.umeng.commonsdk.UMConfigure;
+import com.umeng.message.IUmengCallback;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UTrack;
@@ -86,9 +87,7 @@ public class App extends MultiDexApplication{
 
     //注册友盟推送服务
     public void registerUmengPushService(){
-        HuaWeiRegister.register(this);
-        MiPushRegistar.register(this, "2882303761517763828", "5101776331828");
-        MeizuRegister.register(this, "1000103", "e1bd9a94a46d4cffbfe288a1204a0c87");
+
 
         mPushAgent = PushAgent.getInstance(this);
         //应用在前台时否显示通知
@@ -108,6 +107,10 @@ public class App extends MultiDexApplication{
         });
 
         umengNotifyProcess();
+
+        HuaWeiRegister.register(this);
+        MiPushRegistar.register(this, "2882303761517763828", "5101776331828");
+        MeizuRegister.register(this, "1000103", "e1bd9a94a46d4cffbfe288a1204a0c87");
     }
 
     private UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
@@ -209,5 +212,30 @@ public class App extends MultiDexApplication{
         vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         vibrator.vibrate(260);
     }
+
+
+    public void setNotifyEnable(boolean value){
+        if (value){
+            mPushAgent.enable(new IUmengCallback() {
+                @Override
+                public void onSuccess() {
+                }
+                @Override
+                public void onFailure(String s, String s1) {
+                }
+            });
+        }else{
+            mPushAgent.disable(new IUmengCallback() {
+                @Override
+                public void onSuccess() {
+                }
+                @Override
+                public void onFailure(String s, String s1) {
+                }
+            });
+        }
+
+    }
+
 
 }

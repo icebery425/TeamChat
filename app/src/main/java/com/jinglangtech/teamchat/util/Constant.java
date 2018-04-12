@@ -16,6 +16,8 @@ public class Constant {
     public static final String IMAGE_ADD_FLAG     = "000000";
     public final static String REQUEST_FAILED_STR = "系统异常";
 
+    public static final boolean JPUSH_ENABLE = false;
+
     public static String EVENT_OTHER_LEADER_RESULT_AFTER_HANDLE = "推送";
 
 
