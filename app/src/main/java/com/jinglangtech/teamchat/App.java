@@ -23,6 +23,7 @@ import com.jinglangtech.teamchat.util.ToastUtil;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.IUmengCallback;
 import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.MsgConstant;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UTrack;
 import com.umeng.message.UmengMessageHandler;
@@ -59,8 +60,8 @@ public class App extends MultiDexApplication{
         ToastUtil.setContext(this);
 
 
-        JPushInterface.setDebugMode(true);
-        JPushInterface.init(this);
+        //JPushInterface.setDebugMode(false);
+        //JPushInterface.init(this);
 
         /**
          * 初始化common库
@@ -90,9 +91,12 @@ public class App extends MultiDexApplication{
 
     //注册友盟推送服务
     public void registerUmengPushService(){
-
-
         mPushAgent = PushAgent.getInstance(this);
+
+        mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE); //声音
+        mPushAgent.setNotificationPlayLights(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);//呼吸灯
+        mPushAgent.setNotificationPlayVibrate(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);//振动
+
         //应用在前台时否显示通知
         mPushAgent.setNotificaitonOnForeground(false);
         //注册推送服务，每次调用register方法都会回调该接口

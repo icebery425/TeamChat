@@ -11,10 +11,10 @@
     <color name="common_status_color">#3784E4</color>
     <color name="title_bg">#37363A</color>
     <color name="window_bg">#f0f0f2</color>
-    <color name="dark_font">#6B6B6B</color>
+    <color name="dark_font">#6b6b6b</color>
     <color name="line_bg">#D8D8D8</color>
     <color name="dark_bg3">#999999</color>
-    <color name="dark_bg4">#B2B2B2</color>
+    <color name="dark_bg4">#b2b2b2</color>
     <color name="dark_bg5">#CECECE</color>
     <color name="blue_unread">#3784E4</color>
     <color name="menu_font">#333333</color>

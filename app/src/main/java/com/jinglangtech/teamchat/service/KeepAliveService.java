@@ -11,11 +11,14 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.jinglangtech.teamchat.R;
 import com.jinglangtech.teamchat.activity.AppStartActivity;
+import com.jinglangtech.teamchat.util.PhoneBrand;
+import com.jinglangtech.teamchat.util.SystemUtil;
 
 /**
  * Created by think on 2018/4/4.
@@ -40,7 +43,7 @@ public class KeepAliveService extends Service {
         super.onCreate();
         Log.i(TAG, "onCreate:");
         //showSystemNotify();
-        showCustomNotify();
+        getPhoneBrand();
     }
 
 
@@ -57,6 +60,28 @@ public class KeepAliveService extends Service {
                 .setContentIntent(pi)
                 .build();
         startForeground(9999, notification);
+    }
+
+    private void getPhoneBrand(){
+        boolean isFound = false;
+        String brand = SystemUtil.getDeviceBrand();
+        if (!TextUtils.isEmpty(brand)){
+            String lowbrand = brand.toLowerCase();
+            if (lowbrand.equals(PhoneBrand.PHONE_HUAWEI)){
+                Log.d("", "HUAWEI Brand Phone");
+                isFound = true;
+            }else if (lowbrand.equals(PhoneBrand.PHONE_XIAOMI)){
+                Log.d("", "XIAOMI Brand Phone");
+                isFound = true;
+            }else if (lowbrand.equals(PhoneBrand.PHONE_MEIZU)) {
+                Log.d("", "MEIZU Brand Phone");
+            }
+        }
+
+        if (!isFound){
+            showCustomNotify();
+        }
+
     }
 
     private void showCustomNotify(){

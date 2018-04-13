@@ -2,6 +2,7 @@ package com.jinglangtech.teamchat.activity;
 
 
 import android.app.AppOpsManager;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -9,11 +10,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ApplicationInfo;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
@@ -75,6 +78,7 @@ public class AppStartActivity extends BaseStartActivity {
             @Override
             public void run() {
 
+                //testLight();
                 openNotificationSetting();
 
             }
@@ -317,5 +321,23 @@ public class AppStartActivity extends BaseStartActivity {
     //解绑前台服务
     private void unbindForeground(){
         unbindService(mConnection);
+    }
+
+
+    private void testLight(){
+        int notifyId = 1001;
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher))
+                .setContentTitle("TeamChat")
+                .setContentText("收到一条新消息")
+                .setOnlyAlertOnce(false)
+                .setAutoCancel(true);
+
+        builder.setDefaults(Notification.DEFAULT_SOUND|Notification.DEFAULT_VIBRATE|Notification.DEFAULT_LIGHTS);
+
+
+        NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(notifyId, builder.build());
     }
 }
