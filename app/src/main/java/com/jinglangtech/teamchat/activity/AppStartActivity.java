@@ -120,10 +120,14 @@ public class AppStartActivity extends BaseStartActivity {
                     mLoginName = user.name;
                     mId = user._id;
                     mToken = user.token;
+                    mIsNotifyOpen = user.notification;
+
+                    ConfigUtil.getInstance(AppStartActivity.this).put(Key.NOTICE_OPEN, mIsNotifyOpen);
+                    ConfigUtil.getInstance(AppStartActivity.this).commit();
 
                     saveSp();
                     setJPushAlias();
-                    getUserInfo(mId);
+                    startChatPage();
 
                 }
 
@@ -146,7 +150,6 @@ public class AppStartActivity extends BaseStartActivity {
                 super.responseResult(infoObj, listObj, code, status);
                 LoginUser user = (LoginUser)infoObj;
                 if (user != null){
-                    NetWorkInterceptor.setToken(user.token);
                     mIsNotifyOpen = user.notification;
                     ConfigUtil.getInstance(AppStartActivity.this).put(Key.NOTICE_OPEN, mIsNotifyOpen);
                     ConfigUtil.getInstance(AppStartActivity.this).commit();

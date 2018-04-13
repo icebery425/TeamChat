@@ -195,9 +195,6 @@ public class App extends MultiDexApplication{
 
     }
 
-
-
-
     private void notificationOper(){
         boolean issNoticeVoiceOpen = ConfigUtil.getInstance(this).get(Key.NOTICE_VOICE_OPEN, true);
         boolean issNoticeVibrateOpen = ConfigUtil.getInstance(this).get(Key.NOTICE_VIBRATE_OPEN, true);

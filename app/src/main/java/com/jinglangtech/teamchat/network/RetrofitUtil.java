@@ -22,10 +22,10 @@ public class RetrofitUtil {
     //http
     //public static String BASE_URL = "http://47.100.0.143:8081/";
     //测试环境
-    //public static String BASE_URL = "https://sadxu.top:8443/";
+    public static String BASE_URL = "https://test.daisheng.site:8081/";
     //正式环境
     //public static String BASE_URL = "https://e2038576k7.iok.la:8081/";
-    public static String BASE_URL = "https://teamchat.jinglangtech.com:8081/";
+    //public static String BASE_URL = "https://teamchat.jinglangtech.com:8081/";
 
 
     public static String PHOTO_URL = "http://54.223.26.249:925";
