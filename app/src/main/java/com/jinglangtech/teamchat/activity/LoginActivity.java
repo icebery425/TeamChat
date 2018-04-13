@@ -56,6 +56,7 @@ public class LoginActivity extends BaseActivity{
     private String mAccount;
     private String mToken;
     private boolean mPwdOpen = false;
+    private boolean mIsNotifyOpen = false;
 
     private ChatGroupActivity mGroupActivity;
 
@@ -174,6 +175,10 @@ public class LoginActivity extends BaseActivity{
                     mName = user.name;
                     mId = user._id;
                     mToken = user.token;
+                    mIsNotifyOpen = user.notification;
+
+                    ConfigUtil.getInstance(LoginActivity.this).put(Key.NOTICE_OPEN, mIsNotifyOpen);
+                    ConfigUtil.getInstance(LoginActivity.this).commit();
 
                     saveSp();
                     setJPushAlias();
