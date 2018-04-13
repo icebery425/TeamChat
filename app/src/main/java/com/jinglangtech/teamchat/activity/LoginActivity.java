@@ -200,12 +200,22 @@ public class LoginActivity extends BaseActivity{
 
         App mApp = (App)this.getApplication();
         if (mApp != null && mApp.mPushAgent != null){
-            mApp.mPushAgent.setAlias(mId, "user_id",
+            mApp.mPushAgent.addAlias(mId, "user_id",
                     new UTrack.ICallBack() {
                         @Override
                         public void onMessage(boolean isSuccess, String message) {
+                            Log.e("AppStartActivity", "#### umeng push setAlias result: " + isSuccess );
+                            Log.e("AppStartActivity", "#### umeng push setAlias message: " + message );
                         }
                     });
+//            mApp.mPushAgent.setAlias(mId, "user_id",
+//                    new UTrack.ICallBack() {
+//                        @Override
+//                        public void onMessage(boolean isSuccess, String message) {
+//                            Log.e("LoginActivity", "#### umeng push setAlias result: " + isSuccess );
+//                            Log.e("LoginActivity", "#### umeng push setAlias message: " + message );
+//                        }
+//                    });
         }
 
     }

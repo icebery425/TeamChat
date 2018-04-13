@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <ImageView
         android:id="@+id/image"
         android:layout_width="35dip"
@@ -11,7 +12,7 @@
         android:layout_marginLeft="8.0dip"
         android:layout_marginRight="10dp"
         android:layout_marginTop="8.0dip"
-        android:src="@mipmap/service_logo"/>
+        android:src="@mipmap/service_logo" />
 
     <TextView
         android:id="@+id/title"

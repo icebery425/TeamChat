@@ -19,6 +19,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.jinglangtech.teamchat.App;
 import com.jinglangtech.teamchat.R;
@@ -79,6 +81,7 @@ public class AppStartActivity extends BaseStartActivity {
             public void run() {
 
                 //testLight();
+                //testLightCustom();
                 openNotificationSetting();
 
             }
@@ -96,6 +99,8 @@ public class AppStartActivity extends BaseStartActivity {
     public void loadData() {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(1000);
+        manager.cancel(1);
+        manager.cancelAll();
         startForeground();
     }
 
@@ -174,12 +179,22 @@ public class AppStartActivity extends BaseStartActivity {
 
         App mApp = (App)this.getApplication();
         if (mApp != null && mApp.mPushAgent != null){
-            mApp.mPushAgent.setAlias(mId, "user_id",
+            mApp.mPushAgent.addAlias(mId, "user_id",
                     new UTrack.ICallBack() {
                         @Override
                         public void onMessage(boolean isSuccess, String message) {
+                            Log.e("AppStartActivity", "#### umeng push setAlias result: " + isSuccess );
+                            Log.e("AppStartActivity", "#### umeng push setAlias message: " + message );
                         }
                     });
+//            mApp.mPushAgent.setAlias(mId, "user_id",
+//                    new UTrack.ICallBack() {
+//                        @Override
+//                        public void onMessage(boolean isSuccess, String message) {
+//                            Log.e("AppStartActivity", "#### umeng push setAlias result: " + isSuccess );
+//                            Log.e("AppStartActivity", "#### umeng push setAlias message: " + message );
+//                        }
+//                    });
         }
 
     }
@@ -339,5 +354,21 @@ public class AppStartActivity extends BaseStartActivity {
 
         NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(notifyId, builder.build());
+    }
+
+    private void testLightCustom(){
+        Notification.Builder builder = new Notification.Builder(this);
+        RemoteViews myNotificationView = new RemoteViews(this.getPackageName(),
+                R.layout.notify_layout);
+        myNotificationView.setTextViewText(R.id.title,"TeamChat");
+        myNotificationView.setTextViewText(R.id.text, "收到一条新消息");
+        builder.setContent(myNotificationView)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setTicker("testTicker")
+                .setAutoCancel(true);
+        builder.setDefaults(Notification.DEFAULT_SOUND|Notification.DEFAULT_VIBRATE|Notification.DEFAULT_LIGHTS);
+
+        NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(1002, builder.build());
     }
 }

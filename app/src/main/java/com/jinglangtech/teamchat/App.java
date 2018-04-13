@@ -1,6 +1,7 @@
 package com.jinglangtech.teamchat;
 
 import android.app.ActivityManager;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Ringtone;
@@ -11,6 +12,7 @@ import android.os.Vibrator;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.alibaba.fastjson.JSON;
 import com.jinglangtech.teamchat.activity.ChatGroupActivity;
@@ -93,6 +95,11 @@ public class App extends MultiDexApplication{
     public void registerUmengPushService(){
         mPushAgent = PushAgent.getInstance(this);
 
+        //设置冷却时间为3秒
+        mPushAgent.setMuteDurationSeconds(3);
+        //关闭免打扰模式：即24小都开启
+        mPushAgent.setNoDisturbMode(0, 0, 0, 0);
+
         mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE); //声音
         mPushAgent.setNotificationPlayLights(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);//呼吸灯
         mPushAgent.setNotificationPlayVibrate(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);//振动
@@ -162,6 +169,30 @@ public class App extends MultiDexApplication{
                 }
             });
         }
+
+        //自定义通知栏样式
+        @Override
+        public Notification getNotification(Context context, UMessage msg) {
+            switch (msg.builder_id) {
+                case 1:
+                    Notification.Builder builder = new Notification.Builder(context);
+                    RemoteViews myNotificationView = new RemoteViews(context.getPackageName(),
+                            R.layout.notify_layout);
+                    myNotificationView.setTextViewText(R.id.title, msg.title);
+                    myNotificationView.setTextViewText(R.id.text, msg.text);
+                    myNotificationView.setImageViewResource(R.id.image,
+                            getSmallIconId(context, msg));
+                    builder.setContent(myNotificationView)
+                            .setSmallIcon(getSmallIconId(context, msg))
+                            .setTicker(msg.ticker)
+                            .setAutoCancel(true);
+                    builder.setDefaults(Notification.DEFAULT_SOUND|Notification.DEFAULT_VIBRATE|Notification.DEFAULT_LIGHTS);
+                    return builder.getNotification();
+                default:
+                    //默认为0，若填写的builder_id并不存在，也使用默认。
+                    return super.getNotification(context, msg);
+            }
+        }
     };
 
     public void umengNotifyProcess(){
@@ -175,17 +206,19 @@ public class App extends MultiDexApplication{
         //if (!isAppForceground(ctx)){
         //    return;
         //}
-        if (!App.mIsChatPage){
-            return;
-        }
+        //if (!App.mIsChatPage){
+        //    return;
+        //}
 
         PushData dateInfo = null;
         if (!TextUtils.isEmpty(extraMsg)) {
             try {
                 dateInfo = JSON.parseObject(extraMsg, PushData.class);
                 if (dateInfo != null){
-                    //TODO
-                    notificationOper();
+
+                    if (App.mIsChatPage){
+                        notificationOper();
+                    }
 
                     Intent intent = new Intent(ChatGroupActivity.RECEIVE_MSG_CUSTOM_ACTION);
                     intent.putExtra("jpushRoomId", dateInfo.roomid);
